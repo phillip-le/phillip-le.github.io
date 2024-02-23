@@ -6,7 +6,7 @@ import starlight from "@astrojs/starlight";
 
 // https://astro.build/config
 export default defineConfig({
-  // Enable React to support React JSX components.
+  site: "https://github.com/phillip-le/phillip-le",
   integrations: [
     react(),
     tailwind(),
