@@ -9,10 +9,11 @@ export default defineConfig({
   site: "https://phillip-le.github.io",
   integrations: [
     react(),
-    tailwind(),
+    tailwind({ applyBaseStyles: false }),
     starlight({
       title: "Developer Setup",
       lastUpdated: true,
+      customCss: ["./src/tailwind.css"],
     }),
   ],
 });
