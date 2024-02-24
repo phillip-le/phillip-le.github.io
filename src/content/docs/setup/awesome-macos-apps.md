@@ -71,3 +71,7 @@ caffeinate
 ## Video Player
 
 [IINA](https://github.com/iina/iina) is the modern video player for macOS.
+
+## Notepad
+
+[heynote](https://heynote.com/) is a brilliant notepad for keeping code snippets and random notes. It supports syntax highlighting, easy to copy code snippets, auto-formatting and Markdown support.
