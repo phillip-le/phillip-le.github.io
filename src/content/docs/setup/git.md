@@ -9,6 +9,7 @@ Sensible `git` options to set.
 ```sh
 git config --global push.autosetupremote true
 git config --global core.excludeFiles ~/.gitignore
+git config --global blame.ignoreRevsFile .git-blame-ignore-revs
 ```
 
 ```
@@ -49,3 +50,27 @@ Force push only if your changes are the latest changes on the remote. This preve
 ```sh
 git push --force-with-lease
 ```
+
+## Ignore specific commits in git blame
+
+Sometimes, you will commit large formatting changes which makes `git blame` fairly useless because almost every line will have the formatting change as its most recent commit.
+
+With `git config blame.ignoreRevsFile .git-blame-ignore-revs`, you can create a `.git-blame-ignore-revs` file containing commit SHAs that should be ignored by `git blame` in VSCode and GitHub. GitHub supports `.git-blame-ignore-revs` files natively without configuration.
+
+```
+// ~/.gitconfig
+[blame]
+    ignoreRevsFile = .git-blame-ignore-revs
+```
+
+Example of a `.git-blame-ignore-revs` file.
+
+```
+// .git-blame-ignore-revs
+# Enforced single quotes over double quotes
+7e9386274b3b969b70ae4beda1b3321812c1c512
+```
+
+## Store large files in git
+
+`git` works best with text files and while you can version other file types with it, it is usually not advised. Instead, you can use [Git LFS](https://git-lfs.com/) to manage these larger files.
