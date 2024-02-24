@@ -1,6 +1,5 @@
 ---
 title: "Managing node and package manager versions"
-tags: ["node"]
 ---
 
 Manage the node and package manager versions by using [volta](https://docs.volta.sh/guide/). Also, standardise the versions of `node` and the package managers used in a repository with [volta's config](https://docs.volta.sh/guide/understanding#managing-your-project).

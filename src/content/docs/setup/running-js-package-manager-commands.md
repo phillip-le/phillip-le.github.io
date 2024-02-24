@@ -1,6 +1,5 @@
 ---
-title: "Running npm, yarn and pnpm commands"
-tags: ["pnpm", "yarn"]
+title: "Running javascript package manager commands"
 ---
 
 Ever run `yarn` in a repository that uses `pnpm`? Stop thinking about which package manager to run commands with.
