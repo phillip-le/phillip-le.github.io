@@ -67,3 +67,7 @@ caffeinate
 ## Better Battery Life
 
 [Aldente](https://github.com/AppHouseKitchen/AlDente-Charge-Limiter) helps keep your laptop battery charge maxed at a threshold you set. This is useful because I always keep my laptop plugged in all day.
+
+## Video Player
+
+[IINA](https://github.com/iina/iina) is the modern video player for macOS.
