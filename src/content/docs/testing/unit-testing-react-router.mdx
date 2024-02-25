@@ -2,11 +2,48 @@
 title: "Unit testing React Router"
 ---
 
-Source code can be found [here](https://github.com/phillip-le/vite-react-playground).
-
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-## Test that links work
+[React Router](https://reactrouter.com/en/main) lets us navigate between pages using the `<Link/>` component and through
+hooks like `useNavigate`. When we are testing the functionality of React Router, we usually want to ensure that
+clicking on an element navigates the user to the appropriate screen. The main thing that we should focus on
+is that our component is navigating to the correct URL path. The component of that is rendered after the user is navigated should
+**not** be the responsibility of the component which is navigating.
+
+We can do this by rendering our component inside of a `<Routes>` component that is only used for our test cases. We can usually render to `<Route/>`
+components: one for the component we want to test and a dummy component which we expect to see after navigating.
+
+```tsx
+render(
+  <MemoryRouter>
+    <Routes>
+      <Route path="/" element={<UserCard user={user} />} />
+      <Route path={`/user/${user.id}`} element={<p>Dummy page</p>} />
+    </Routes>
+  </MemoryRouter>
+);
+```
+
+Using a `<MemoryRouter/>` also resolves the following error:
+
+```sh
+Error: useRoutes() may be used only in the context of a <Router> component.
+```
+
+Afterwards, we can simulate the user clicking on the link in the component and asserting that the "Dummy page" component is visible.
+
+```tsx
+// retrieves the link element from the rendered component.
+const linkToUserDetails = screen.getByRole("link");
+// simulates a user click on the link.
+await user.click(linkToUserDetails);
+// checks whether the text "Dummy page" is visible on the screen. This is asserting that after clicking the link, the user is navigated to the page with the dummy text.
+expect(screen.getByText("Dummy page")).toBeVisible();
+```
+
+## Examples
+
+### Test navigation with `<Link/>`
 
 <Tabs>
 <TabItem label="UserCard.test.tsx">
@@ -64,7 +101,7 @@ export const UserCard: FC<UserCardProps> = ({ user }) => (
 </TabItem>
 </Tabs>
 
-## Test that button click results in page navigation
+### Test navigation with `useNavigate`
 
 <Tabs>
 
@@ -77,8 +114,8 @@ import { UserDetails } from "./UserDetails";
 import { userData } from "../data/userData";
 
 describe("UserDetails", () => {
-it("should navigate back to / when clicking button", async () => {
-const user = userEvent.setup();
+  it("should navigate back to / when clicking button", async () => {
+    const user = userEvent.setup();
 
     const screen = render(
       <MemoryRouter initialEntries={[`/user/${userData[0].id}`]}>
@@ -94,8 +131,7 @@ const user = userEvent.setup();
     await user.click(buttonToClick);
 
     expect(screen.getByText("Dummy page")).toBeVisible();
-
-});
+  });
 });
 
 ````
@@ -139,3 +175,8 @@ export const UserDetails: FC = () => {
 
 </TabItem>
 </Tabs>
+
+## Useful resources
+
+- Source code can be found [here](https://github.com/phillip-le/vite-react-playground).
+- React Testing library also maintains its own [documentation](https://testing-library.com/docs/example-react-router/) on testing React Router.
