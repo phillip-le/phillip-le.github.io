@@ -1,0 +1,138 @@
+---
+title: "Unit testing React Router"
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+## Test that links work
+
+<Tabs>
+<TabItem label="UserCard.test.tsx">
+
+```tsx
+import { userEvent } from "@testing-library/user-event";
+import { render } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { UserCard } from "./UserCard";
+import { userData } from "../data/userData";
+
+describe("UserCard", () => {
+  it("should link to the user details page", async () => {
+    const user = userEvent.setup();
+
+    const screen = render(
+      <MemoryRouter>
+        <Routes>
+          <Route path="/" element={<UserCard user={userData[0]} />} />
+          <Route path={`/user/${userData[0].id}`} element={<p>Dummy page</p>} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const linkToUserDetails = screen.getByRole("link");
+
+    await user.click(linkToUserDetails);
+
+    expect(screen.getByText("Dummy page")).toBeVisible();
+  });
+});
+```
+
+</TabItem>
+<TabItem label="UserCard.tsx">
+
+```tsx
+import { FC } from "react";
+import { User } from "../data/userData";
+import { Link } from "react-router-dom";
+
+type UserCardProps = {
+  user: User;
+};
+
+export const UserCard: FC<UserCardProps> = ({ user }) => (
+  <div>
+    <p>
+      <Link to={`/user/${user.id}`}>{user.name}</Link>
+    </p>
+  </div>
+);
+```
+
+</TabItem>
+</Tabs>
+
+## Test that button click results in page navigation
+
+<Tabs>
+
+<TabItem label="UserDetails.test.tsx">
+```tsx
+import { render } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { UserDetails } from "./UserDetails";
+import { userData } from "../data/userData";
+
+describe("UserDetails", () => {
+  it("should navigate back to / when clicking button", async () => {
+    const user = userEvent.setup();
+
+    const screen = render(
+      <MemoryRouter initialEntries={[`/user/${userData[0].id}`]}>
+        <Routes>
+          <Route path="/user/:userId" element={<UserDetails />} />
+          <Route path="/" element={<p>Dummy page</p>} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const buttonToClick = screen.getByRole("button");
+
+    await user.click(buttonToClick);
+
+    expect(screen.getByText("Dummy page")).toBeVisible();
+  });
+});
+```
+</TabItem>
+
+<TabItem label="UserDetails.tsx">
+
+```tsx
+import { FC } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { userData } from "../data/userData";
+
+export const UserDetails: FC = () => {
+  const navigate = useNavigate();
+
+  const { userId } = useParams();
+  if (!userId) {
+    return <p>404</p>;
+  }
+
+  const user = userData.find(({ id }) => id === userId);
+  if (!user) {
+    return <p>404</p>;
+  }
+
+  return (
+    <div>
+      <h1>User Details</h1>
+      <p>{user.name}</p>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Back to list
+      </button>
+    </div>
+  );
+};
+```
+
+</TabItem>
+</Tabs>
+
