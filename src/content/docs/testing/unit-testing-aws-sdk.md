@@ -12,7 +12,7 @@ generally used for table level commands such as `CreateTableCommand` and `Descri
 it helpful to use `@aws-sdk/lib-dynamodb` which automatically handles marshalling and unmarshalling javascript objects to [DynamoDB JSON](https://docs.aws.amazon.com/whitepapers/latest/comparing-dynamodb-and-hbase-for-nosql/data-types.html).
 
 ```shell
-yarn add @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
+ni @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 ```
 
 You can initialise the DynamoDB client in its own file and export it globally so you can use it throughout your application:
@@ -59,7 +59,7 @@ export const createUser = async (input: CreateUserInput): Promise<User> => {
 To test this we can use the [aws-sdk-client-mock](https://www.npmjs.com/package/aws-sdk-client-mock) library which provides a simple way to mock AWS SDK v3 clients:
 
 ```shell
-yarn add -D aws-sdk-client-mock
+ni -D aws-sdk-client-mock
 ```
 
 In our test file, we can then mock the DynamoDB Document Client that we created earlier.
@@ -134,7 +134,7 @@ We also want to assert that we are giving the DynamoDB client commands with the 
 the correct table name and the user we expect to create. We can use the custom jest matchers provided by [aws-sdk-client-mock-jest](https://www.npmjs.com/package/aws-sdk-client-mock#jest-matchers) to do this:
 
 ```shell
-yarn add -D aws-sdk-client-mock-jest
+ni -D aws-sdk-client-mock-jest
 ```
 
 Make sure to import `aws-sdk-client-mock-jest` at the top of your test file:
