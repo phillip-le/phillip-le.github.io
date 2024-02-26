@@ -122,6 +122,7 @@ brew install eza
 ## fzf
 
 [fzf](https://github.com/junegunn/fzf) is a general-purpose command-line fuzzy finder.
+
 [fzf.fish](https://github.com/PatrickF1/fzf.fish) adds nice keybindings for `fzf`.
 
 ### Installation
