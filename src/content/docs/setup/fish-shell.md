@@ -91,7 +91,7 @@ fisher install jethrokuan/z
 
 ## bat
 
-The better `cat` alternative.
+[bat](https://github.com/sharkdp/bat) is the better `cat` alternative.
 
 ### Installation
 
@@ -101,7 +101,7 @@ brew install bat
 
 ## fd
 
-The better `find` alternative.
+[fd](https://github.com/sharkdp/fd) is the better `find` alternative.
 
 ### Installation
 
@@ -111,7 +111,7 @@ brew install fd
 
 ## eza
 
-The better `ls` alternative.
+[eza](https://github.com/eza-community/eza) is the better `ls` alternative.
 
 ### Installation
 
