@@ -4,7 +4,7 @@ title: "Awesome macOS apps"
 
 ## Spotlight Replacement
 
-[Raycast](https://www.raycast.com/) is a better Spotlight search. It can also be used to [uninstall applications](https://youtu.be/tVDnl0YW9hA)!
+[Raycast](https://www.raycast.com/) is a better Spotlight search. It can also be used to [uninstall applications](https://youtu.be/tVDnl0YW9hA) and search for screenshots!
 
 ### Extensions
 
@@ -75,3 +75,11 @@ caffeinate
 ## Notepad
 
 [heynote](https://heynote.com/) is a brilliant notepad for keeping code snippets and random notes. It supports syntax highlighting, easy to copy code snippets, auto-formatting and Markdown support.
+
+## Clipboard History
+
+Raycast has a native [Clipboard History](https://www.raycast.com/extensions/clipboard-history) extension which is phenomenal.
+
+### Alternatives
+
+[Maccy](https://maccy.app/)
