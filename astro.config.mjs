@@ -13,7 +13,10 @@ export default defineConfig({
     starlight({
       title: "Developer Setup",
       lastUpdated: true,
-      customCss: ["./src/tailwind.css"],
+      customCss: [
+        "./src/tailwind.css",
+        "@fontsource-variable/jetbrains-mono/index.css",
+      ],
     }),
   ],
 });
