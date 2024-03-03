@@ -1,0 +1,65 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "d2@latest": {
+      "last_modified": "2024-02-26T19:46:43Z",
+      "resolved": "github:NixOS/nixpkgs/548a86b335d7ecd8b57ec617781f5e652ab0c38e#d2",
+      "source": "devbox-search",
+      "version": "0.6.3",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/xjrimd18wg7gn0hq4qssr1bilxv6w9mr-d2-0.6.3"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/dzl40lhb1wmw3lv3n6xq3sn22aqdrwjp-d2-0.6.3"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/61r1pmk6b1v81arddxxfarvrjqv6vy46-d2-0.6.3"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/yy7wf9sb443d7q4wirnbqih1a83pydxb-d2-0.6.3"
+        }
+      }
+    },
+    "nodePackages.pnpm@latest": {
+      "last_modified": "2024-02-26T19:46:43Z",
+      "resolved": "github:NixOS/nixpkgs/548a86b335d7ecd8b57ec617781f5e652ab0c38e#nodePackages.pnpm",
+      "source": "devbox-search",
+      "version": "8.15.3",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/5r4f8l7man6wafyzxd39pbndkw7hklh6-pnpm-8.15.3"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/p6qla4nnfhfqj8gm7609bnynx1vfcfpb-pnpm-8.15.3"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/7zxfp8n1987076069vd6rqxvcd3hrv4n-pnpm-8.15.3"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/jxyv7qildiy960h194h4ca3wharbbpks-pnpm-8.15.3"
+        }
+      }
+    },
+    "nodejs@20": {
+      "last_modified": "2024-02-25T07:54:35Z",
+      "resolved": "github:NixOS/nixpkgs/2a34566b67bef34c551f204063faeecc444ae9da#nodejs_20",
+      "source": "devbox-search",
+      "version": "20.11.1",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/xr7qgwzvymigkn4lhz8hzdky765m32r4-nodejs-20.11.1"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/gdjc5gacmfpj6warfxhfkjj3i8vhaxq9-nodejs-20.11.1"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/c0bc4479fbsdmzam1b50yil1ixcaaz4s-nodejs-20.11.1"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/vz13mi0w75q96sfjxz2ylnv8812hvf34-nodejs-20.11.1"
+        }
+      }
+    }
+  }
+}

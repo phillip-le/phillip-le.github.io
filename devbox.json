@@ -1,0 +1,6 @@
+{
+  "packages": ["nodejs@20", "nodePackages.pnpm@latest", "d2@latest"],
+  "shell": {
+    "init_hook": ["pnpm -g add @antfu/ni", "ni"]
+  }
+}

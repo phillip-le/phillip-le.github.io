@@ -1,0 +1,23 @@
+public: {
+    label: "Public internet (Untrusted)"
+    web: {
+        label: "Web app"
+    }
+    mobile: {
+        label: "Mobile app"
+    }
+}
+
+private: {
+    label:  "Private network (Trusted)"
+    api: {
+        label: "REST API"
+    }
+    database: {
+        shape: cylinder
+    }
+}
+
+public.web -> private.api
+public.mobile -> private.api
+private.api -> private.database 
