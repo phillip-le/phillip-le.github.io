@@ -1,0 +1,54 @@
+---
+title: "Unit testing network requests"
+sidebar:
+  hidden: true
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+## Node Environment
+
+## Browser Environment
+
+[nock](https://github.com/nock/nock) can also be used to mock network requests in a frontend repository. It is usually useful for unit testing functions that make API calls in isolation.
+
+For example, here is a function that retrieves a `User` from [JSONPlaceHolder](https://jsonplaceholder.typicode.com/).
+
+```ts
+// getUser.ts
+import request from "axios";
+import { User } from "../data/userData";
+
+export const getUser = async (id: User["id"]): Promise<User> => {
+  const response = await request({
+    baseURL: "https://jsonplaceholder.typicode.com",
+    url: `/users/${id}`,
+    method: "GET",
+    responseType: "json",
+  });
+
+  return response.data as User;
+};
+```
+
+So that we can use `nock` we need to pretend to be in a node environment in our unit test: 
+- https://vitest.dev/guide/environment.html#environments-for-specific-files
+- https://jestjs.io/docs/configuration#testenvironment-string
+
+Add the following comment to the top of your test file:
+
+<Tabs>
+<TabItem label="vitest">
+```ts
+// @vitest-environment node
+```
+</TabItem>
+
+<TabItem label="jest">
+```ts
+/**
+ * @jest-environment node
+ */
+```
+</TabItem>
+</Tabs>
