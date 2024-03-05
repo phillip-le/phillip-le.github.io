@@ -31,7 +31,8 @@ export const getUser = async (id: User["id"]): Promise<User> => {
 };
 ```
 
-So that we can use `nock` we need to pretend to be in a node environment in our unit test: 
+So that we can use `nock` we need to pretend to be in a node environment in our unit test:
+
 - https://vitest.dev/guide/environment.html#environments-for-specific-files
 - https://jestjs.io/docs/configuration#testenvironment-string
 
@@ -52,3 +53,59 @@ Add the following comment to the top of your test file:
 ```
 </TabItem>
 </Tabs>
+
+We can then use `nock` to mock the network request like the following:
+
+```ts
+// @vitest-environment node
+import nock from "nock";
+import { getUser } from "./getUser";
+import { userData } from "../data/userData";
+
+describe("getUser", () => {
+  it("should return the user if API returns 200", async () => {
+    const scope = nock("https://jsonplaceholder.typicode.com")
+      .get(`/users/${userData[0].id}`)
+      .reply(200, userData[0]);
+
+    const result = await getUser(userData[0].id);
+
+    expect(result).toEqual(userData[0]);
+
+    scope.isDone();
+  });
+});
+```
+
+Alternatively, we could mock the `axios` request function like this:
+
+```ts
+import { getUser } from "./getUser";
+import { userData } from "../data/userData";
+import request from "axios";
+import { vi } from "vitest";
+
+vi.mock("axios");
+
+describe("getUser", () => {
+  it("should return the user if API returns 200", async () => {
+    vi.mocked(request).mockResolvedValueOnce({
+      data: userData[0],
+      status: 200,
+    });
+
+    const result = await getUser(userData[0].id);
+
+    expect(result).toEqual(userData[0]);
+  });
+});
+```
+
+However, mocking network requests is typically quite error prone because it is easy to fake
+the behaviour of our HTTP client. For example, `axios` by default throws an error if the API returns
+a 4xx or 5xx error whereas `fetch` always gracefully returns the API response and expects consumers
+to handle the status code appropriately.
+
+Ideally, your unit test should be HTTP client agnostic. It should not matter whether or not you are using `axios`
+or `fetch`. Mocking the network layer with `nock` is beneficial because it is mocking at the outermost edge of our
+application and so you can write unit tests that will be HTTP client agnostic.
