@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     tailwind({ applyBaseStyles: false }),
     starlight({
-      title: "Developer Setup",
+      title: "Developer Musings",
       lastUpdated: true,
       customCss: [
         "./src/tailwind.css",
