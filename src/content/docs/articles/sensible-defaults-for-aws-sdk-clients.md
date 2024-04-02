@@ -49,8 +49,50 @@ If you are running your application in AWS, some environments like Fargate and L
 import { S3Client } from "@aws-sdk/client-s3";
 
 export const s3Client = new S3Client({
-  region: process.env.AWS_DEFAULT_REGION,
+  region: process.env.AWS_REGION,
 });
+```
+
+## Initialise clients outside of handler functions
+
+In serverless environments like AWS Lambda, it can be costly to initialise a new client for every function invocation. As recommended in the [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html), we can check if a client exists before initialising a new client with [nullish coalescing assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment).
+
+> Objects declared outside of the function's handler method remain initialized, providing additional optimization when the function is invoked again. For example, if your Lambda function establishes a database connection, instead of reestablishing the connection, the original connection is used in subsequent invocations. We recommend adding logic in your code to check if a connection exists before creating a new one.
+
+```ts
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+
+let dynamoDbDocumentClient: DynamoDBDocumentClient;
+
+const getAwsClients = (config: { region: string; requestTimeout: number }) => {
+  dynamoDbDocumentClient ??= DynamoDBDocumentClient.from(
+    new DynamoDBClient({
+      region: config.region,
+      requestHandler: {
+        requestTimeout: config.requestTimeout,
+      },
+    })
+  );
+
+  return {
+    dynamoDbDocumentClient,
+  };
+};
+```
+
+Alternatively, if we do not need to configure the clients at runtime, we can initialise them globally:
+
+```ts
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+
+const dynamoDbClient = new DynamoDBClient({
+  region: process.env.AWS_REGION,
+});
+
+export const dynamoDbDocumentClient =
+  DynamoDBDocumentClient.from(dynamoDbClient);
 ```
 
 ## Resource Links
@@ -58,3 +100,5 @@ export const s3Client = new S3Client({
 - [Configuring max sockets](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/node-configuring-maxsockets.html)
 - [Reusing connections](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/node-reusing-connections.html)
 - [Using Lambda environmental variables](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html)
+- [Lambda Runtime Environment](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html)
+- [Nullish coalescing assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment)
