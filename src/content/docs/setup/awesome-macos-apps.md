@@ -1,5 +1,5 @@
 ---
-title: "Awesome macOS apps"
+title: 'Awesome macOS apps'
 ---
 
 ## Spotlight Replacement

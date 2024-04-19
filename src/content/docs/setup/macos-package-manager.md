@@ -1,5 +1,5 @@
 ---
-title: "Package manager for macOS"
+title: 'Package manager for macOS'
 sidebar:
   order: 1
 ---

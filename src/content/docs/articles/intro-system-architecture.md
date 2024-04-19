@@ -1,5 +1,5 @@
 ---
-title: "Introduction to system architecture"
+title: 'Introduction to system architecture'
 sidebar:
   hidden: true
 ---

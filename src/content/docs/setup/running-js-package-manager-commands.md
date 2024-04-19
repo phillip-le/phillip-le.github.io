@@ -1,5 +1,5 @@
 ---
-title: "Running javascript package manager commands"
+title: 'Running javascript package manager commands'
 ---
 
 Ever run `yarn` in a repository that uses `pnpm`? Stop thinking about which package manager to run commands with.

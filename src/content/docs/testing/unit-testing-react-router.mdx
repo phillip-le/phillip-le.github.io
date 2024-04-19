@@ -1,8 +1,8 @@
 ---
-title: "Unit testing React Router"
+title: 'Unit testing React Router'
 ---
 
-import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 [React Router](https://reactrouter.com/en/main) lets us navigate between pages using the `<Link/>` component and through
 hooks like `useNavigate`. When we are testing the functionality of React Router, we usually want to ensure that
@@ -20,7 +20,7 @@ render(
       <Route path="/" element={<UserCard user={user} />} />
       <Route path={`/user/${user.id}`} element={<p>Dummy page</p>} />
     </Routes>
-  </MemoryRouter>
+  </MemoryRouter>,
 );
 ```
 
@@ -34,11 +34,11 @@ Afterwards, we can simulate the user clicking on the link in the component and a
 
 ```tsx
 // retrieves the link element from the rendered component.
-const linkToUserDetails = screen.getByRole("link");
+const linkToUserDetails = screen.getByRole('link');
 // simulates a user click on the link.
 await user.click(linkToUserDetails);
 // checks whether the text "Dummy page" is visible on the screen. This is asserting that after clicking the link, the user is navigated to the page with the dummy text.
-expect(screen.getByText("Dummy page")).toBeVisible();
+expect(screen.getByText('Dummy page')).toBeVisible();
 ```
 
 ## Examples
@@ -49,14 +49,14 @@ expect(screen.getByText("Dummy page")).toBeVisible();
 <TabItem label="UserCard.test.tsx">
 
 ```tsx
-import { userEvent } from "@testing-library/user-event";
-import { render } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { UserCard } from "./UserCard";
-import { userData } from "../data/userData";
+import { userEvent } from '@testing-library/user-event';
+import { render } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { UserCard } from './UserCard';
+import { userData } from '../data/userData';
 
-describe("UserCard", () => {
-  it("should link to the user details page", async () => {
+describe('UserCard', () => {
+  it('should link to the user details page', async () => {
     const user = userEvent.setup();
 
     const screen = render(
@@ -65,14 +65,14 @@ describe("UserCard", () => {
           <Route path="/" element={<UserCard user={userData[0]} />} />
           <Route path={`/user/${userData[0].id}`} element={<p>Dummy page</p>} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
-    const linkToUserDetails = screen.getByRole("link");
+    const linkToUserDetails = screen.getByRole('link');
 
     await user.click(linkToUserDetails);
 
-    expect(screen.getByText("Dummy page")).toBeVisible();
+    expect(screen.getByText('Dummy page')).toBeVisible();
   });
 });
 ```
@@ -81,9 +81,9 @@ describe("UserCard", () => {
 <TabItem label="UserCard.tsx">
 
 ```tsx
-import { FC } from "react";
-import { User } from "../data/userData";
-import { Link } from "react-router-dom";
+import { FC } from 'react';
+import { User } from '../data/userData';
+import { Link } from 'react-router-dom';
 
 type UserCardProps = {
   user: User;
@@ -114,8 +114,8 @@ import { UserDetails } from "./UserDetails";
 import { userData } from "../data/userData";
 
 describe("UserDetails", () => {
-  it("should navigate back to / when clicking button", async () => {
-    const user = userEvent.setup();
+it("should navigate back to / when clicking button", async () => {
+const user = userEvent.setup();
 
     const screen = render(
       <MemoryRouter initialEntries={[`/user/${userData[0].id}`]}>
@@ -131,7 +131,8 @@ describe("UserDetails", () => {
     await user.click(buttonToClick);
 
     expect(screen.getByText("Dummy page")).toBeVisible();
-  });
+
+});
 });
 
 ````

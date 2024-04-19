@@ -1,5 +1,5 @@
 ---
-title: "Managing node and package manager versions"
+title: 'Managing node and package manager versions'
 ---
 
 ## volta

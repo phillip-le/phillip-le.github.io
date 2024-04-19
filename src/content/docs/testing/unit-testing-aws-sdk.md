@@ -1,5 +1,5 @@
 ---
-title: "Unit Testing AWS SDK for TypeScript"
+title: 'Unit Testing AWS SDK for TypeScript'
 ---
 
 Take a look at the source code in [GitHub](https://github.com/phillip-le/medium-article-code-examples).
@@ -18,10 +18,10 @@ ni @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 You can initialise the DynamoDB client in its own file and export it globally so you can use it throughout your application:
 
 ```ts
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
-const dynamoDbClient = new DynamoDBClient({ region: "ap-southeast-2" });
+const dynamoDbClient = new DynamoDBClient({ region: 'ap-southeast-2' });
 
 export const dynamoDbDocumentClient =
   DynamoDBDocumentClient.from(dynamoDbClient);
@@ -47,7 +47,7 @@ export const createUser = async (input: CreateUserInput): Promise<User> => {
     new PutCommand({
       TableName: config.userTableName,
       Item: userToCreate,
-    })
+    }),
   );
 
   return userToCreate;
@@ -65,7 +65,7 @@ ni -D aws-sdk-client-mock
 In our test file, we can then mock the DynamoDB Document Client that we created earlier.
 
 ```ts
-import { mockClient } from "aws-sdk-client-mock";
+import { mockClient } from 'aws-sdk-client-mock';
 
 const mockDynamoDbDocumentClient = mockClient(dynamoDbDocumentClient);
 ```
@@ -73,7 +73,7 @@ const mockDynamoDbDocumentClient = mockClient(dynamoDbDocumentClient);
 In our test case, we can setup the expected response from the `PutCommand`:
 
 ```ts
-it("should create user with readonly properties and put in dynamodb", async () => {
+it('should create user with readonly properties and put in dynamodb', async () => {
   mockDynamoDbDocumentClient.on(PutCommand).resolves({});
 });
 ```
@@ -86,16 +86,16 @@ On the other hand, if we wanted to get a list of users by their role:
 
 ```ts
 export const getUsersByRole = async (
-  role: Role
+  role: Role,
 ): Promise<GetUsersByRoleOutput> => {
   const { Items: users } = await dynamoDbDocumentClient.send(
     new QueryCommand({
       TableName: config.userTableName,
       IndexName: config.userTableRoleIndexName,
-      ExpressionAttributeNames: { "#role": "role" },
-      ExpressionAttributeValues: { ":role": role },
-      KeyConditionExpression: "#role = :role",
-    })
+      ExpressionAttributeNames: { '#role': 'role' },
+      ExpressionAttributeValues: { ':role': role },
+      KeyConditionExpression: '#role = :role',
+    }),
   );
 
   if (!maybeUsers) {
@@ -111,15 +111,15 @@ export const getUsersByRole = async (
 We would need to setup the list users that DynamoDB would return:
 
 ```ts
-it("should query user by role from dynamodb", async () => {
-  const role: Role = "READER";
+it('should query user by role from dynamodb', async () => {
+  const role: Role = 'READER';
 
   const mockReaderUser: User = {
-    id: "TestUserId",
-    email: "test@email.com",
+    id: 'TestUserId',
+    email: 'test@email.com',
     role,
-    createdAt: "2023-09-10T05:58:16.945Z",
-    updatedAt: "2023-09-10T05:58:16.945Z",
+    createdAt: '2023-09-10T05:58:16.945Z',
+    updatedAt: '2023-09-10T05:58:16.945Z',
   };
 
   mockDynamoDbDocumentClient.on(QueryCommand).resolves({
@@ -140,17 +140,17 @@ ni -D aws-sdk-client-mock-jest
 Make sure to import `aws-sdk-client-mock-jest` at the top of your test file:
 
 ```ts
-import "aws-sdk-client-mock-jest";
+import 'aws-sdk-client-mock-jest';
 ```
 
 Then, we can use the `toHaveReceivedCommandWith` matcher to assert that the client has received a `PutCommand` with the correct parameters:
 
 ```ts
-it("should persist user to dynamodb", async () => {
+it('should persist user to dynamodb', async () => {
   await createUser(userInput);
 
   expect(mockDynamoDbDocumentClient).toHaveReceivedCommandWith(PutCommand, {
-    TableName: "TestUserTable",
+    TableName: 'TestUserTable',
     Item: userToCreate,
   });
 });
@@ -161,13 +161,13 @@ it("should persist user to dynamodb", async () => {
 Similarly, we can use the `toHaveReceivedCommandWith` matcher to assert that the client has received a `QueryCommand` with the correct parameters:
 
 ```ts
-it("should query user by role from dynamodb", async () => {
+it('should query user by role from dynamodb', async () => {
   expect(mockDynamoDbDocumentClient).toHaveReceivedCommandWith(QueryCommand, {
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { "#role": "role" },
-    ExpressionAttributeValues: { ":role": role },
-    KeyConditionExpression: "#role = :role",
+    ExpressionAttributeNames: { '#role': 'role' },
+    ExpressionAttributeValues: { ':role': role },
+    KeyConditionExpression: '#role = :role',
   });
 });
 ```
@@ -187,9 +187,9 @@ const { Items: maybeUsers } = await dynamoDbDocumentClient
   .query({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { "#role": "role" },
-    ExpressionAttributeValues: { ":role": role },
-    KeyConditionExpression: "#role = :role",
+    ExpressionAttributeNames: { '#role': 'role' },
+    ExpressionAttributeValues: { ':role': role },
+    KeyConditionExpression: '#role = :role',
   })
   .promise();
 ```
@@ -200,32 +200,32 @@ Notice that AWS SDK v2 does not support promises initially, so we need to call t
 makes mocking more complex:
 
 ```ts
-it("should query user by role from dynamodb", async () => {
+it('should query user by role from dynamodb', async () => {
   const mockReaderUser: User = {
-    id: "TestUserId",
-    email: "test@email.com",
-    role: "READER",
-    createdAt: "2023-09-10T05:58:16.945Z",
-    updatedAt: "2023-09-10T05:58:16.945Z",
+    id: 'TestUserId',
+    email: 'test@email.com',
+    role: 'READER',
+    createdAt: '2023-09-10T05:58:16.945Z',
+    updatedAt: '2023-09-10T05:58:16.945Z',
   };
 
   const mockQueryDynamoDb = jest.fn().mockImplementation(() => ({
     promise: jest.fn().mockResolvedValue({ Items: [mockReaderUser] }),
   }));
   jest
-    .spyOn(dynamoDbDocumentClient, "query")
+    .spyOn(dynamoDbDocumentClient, 'query')
     .mockImplementation(mockQueryDynamoDb);
 
-  await expect(getUsersByRole("READER")).resolves.toEqual([mockReaderUser]);
+  await expect(getUsersByRole('READER')).resolves.toEqual([mockReaderUser]);
 
   expect(mockQueryDynamoDb).toHaveBeenCalledWith<
     [DynamoDB.DocumentClient.QueryInput]
   >({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { "#role": "role" },
-    ExpressionAttributeValues: { ":role": mockReaderUser.role },
-    KeyConditionExpression: "#role = :role",
+    ExpressionAttributeNames: { '#role': 'role' },
+    ExpressionAttributeValues: { ':role': mockReaderUser.role },
+    KeyConditionExpression: '#role = :role',
   });
 });
 ```
@@ -243,7 +243,7 @@ pass the parameters to the client method and return the results.
 
 ```ts
 export const queryDynamoDb = async (
-  params: QueryCommandInput
+  params: QueryCommandInput,
 ): Promise<QueryCommandOutput> =>
   await dynamoDbDocumentClient.send(new QueryCommand(params));
 ```
@@ -257,14 +257,14 @@ Using our wrapper looks like this:
 
 ```ts
 export const getUsersByRoleDynamoDb = async (
-  role: Role
+  role: Role,
 ): Promise<GetUsersByRoleOutput> => {
   const { Items: users } = await queryDynamoDb({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { "#role": "role" },
-    ExpressionAttributeValues: { ":role": role },
-    KeyConditionExpression: "#role = :role",
+    ExpressionAttributeNames: { '#role': 'role' },
+    ExpressionAttributeValues: { ':role': role },
+    KeyConditionExpression: '#role = :role',
   });
 
   if (!users) {
@@ -282,14 +282,14 @@ The `queryDynamoDb` wrapper function is much easier to mock than the `send` meth
 In our test file, we first mock the file that exports the AWS SDK wrapper functions:
 
 ```ts
-jest.mock("../../../aws-sdk-v3/dynamodb");
+jest.mock('../../../aws-sdk-v3/dynamodb');
 ```
 
 This replaces all the functions exported by the file with mock functions. Then, we can mock the `queryDynamoDb` function using `jest.mocked`:
 
 ```ts
-it("should query user by role from dynamodb", async () => {
-  const role: Role = "READER";
+it('should query user by role from dynamodb', async () => {
+  const role: Role = 'READER';
 
   const mockReaderUser: User = {
     ...mockUser,
@@ -308,13 +308,13 @@ it("should query user by role from dynamodb", async () => {
 We can also assert that `queryDynamoDb` was called with the correct parameters easily with `toHaveBeenCalledWith`:
 
 ```ts
-it("should query user by role from dynamodb", async () => {
+it('should query user by role from dynamodb', async () => {
   expect(queryDynamoDb).toHaveBeenCalledWith<[QueryCommandInput]>({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { "#role": "role" },
-    ExpressionAttributeValues: { ":role": role },
-    KeyConditionExpression: "#role = :role",
+    ExpressionAttributeNames: { '#role': 'role' },
+    ExpressionAttributeValues: { ':role': role },
+    KeyConditionExpression: '#role = :role',
   });
 });
 ```
@@ -327,7 +327,7 @@ If we used AWS SDK v2, `queryDynamoDb` would look like this:
 
 ```ts
 export const queryDynamoDb = async (
-  params: DynamoDB.DocumentClient.QueryInput
+  params: DynamoDB.DocumentClient.QueryInput,
 ): Promise<DynamoDB.DocumentClient.QueryOutput> =>
   await dynamoDbDocumentClient.query(params).promise();
 ```

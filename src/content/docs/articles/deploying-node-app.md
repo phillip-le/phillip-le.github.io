@@ -1,5 +1,5 @@
 ---
-title: "Deploying a Node app with DigitalOcean and Dokku"
+title: 'Deploying a Node app with DigitalOcean and Dokku'
 sidebar:
   hidden: true
 ---

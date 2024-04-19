@@ -1,5 +1,5 @@
 ---
-title: "Fish shell"
+title: 'Fish shell'
 sidebar:
   order: 2
 ---

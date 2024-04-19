@@ -1,5 +1,5 @@
 ---
-title: "Sensible defaults for Node AWS SDK v3 clients"
+title: 'Sensible defaults for Node AWS SDK v3 clients'
 ---
 
 ## Setting timeouts
@@ -15,8 +15,8 @@ It is usually a good idea to set the `requestTimeout` to some sensible value so 
 For example, this can be set in the `S3Client` as follows:
 
 ```ts
-import { S3Client } from "@aws-sdk/client-s3";
-import { NodeHttpHandler } from "@smithy/node-http-handler";
+import { S3Client } from '@aws-sdk/client-s3';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 
 export const s3Client = new S3Client({
   requestHandler: new NodeHttpHandler({
@@ -28,7 +28,7 @@ export const s3Client = new S3Client({
 Or more simply,
 
 ```ts
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client } from '@aws-sdk/client-s3';
 
 export const s3Client = new S3Client({
   requestHandler: {
@@ -46,7 +46,7 @@ Setting up a new TCP connection for every request can be expensive so re-using t
 If you are running your application in AWS, some environments like Fargate and Lambda expose the AWS region as the `AWS_DEFAULT_REGION` or `AWS_REGION` environmental variables. So you can initialise a client as follows:
 
 ```ts
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client } from '@aws-sdk/client-s3';
 
 export const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -60,8 +60,8 @@ In serverless environments like AWS Lambda, it can be costly to initialise a new
 > Objects declared outside of the function's handler method remain initialized, providing additional optimization when the function is invoked again. For example, if your Lambda function establishes a database connection, instead of reestablishing the connection, the original connection is used in subsequent invocations. We recommend adding logic in your code to check if a connection exists before creating a new one.
 
 ```ts
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
 let dynamoDbDocumentClient: DynamoDBDocumentClient;
 
@@ -72,7 +72,7 @@ const getAwsClients = (config: { region: string; requestTimeout: number }) => {
       requestHandler: {
         requestTimeout: config.requestTimeout,
       },
-    })
+    }),
   );
 
   return {
@@ -84,8 +84,8 @@ const getAwsClients = (config: { region: string; requestTimeout: number }) => {
 Alternatively, if we do not need to configure the clients at runtime, we can initialise them globally:
 
 ```ts
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
 const dynamoDbClient = new DynamoDBClient({
   region: process.env.AWS_REGION,

@@ -1,5 +1,5 @@
 ---
-title: "Handling multiple promises"
+title: 'Handling multiple promises'
 ---
 
 ## TLDR
@@ -14,8 +14,8 @@ Useful for handling promises that are dependent on one another and should be don
 For example, AWS SDK v3 provides async generator functions which handle retrieving the next page of a paginated response. We could get all the users based on a `QueryCommand` as follows:
 
 ```ts
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, paginateQuery } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, paginateQuery } from '@aws-sdk/lib-dynamodb';
 
 const dynamoDbClient = new DynamoDBClient();
 const dynamoDbDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
@@ -26,12 +26,12 @@ const paginator = paginateQuery(
     pageSize: 25,
   },
   {
-    TableName: "some-table",
-    KeyConditionExpression: "userId = :userId",
+    TableName: 'some-table',
+    KeyConditionExpression: 'userId = :userId',
     ExpressionAttributeValues: {
-      ":userId": "12345",
+      ':userId': '12345',
     },
-  }
+  },
 );
 
 const users = [];
@@ -110,19 +110,19 @@ const timeInSecondsArray = [1, 2, 3, 4];
   const now = Date.now();
   for (const timeInSeconds of timeInSecondsArray) {
     await someAsyncFunction(timeInSeconds);
-    console.log("Sequentially", timeInSeconds);
+    console.log('Sequentially', timeInSeconds);
   }
-  console.log("time sequentially: ", (Date.now() - now) / 1000);
+  console.log('time sequentially: ', (Date.now() - now) / 1000);
 })();
 
 (async () => {
   const now = Date.now();
   const promises = timeInSecondsArray.map(async (timeInSeconds) => {
     await someAsyncFunction(timeInSeconds);
-    console.log("In parallel", timeInSeconds);
+    console.log('In parallel', timeInSeconds);
   });
   await Promise.all(promises);
-  console.log("time in parallel: ", (Date.now() - now) / 1000);
+  console.log('time in parallel: ', (Date.now() - now) / 1000);
 })();
 ```
 
@@ -130,78 +130,79 @@ const timeInSecondsArray = [1, 2, 3, 4];
 
 ## `Promise.allSettled()`
 
-`Promise.allSettled()` operates in a similar way to `Promise.all()` but it will catch any errors caused by rejected promises and return an error of success and fail states for each promise. On the other hand, `Promise.all()` will reject as soon as the first promise in its array rejects. 
+`Promise.allSettled()` operates in a similar way to `Promise.all()` but it will catch any errors caused by rejected promises and return an error of success and fail states for each promise. On the other hand, `Promise.all()` will reject as soon as the first promise in its array rejects.
 
-`Promise.allSettled()` is very useful for error handling and observability because usually, you want to log errors with the most context possible. For example, we place the `try...catch` block inside of the `async` map function which creates `User` records in DynamoDB so that we can log the error for each individual DynamoDB `PutItem` request. 
+`Promise.allSettled()` is very useful for error handling and observability because usually, you want to log errors with the most context possible. For example, we place the `try...catch` block inside of the `async` map function which creates `User` records in DynamoDB so that we can log the error for each individual DynamoDB `PutItem` request.
 
 ```ts
 const createUsers = async ({
-    userIds,
-    dynamoDbDocumentClient,
-    logger,
+  userIds,
+  dynamoDbDocumentClient,
+  logger,
 }: {
-    userIds: string[];
-    dynamoDbDocumentClient: DynamoDBDocumentClient;
-    logger: pino.Logger;
+  userIds: string[];
+  dynamoDbDocumentClient: DynamoDBDocumentClient;
+  logger: pino.Logger;
 }) => {
-    const createUserPromises = userIds.map(async (userId) => {
-        try {
-            await dynamoDbDocumentClient.send(new PutCommand({
-                TableName: 'some-table',
-                Item: {
-                    userId
-                }
-            }))
-        } catch (error) {
-            logger.error({ error }, 'Failed to create users')
-            throw error
-        }
-    })
-
-    const createUserResults = await Promise.allSettled(createUserPromises)
-
-    if (createUserResults.some((result) => status === 'rejected')) {
-        throw new Error('Failed to create some users')
+  const createUserPromises = userIds.map(async (userId) => {
+    try {
+      await dynamoDbDocumentClient.send(
+        new PutCommand({
+          TableName: 'some-table',
+          Item: {
+            userId,
+          },
+        }),
+      );
+    } catch (error) {
+      logger.error({ error }, 'Failed to create users');
+      throw error;
     }
-}
+  });
+
+  const createUserResults = await Promise.allSettled(createUserPromises);
+
+  if (createUserResults.some((result) => status === 'rejected')) {
+    throw new Error('Failed to create some users');
+  }
+};
 ```
 
 ```ts
 const createUsers = async ({
-    userIds,
-    dynamoDbDocumentClient,
-    logger,
+  userIds,
+  dynamoDbDocumentClient,
+  logger,
 }: {
-    userIds: string[];
-    dynamoDbDocumentClient: DynamoDBDocumentClient;
-    logger: pino.Logger;
+  userIds: string[];
+  dynamoDbDocumentClient: DynamoDBDocumentClient;
+  logger: pino.Logger;
 }) => {
-    const createUserPromises = userIds.map(async (userId) => {
-        try {
-            await dynamoDbDocumentClient.send(new PutCommand({
-                TableName: 'some-table',
-                Item: {
-                    userId
-                }
-            }))
-        } catch (error) {
-            logger.error({ error }, 'Failed to create users')
-            throw error
-        }
-    })
-
-    const createUserResults = await Promise.all(createUserPromises)
-
-    if (createUserResults.some((result) => status === 'rejected')) {
-        throw new Error('Failed to create some users')
+  const createUserPromises = userIds.map(async (userId) => {
+    try {
+      await dynamoDbDocumentClient.send(
+        new PutCommand({
+          TableName: 'some-table',
+          Item: {
+            userId,
+          },
+        }),
+      );
+    } catch (error) {
+      logger.error({ error }, 'Failed to create users');
+      throw error;
     }
-}
+  });
+
+  const createUserResults = await Promise.all(createUserPromises);
+
+  if (createUserResults.some((result) => status === 'rejected')) {
+    throw new Error('Failed to create some users');
+  }
+};
 ```
 
 If we used, `Promise.all()` instead of `Promise.allSettled()`, then `createUsers` would **only** log an error for the first DynamoDB `PutItem` request that failed.
-
-
-
 
 ## Resource Links
 
