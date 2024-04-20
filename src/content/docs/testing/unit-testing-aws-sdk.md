@@ -1,5 +1,5 @@
 ---
-title: 'Unit Testing AWS SDK for TypeScript'
+title: 'Unit testing AWS SDK for TypeScript'
 ---
 
 Take a look at the source code in [GitHub](https://github.com/phillip-le/medium-article-code-examples).
