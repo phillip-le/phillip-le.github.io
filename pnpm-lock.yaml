@@ -41,9 +41,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      starlight-links-validator:
-        specifier: ^0.6.0
-        version: 0.6.0(@astrojs/starlight@0.21.2(astro@4.5.12(@types/node@17.0.45)(typescript@5.4.3)))(astro@4.5.12(@types/node@17.0.45)(typescript@5.4.3))
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.1
@@ -1403,10 +1400,6 @@ packages:
   inline-style-parser@0.2.2:
     resolution: {integrity: sha512-EcKzdTHVe8wFVOGEYXiW9WmJXPjqi1T+234YpJr98RiFYKHV3cdy1+3mkTE+KHTHxFFLH51SfaGOoUdW+v7ViQ==}
 
-  is-absolute-url@4.0.1:
-    resolution: {integrity: sha512-/51/TKE88Lmm7Gc4/8btclNXWS+g50wXhYJq8HWIBAGUBnoAdRu1aXeh364t/O7wXDAcTJDP8PNuNKWUDWie+A==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
   is-alphabetical@2.0.1:
     resolution: {integrity: sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==}
 
@@ -2273,13 +2266,6 @@ packages:
 
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
-
-  starlight-links-validator@0.6.0:
-    resolution: {integrity: sha512-YXzKKZHM79ccBTO61l2WSmgdCG3406gldpVM6J2LhqZ5CeXsOgj6lho2xMLkc/p5nWcNSuYI2qNzsNUrLTmR5w==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      '@astrojs/starlight': '>=0.15.0'
-      astro: '>=4.0.0'
 
   std-env@3.7.0:
     resolution: {integrity: sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==}
@@ -4498,8 +4484,6 @@ snapshots:
 
   inline-style-parser@0.2.2: {}
 
-  is-absolute-url@4.0.1: {}
-
   is-alphabetical@2.0.1: {}
 
   is-alphanumerical@2.0.1:
@@ -5703,18 +5687,6 @@ snapshots:
   sprintf-js@1.0.3: {}
 
   stackback@0.0.2: {}
-
-  starlight-links-validator@0.6.0(@astrojs/starlight@0.21.2(astro@4.5.12(@types/node@17.0.45)(typescript@5.4.3)))(astro@4.5.12(@types/node@17.0.45)(typescript@5.4.3)):
-    dependencies:
-      '@astrojs/starlight': 0.21.2(astro@4.5.12(@types/node@17.0.45)(typescript@5.4.3))
-      astro: 4.5.12(@types/node@17.0.45)(typescript@5.4.3)
-      github-slugger: 2.0.0
-      hast-util-from-html: 2.0.1
-      hast-util-has-property: 3.0.0
-      is-absolute-url: 4.0.1
-      kleur: 4.1.5
-      mdast-util-to-string: 4.0.0
-      unist-util-visit: 5.0.0
 
   std-env@3.7.0: {}
 
