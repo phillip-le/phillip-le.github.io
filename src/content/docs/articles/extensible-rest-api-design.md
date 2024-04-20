@@ -163,7 +163,7 @@ type User = {
 
 ### Using an array of traits over a string union
 
-Another interesting idea to consider is how we could handle the scenario where the types of users is more likely to be subject to change quite frequently. Based on our learnings about [using arrays over objects](#use-array-over-object-keys-when-the-number-of-items-is-more-likely-subject-to-change), we could represent user types as a list of privileges that the user has access to. This means that downstream API consumers are not tightly coupled to the specific type of a user and instead handle what should happen if any user has a certain privilege instead.
+Another interesting idea to consider is how we could handle the scenario where the types of users is more likely to be subject to change quite frequently. Based on our learnings about [using arrays over objects](https://phillip-le.github.io/articles/extensible-rest-api-design/#prefer-using-an-array-over-object-keys-when-the-number-of-items-is-more-likely-subject-to-change), we could represent user types as a list of privileges that the user has access to. This means that downstream API consumers are not tightly coupled to the specific type of a user and instead handle what should happen if any user has a certain privilege instead.
 
 ```ts
 type User = {
