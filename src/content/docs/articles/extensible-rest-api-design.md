@@ -107,7 +107,7 @@ type FeatureFlags = Record<
   }
 >;
 
-const featureFlags = {
+const featureFlags: FeatureFlags = {
   canSetIceCreamPreferences: {
     countriesAvailable: ['Australia'],
   },
