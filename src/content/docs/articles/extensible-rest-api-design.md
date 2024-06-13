@@ -1,6 +1,6 @@
 ---
 title: 'Tips for extensible Rest API design'
-lastUpdated: 2024-04-20
+lastUpdated: 2024-06-13
 ---
 
 Deciding the right design for a Rest API can be difficult. Here are a few tips I've found that can make it easier to avoid breaking changes for your API consumers.
@@ -100,13 +100,11 @@ const featureFlags: FeatureFlags = [
 ```
 
 ```ts
-type IndividualFeatureFlagConfig = {
-  countriesAvailable: string;
-};
-
 type FeatureFlags = Record<
   'canSetIceCreamPreferances' | 'canSetHomeTown',
-  IndividualFeatureFlagConfig
+  {
+    countriesAvailable: string[];
+  }
 >;
 
 const featureFlags = {
@@ -119,7 +117,7 @@ const featureFlags = {
 };
 ```
 
-For data like feature flags which changes quite often it can be good to keep to use an array because each item in the array is implicitly optional. Consumers must always search the array for the feature flag they are looking for and are required to handle what happens when they cannot find it. This means that we can remove feature flags from the API without causing brekaing changes for our consumers.
+For data like feature flags which changes quite often it can be good to keep to use an array because each item in the array is implicitly optional. Consumers must always search the array for the feature flag they are looking for and are required to handle what happens when they cannot find it. This means that we can remove feature flags from the API without causing breaking changes for our consumers.
 
 ### Prefer using string unions over boolean
 
