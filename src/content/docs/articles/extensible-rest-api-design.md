@@ -89,7 +89,7 @@ type FeatureFlags = Array<{
 
 const featureFlags: FeatureFlags = [
   {
-    name: 'canSetIceCreamPreferances',
+    name: 'canSetIceCreamPreferences',
     countriesAvailable: ['Australia'],
   },
   {
@@ -101,14 +101,14 @@ const featureFlags: FeatureFlags = [
 
 ```ts
 type FeatureFlags = Record<
-  'canSetIceCreamPreferances' | 'canSetHomeTown',
+  'canSetIceCreamPreferences' | 'canSetHomeTown',
   {
     countriesAvailable: string[];
   }
 >;
 
 const featureFlags = {
-  canSetIceCreamPreferances: {
+  canSetIceCreamPreferences: {
     countriesAvailable: ['Australia'],
   },
   canSetHomeTown: {
