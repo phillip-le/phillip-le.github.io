@@ -3,7 +3,7 @@ title: 'Type safe mock data'
 lastUpdated: 2024-07-09
 ---
 
-Often, I find that when I am writing tests, I do not necessarily want to provide robust mock data or implementations because they are not necessary for a test.
+Often, I find that when I am writing tests, I do not necessarily want to provide robust mock data because it is not necessary for a test.
 
 Suppose we have a `User` that looks like:
 
@@ -22,7 +22,7 @@ And I wanted to test a function like:
 const getFullName = (user: User) => `${user.firstName} ${user.lastName}`;
 ```
 
-For our test, while I could provide a full mock object:
+For our test, we could provide a full mock object:
 
 ```ts
 it('should return full name', () => {
@@ -40,7 +40,9 @@ it('should return full name', () => {
 });
 ```
 
-My function only really cares about `firstName` and `lastName`. In our test, we could create a mock `User` with only the `firstName` and `lastName` and [type assert](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) that it is a valid `User`.
+### Providing the minimum fields required
+
+The function only really cares about `firstName` and `lastName`. So instead, in our test, we could create a mock `User` with only the `firstName` and `lastName` and [type assert](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) that it is a valid `User`.
 
 ```ts
 it('should return full name', () => {
@@ -61,7 +63,7 @@ The advantage of this is that:
 1. We get `IntelliSense` support
 1. When we try to put an invalid data type into a valid key e.g. `firstName: 1` then TypeScript will give us an error
 
-However, if we instantiate the `User` object with unknown keys or if the type of `User` changes so that a key is removed or renamed, TypeScript will not tell us that we are providing invalid keys because we are telling TypeScript that we know that this should be a `User` object.
+However, if we instantiate the `User` object with unknown keys or if the `User` type changes so that a key is removed or renamed, TypeScript will not tell us that we are providing invalid keys because we are telling TypeScript that we know that this should be a `User` object.
 
 ```ts "invalid: 'key'"
 const user = {
@@ -89,6 +91,8 @@ it('should return full name', () => {
 ```
 
 Using a type annotation will tell us when we are instantiating an object with invalid keys. The `Partial` utility type is used to say that `user` only needs to have some of the keys of the `User` type. We still need to use a type assertion when passing the `user` object to `getFullName` because `getFullName` expects a `User` and not a partial version of `User`. We know that `getFullName` should only require `firstName` and `lastName` so we use the type assertion to override TypeScript in this instance.
+
+### Using spread syntax to create valid objects every time
 
 Another approach is to create valid objects every time.
 
@@ -145,7 +149,7 @@ it('should return full name', () => {
 });
 ```
 
-### The troubles with nested data
+### PartialDeep for nested data
 
 So far, we have used the `User` object as an example which is convenient because it does not have nested fields. This is usually not the case.
 
@@ -175,7 +179,7 @@ Giving the error:
 Property 'current' is missing in type '{ homeTown: "New York"; }' but required in type '{ homeTown: "New York"; current: "Munich"; }'
 ```
 
-Instead, we can use [PartialDeep](https://github.com/sindresorhus/type-fest/blob/main/source/partial-deep.d.ts) from `type-fest` or define your own:
+Instead, we can use [PartialDeep](https://github.com/sindresorhus/type-fest/blob/main/source/partial-deep.d.ts) from the `type-fest` package or define your own:
 
 ```ts
 // credit to https://stackoverflow.com/questions/61132262/typescript-deep-partial
@@ -195,6 +199,8 @@ const user: DeepPartial<User> = {
   },
 };
 ```
+
+### factory.ts for overriding nested attributes
 
 If we wanted to create valid objects every time, we will find that spread syntax also does not work well with nesting:
 
