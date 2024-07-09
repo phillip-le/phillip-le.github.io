@@ -7,6 +7,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "format": "prettier --write ./src",
+    "lint": "tsc --noEmit",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest"
@@ -21,6 +22,7 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.22",
     "astro": "^4.5.12",
+    "pino": "^9.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "starlight-links-validator": "^0.6.0",
@@ -28,6 +30,7 @@
     "typescript": "^5.4.3"
   },
   "devDependencies": {
+    "factory.ts": "^1.4.1",
     "kebab-case": "^1.0.2",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
