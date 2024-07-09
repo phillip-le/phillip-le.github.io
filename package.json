@@ -28,7 +28,7 @@
     "react-dom": "^18.2.0",
     "starlight-links-validator": "^0.6.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.3"
+    "typescript": "^5.5.3"
   },
   "devDependencies": {
     "factory.ts": "^1.4.1",
