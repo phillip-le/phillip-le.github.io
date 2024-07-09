@@ -13,7 +13,7 @@ importers:
         version: 0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.3.2)(typescript@5.5.3)
       '@astrojs/react':
         specifier: ^3.6.0
-        version: 3.6.0(@types/react-dom@18.2.22)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(vite@5.1.4)
+        version: 3.6.0(@types/react-dom@18.2.22)(@types/react@18.3.3)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(vite@5.1.4)
       '@astrojs/starlight':
         specifier: ^0.21.2
         version: 0.21.2(astro@4.5.12(typescript@5.5.3))
@@ -30,8 +30,8 @@ importers:
         specifier: ^5.0.20
         version: 5.0.20
       '@types/react':
-        specifier: ^18.2.73
-        version: 18.2.73
+        specifier: ^18.3.3
+        version: 18.3.3
       '@types/react-dom':
         specifier: ^18.2.22
         version: 18.2.22
@@ -42,11 +42,11 @@ importers:
         specifier: ^9.2.0
         version: 9.2.0
       react:
-        specifier: ^18.2.0
-        version: 18.2.0
+        specifier: ^18.3.1
+        version: 18.3.1
       react-dom:
         specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
+        version: 18.2.0(react@18.3.1)
       starlight-links-validator:
         specifier: ^0.6.0
         version: 0.6.0(@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3)))(astro@4.5.12(typescript@5.5.3))
@@ -781,8 +781,8 @@ packages:
   '@types/react-dom@18.2.22':
     resolution: {integrity: sha512-fHkBXPeNtfvri6gdsMYyW+dW7RXFo6Ad09nLFK0VQWR7yGLai/Cyvyj696gbwYvBnhGtevUG9cET0pmUbMtoPQ==}
 
-  '@types/react@18.2.73':
-    resolution: {integrity: sha512-XcGdod0Jjv84HOC7N5ziY3x+qL0AfmubvKOZ9hJjJ2yd5EE+KYjWhdOjt387e9HPheHkdggF9atTifMRtyAaRA==}
+  '@types/react@18.3.3':
+    resolution: {integrity: sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==}
 
   '@types/sax@1.2.7':
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
@@ -2249,8 +2249,8 @@ packages:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
 
-  react@18.2.0:
-    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -3077,13 +3077,13 @@ snapshots:
     dependencies:
       prismjs: 1.29.0
 
-  '@astrojs/react@3.6.0(@types/react-dom@18.2.22)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(vite@5.1.4)':
+  '@astrojs/react@3.6.0(@types/react-dom@18.2.22)(@types/react@18.3.3)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(vite@5.1.4)':
     dependencies:
-      '@types/react': 18.2.73
+      '@types/react': 18.3.3
       '@types/react-dom': 18.2.22
       '@vitejs/plugin-react': 4.3.1(vite@5.1.4)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+      react: 18.3.1
+      react-dom: 18.2.0(react@18.3.1)
       ultrahtml: 1.5.3
     transitivePeerDependencies:
       - supports-color
@@ -3806,9 +3806,9 @@ snapshots:
 
   '@types/react-dom@18.2.22':
     dependencies:
-      '@types/react': 18.2.73
+      '@types/react': 18.3.3
 
-  '@types/react@18.2.73':
+  '@types/react@18.3.3':
     dependencies:
       '@types/prop-types': 15.7.11
       csstype: 3.1.3
@@ -5781,17 +5781,17 @@ snapshots:
       strip-json-comments: 2.0.1
     optional: true
 
-  react-dom@18.2.0(react@18.2.0):
+  react-dom@18.2.0(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
-      react: 18.2.0
+      react: 18.3.1
       scheduler: 0.23.0
 
   react-is@18.2.0: {}
 
   react-refresh@0.14.2: {}
 
-  react@18.2.0:
+  react@18.3.1:
     dependencies:
       loose-envify: 1.4.0
 
