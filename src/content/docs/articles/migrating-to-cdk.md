@@ -193,3 +193,15 @@ cdk import
 Ensure that the CDK stack has no unexpected stack drift. If there is stack drift, you can remove the resource definitions from your CDK stack and redeploy the stack which will orphan the resources again. Now, you can either update the CDK resource definitions to fix the drift errors e.g. if you were missing an attribute in your CDK resource definition, then you can add it and try to re-import it. Or you can abort the migration by re-adding the resource definitions to the original `CloudFormation` / `serverless` stacks and importing your orphaned resources into their original stacks.
 
 🎉 If there is no unexpected stack drift, congratulations you have successfully migrated your resources to CDK. 🎉
+
+### Referenced resources
+
+1. [Supported Resources for CloudFormation Imports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import-supported-resources.html)
+1. [AWS CDK CLI Migrate Command Guide](https://docs.aws.amazon.com/cdk/v2/guide/migrate.html#migrate-intro)
+1. [Detect Stack Drift in CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/detect-drift-stack.html)
+1. [DeletionPolicy Attribute in CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)
+1. [AWS CloudFormation !Ref Function Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html)
+1. [AWS CloudFormation !GetAtt Function Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html)
+1. [Generate Infrastructure as Code](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC.html)
+1. [AWS CDK Getting Started Guide](https://github.com/aws/aws-cdk?tab=readme-ov-file#getting-started)
+1. [AWS CDK CLI Import Command](https://docs.aws.amazon.com/cdk/v2/guide/cli.html#cli-import)
