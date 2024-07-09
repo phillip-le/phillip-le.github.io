@@ -19,10 +19,10 @@ importers:
         version: 0.21.2(astro@4.5.12(typescript@5.5.3))
       '@astrojs/starlight-tailwind':
         specifier: ^2.0.1
-        version: 2.0.1(@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3)))(@astrojs/tailwind@5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.1))(tailwindcss@3.4.1)
+        version: 2.0.1(@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3)))(@astrojs/tailwind@5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.4))(tailwindcss@3.4.4)
       '@astrojs/tailwind':
         specifier: ^5.1.0
-        version: 5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.1)
+        version: 5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.4)
       '@faker-js/faker':
         specifier: ^8.4.1
         version: 8.4.1
@@ -51,8 +51,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0(@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3)))(astro@4.5.12(typescript@5.5.3))
       tailwindcss:
-        specifier: ^3.4.1
-        version: 3.4.1
+        specifier: ^3.4.4
+        version: 3.4.4
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
@@ -2551,8 +2551,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  tailwindcss@3.4.1:
-    resolution: {integrity: sha512-qAYmXRfk3ENzuPBakNK0SRrUDipP8NQnEY6772uDhflcQz5EhRdD7JNZxyrFHVQNCwULPBn6FNPp9brpO7ctcA==}
+  tailwindcss@3.4.4:
+    resolution: {integrity: sha512-ZoyXOdJjISB7/BcLTR6SEsLgKtDStYyYZVLsUtWChO4Ps20CBad7lfJKVDiejocV4ME1hLmyY0WJE3hSDcmQ2A==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -2965,7 +2965,7 @@ snapshots:
 
   '@ampproject/remapping@2.2.1':
     dependencies:
-      '@jridgewell/gen-mapping': 0.3.3
+      '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.22
 
   '@astrojs/check@0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.3.2)(typescript@5.5.3)':
@@ -3094,11 +3094,11 @@ snapshots:
       sitemap: 7.1.1
       zod: 3.22.4
 
-  '@astrojs/starlight-tailwind@2.0.1(@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3)))(@astrojs/tailwind@5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.1))(tailwindcss@3.4.1)':
+  '@astrojs/starlight-tailwind@2.0.1(@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3)))(@astrojs/tailwind@5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.4))(tailwindcss@3.4.4)':
     dependencies:
       '@astrojs/starlight': 0.21.2(astro@4.5.12(typescript@5.5.3))
-      '@astrojs/tailwind': 5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.1)
-      tailwindcss: 3.4.1
+      '@astrojs/tailwind': 5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.4)
+      tailwindcss: 3.4.4
 
   '@astrojs/starlight@0.21.2(astro@4.5.12(typescript@5.5.3))':
     dependencies:
@@ -3126,13 +3126,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/tailwind@5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.1)':
+  '@astrojs/tailwind@5.1.0(astro@4.5.12(typescript@5.5.3))(tailwindcss@3.4.4)':
     dependencies:
       astro: 4.5.12(typescript@5.5.3)
       autoprefixer: 10.4.17(postcss@8.4.35)
       postcss: 8.4.35
       postcss-load-config: 4.0.2(postcss@8.4.35)
-      tailwindcss: 3.4.1
+      tailwindcss: 3.4.4
     transitivePeerDependencies:
       - ts-node
 
@@ -6175,7 +6175,7 @@ snapshots:
 
   sucrase@3.35.0:
     dependencies:
-      '@jridgewell/gen-mapping': 0.3.3
+      '@jridgewell/gen-mapping': 0.3.5
       commander: 4.1.1
       glob: 10.3.10
       lines-and-columns: 1.2.4
@@ -6193,7 +6193,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tailwindcss@3.4.1:
+  tailwindcss@3.4.4:
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
