@@ -1,5 +1,6 @@
 ---
 title: 'Handling multiple promises'
+lastUpdated: 2024-07-10
 ---
 
 ## TLDR
