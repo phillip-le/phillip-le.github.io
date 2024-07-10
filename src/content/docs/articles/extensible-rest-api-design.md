@@ -1,6 +1,6 @@
 ---
 title: 'Tips for extensible Rest API design'
-lastUpdated: 2024-06-13
+lastUpdated: 2024-07-10
 ---
 
 Deciding the right design for a Rest API can be difficult. Here are a few tips I've found that can make it easier to avoid breaking changes for your API consumers.
@@ -60,7 +60,11 @@ What happens when we want to return more than just the ID? Suppose we now have a
 }
 ```
 
-This results in a breaking change because the shape of user object has changed from `string` to `{ id: string; name: string }`.
+This results in a breaking change because the shape of user object has changed from `string` to 
+
+```js
+{ id: string; name: string; }
+```
 
 So, rather than returning the ID directly, it is usually a good idea to return each user as an object even if it only has a single property.
 
