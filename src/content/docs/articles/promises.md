@@ -202,7 +202,7 @@ const createUsers = async ({
 };
 ```
 
-If we used, `Promise.all()` instead of `Promise.allSettled()`, then `createUsers` would **only** log an error for the first DynamoDB `PutItem` request that failed.
+If we used `Promise.all()` instead of `Promise.allSettled()`, then `createUsers` would **only** log an error for the first DynamoDB `PutItem` request that failed within the context of short lived applications such as serverless functions or scripts. For long running applications like Rest APIs, `Promise.all()` and `Promise.allSettled()` would function the same. 
 
 ## Resource Links
 
