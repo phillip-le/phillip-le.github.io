@@ -1,5 +1,6 @@
 ---
 title: 'Git'
+lastUpdated: 2024-07-12
 ---
 
 ## Config
@@ -55,7 +56,7 @@ git push --force-with-lease
 
 Sometimes, you will commit large formatting changes which makes `git blame` fairly useless because almost every line will have the formatting change as its most recent commit.
 
-With `git config blame.ignoreRevsFile .git-blame-ignore-revs`, you can create a `.git-blame-ignore-revs` file containing commit SHAs that should be ignored by `git blame` in VSCode and GitHub. GitHub supports `.git-blame-ignore-revs` files natively without configuration.
+With `git config blame.ignoreRevsFile .git-blame-ignore-revs`, you can create a `.git-blame-ignore-revs` file containing commit SHAs that should be ignored by `git blame` in VSCode and GitHub. GitHub [supports `.git-blame-ignore-revs`](https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file#ignore-commits-in-the-blame-view) files natively without configuration.
 
 ```
 // ~/.gitconfig
