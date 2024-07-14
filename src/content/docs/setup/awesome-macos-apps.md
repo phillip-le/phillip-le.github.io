@@ -1,5 +1,6 @@
 ---
 title: 'Awesome macOS apps'
+lastUpdated: 2024-07-14
 ---
 
 ## Spotlight Replacement
@@ -10,6 +11,7 @@ title: 'Awesome macOS apps'
 
 - [Clipboard History](https://www.raycast.com/extensions/clipboard-history) - Never go back to copy something twice again just because you overwrote your clipboard.
 - [Git Repos](https://www.raycast.com/moored/git-repos) - Quickly access your local git repositories and open them in your favorite editor or any app.
+- [Port Manager](https://www.raycast.com/lucaschultz/port-manager) - Quickly kill processes that are taking up your ports.
 
 ## Windows Management
 
