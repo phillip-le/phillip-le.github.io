@@ -42,17 +42,17 @@ export const applyForJob = async ({
 };
 ```
 
-There's a few things that we need to test in this function:
+There are a few things that we need to test in this function:
 
-1. Happy path, we get a job application when everything is successful and we call our underlying functions correctly
-1. We throw a `JobNotFoundError` when `getJob` returns `null`
-1. We throw an error and log whenever `createJobApplication` and `sendJobApplicationSuccessNotification` throws an error
+1. The happy path, where we get a job application when everything is successful and we call our underlying functions correctly.
+2. We throw a `JobNotFoundError` when `getJob` returns `null`.
+3. We throw an error and log whenever `createJobApplication` or `sendJobApplicationSuccessNotification` throws an error.
 
 ### Simple approach
 
-The simplest approach to writing a test suite for `applyForJob` would be to setup the appropriate mocks in every test case.
+The simplest approach to writing a test suite for `applyForJob` would be to set up the appropriate mocks in every test case.
 
-For example, when we check that we are throwing a `JobNotFoundError`, we only need to mock the response of `getJob`.
+For example, when we check that we are throwing a `JobNotFoundError`, we only need to mock the response of `getJob`:
 
 ```ts
 it('should throw a JobNotFoundError when job is not found', async () => {
@@ -64,7 +64,7 @@ it('should throw a JobNotFoundError when job is not found', async () => {
 });
 ```
 
-When we are checking that we are throwing an error and logging whenever `createJobApplication` and `sendJobApplicationSuccessNotification` throw an error, we would setup `getJob` again for both:
+When we are checking that we are throwing an error and logging whenever `createJobApplication` or `sendJobApplicationSuccessNotification` throws an error, we would set up `getJob` again for both:
 
 ```ts {2-4,19-21}
 it('should throw an error and log when creating a job application fails', async () => {
@@ -109,12 +109,12 @@ it('should throw an error and log when sending a job application success notific
 });
 ```
 
-The benefits of this approach is that everything a reader needs to know about why a test case passes or fails is self contained within each test case.
+The benefit of this approach is that everything a reader needs to know about why a test case passes or fails is self-contained within each test case.
 
-Some of the disadvantages of this approach are that:
+Some of the disadvantages of this approach are:
 
-- When there are many mocks setup, it is not clear what exactly is different about this particular test case
-- There is some code duplication
+- When there are many mocks set up, it is not clear what exactly is different about this particular test case.
+- There is some code duplication.
 
 ### Nesting `describe` blocks to be DRY
 
@@ -160,7 +160,7 @@ describe('job is found', () => {
 });
 ```
 
-Now, instead of repeating our mock setups in every test case, by using `describe` blocks, we can create bounded test contexts which setup mocks in `beforeEach` statements. So, every test that needs `getJob` to return a job will be within this `describe` block:
+Now, instead of repeating our mock setups in every test case, by using `describe` blocks, we can create bounded test contexts which set up mocks in `beforeEach` statements. So, every test that needs `getJob` to return a job will be within this `describe` block:
 
 ```ts
 describe('job is found', () => {
@@ -174,13 +174,13 @@ describe('job is found', () => {
 });
 ```
 
-I do not recommend this approach because when a reader wants to understand everything that a test needs to pass / fail, they will need to look at every single `describe` block that the test is nested within. This means that the needed context is scattered across the file. It is especially difficult to figure out which `describe` blocks apply when the test suite is long and complex.
+I do not recommend this approach because when a reader wants to understand everything that a test needs to pass or fail, they will need to look at every single `describe` block that the test is nested within. This means that the needed context is scattered across the file. It is especially difficult to figure out which `describe` blocks apply when the test suite is long and complex.
 
-I would actually prefer the simpler approach described before. Especially with the advent of AI code suggestion tools, it has become much easier to maintain more verbose and readable test suites.  
+I would actually prefer the previous, more verbose approach given that it is easier for a maintainer to understand the test suite when they are unfamiliar with the codebase. 
 
 ### Only modifying what we need to make the test pass
 
-An approach that I prefer is to setup all the mocks according to the happy path within a single `beforeEach` statement:
+An approach that I prefer is to set up all the mocks according to the happy path within a single `beforeEach` statement:
 
 ```ts
 beforeEach(() => {
@@ -204,4 +204,4 @@ it('should throw a JobNotFoundError when job is not found', async () => {
 });
 ```
 
-This approach means that when a reader looks at a test case, they only need to see **what has changed from the happy path** to make this test case pass. When they are debugging an issue with their tests, they only need to refer to two locations, the test case they are writing and the single `beforeEach` statement in the test suite, which means that context is not scattered all over the file.
+This approach means that when a reader looks at a test case, they only need to see **what has changed from the happy path** to make this test case pass. When they are debugging an issue with their tests, they only need to refer to two locations: the test case they are writing and the single `beforeEach` statement in the test suite, which means that context is not scattered all over the file.
