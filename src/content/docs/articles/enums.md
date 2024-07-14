@@ -15,6 +15,7 @@ Cons
 - No `IntelliSense` discoverability
 - You may find that the support for enums with other technologies to be good or poor like with [GraphQL](https://typegraphql.com/docs/enums.html)
 - Without understanding the pitfalls of different variants of enums, bad variants can be unknowingly added to a codebase and then become very hard to remove if they are then used in persisted datastores
+- Cannot use interpolated values such as with a common route prefix
 
 Pros
 
