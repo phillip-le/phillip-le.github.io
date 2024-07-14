@@ -116,6 +116,8 @@ Some of the disadvantages of this approach are:
 - When there are many mocks set up, it is not clear what exactly is different about this particular test case.
 - There is some code duplication.
 
+[Source Code](https://github.com/phillip-le/phillip-le.github.io/blob/3bd4fa5f64d8388d3e3df774fd6ea0f57919dcf1/src/examples/unit-testing-structure/applyForJob.test.ts#L12)
+
 ### Nesting `describe` blocks to be DRY
 
 One of the approaches that I dislike when it comes to attempting to solve the previous issues is through nested `describe` blocks. This path of development usually comes when someone realizes that there is a lot of code duplication in the mock setups and refactors the test suite to be more [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
@@ -178,6 +180,8 @@ I do not recommend this approach because when a reader wants to understand every
 
 I would actually prefer the previous, more verbose approach given that it is easier for a maintainer to understand the test suite when they are unfamiliar with the codebase. 
 
+[Source Code](https://github.com/phillip-le/phillip-le.github.io/blob/3bd4fa5f64d8388d3e3df774fd6ea0f57919dcf1/src/examples/unit-testing-structure/applyForJob.test.ts#L103)
+
 ### Only modifying what we need to make the test pass
 
 An approach that I prefer is to set up all the mocks according to the happy path within a single `beforeEach` statement:
@@ -205,3 +209,6 @@ it('should throw a JobNotFoundError when job is not found', async () => {
 ```
 
 This approach means that when a reader looks at a test case, they only need to see **what has changed from the happy path** to make this test case pass. When they are debugging an issue with their tests, they only need to refer to two locations: the test case they are writing and the single `beforeEach` statement in the test suite, which means that context is not scattered all over the file.
+
+[Source Code](https://github.com/phillip-le/phillip-le.github.io/blob/3bd4fa5f64d8388d3e3df774fd6ea0f57919dcf1/src/examples/unit-testing-structure/applyForJob.test.ts#L195)
+
