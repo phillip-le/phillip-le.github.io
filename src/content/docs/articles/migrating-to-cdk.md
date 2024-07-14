@@ -3,7 +3,7 @@ title: 'Migrating AWS resources to AWS CDK'
 lastUpdated: 2024-07-09
 ---
 
-This guide describes how to migrate resources from an existing `CloudFormation` or `serverless` definition to a CDK stack. This also applies for resources that have been created using clickops. 
+This guide describes how to migrate resources from an existing `CloudFormation` or `serverless` definition to a CDK stack. This also applies for resources that have been created using clickops.
 
 This guide is mostly concerned with no downtime migration of stateful resources where destroying and re-creating the resource is unacceptable. Usually, stateless resources such as lambdas can have multiple simultaneous deployments (e.g. one defined in CDK and one defined in `serverless`) at once and the migration would involve simply switching the traffic between the two deployments and tearing down the old infrastructure afterwards.
 
@@ -14,7 +14,7 @@ This guide is mostly concerned with no downtime migration of stateful resources 
 
 ### Alternatives
 
-Note that there is a [cdk migrate](https://docs.aws.amazon.com/cdk/v2/guide/migrate.html#migrate-intro) tool available for migrating resources to CDK with minimal effort. However, that approach means that you cannot take advantage of many of the features of AWS CDK. I have not used `cdk migrate` extensively but I think that the deal breaker of `cdk migrate` is that it likely does not handle stack definitions which are deployed to different AWS accounts e.g. a single stack which is deployed to `staging` and `production` AWS accounts. 
+Note that there is a [cdk migrate](https://docs.aws.amazon.com/cdk/v2/guide/migrate.html#migrate-intro) tool available for migrating resources to CDK with minimal effort. However, that approach means that you cannot take advantage of many of the features of AWS CDK. I have not used `cdk migrate` extensively but I think that the deal breaker of `cdk migrate` is that it likely does not handle stack definitions which are deployed to different AWS accounts e.g. a single stack which is deployed to `staging` and `production` AWS accounts.
 
 ### Check your CloudFormation stack for drift
 
@@ -33,12 +33,12 @@ Resources:
   UserTable:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: RetainExceptOnCreate
-    Properties: 
+    Properties:
       TableName: 'User'
-      AttributeDefinitions: 
+      AttributeDefinitions:
         - AttributeName: 'id'
           AttributeType: 'S'
-      KeySchema: 
+      KeySchema:
         - AttributeName: 'id'
           KeyType: 'HASH'
       BillingMode: 'PAY_PER_REQUEST'
@@ -57,18 +57,18 @@ Resources:
               - Effect: Allow
                 Action:
                   - 'dynamodb:BatchGetItem'
-                Resource: 
+                Resource:
 -                  - !GetAtt UserTable.Arn
 +                  - arn:aws:dynamodb:us-west-2:123456789012:table/User
 ```
 
 ### Create a new empty CDK stack
 
-You can skip this step if you already have an existing CDK stack that you want to migrate resources into. 
+You can skip this step if you already have an existing CDK stack that you want to migrate resources into.
 
 Firstly, ensure that you have [bootstrapped](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) your AWS account so that you can use AWS CDK.
 
-Next, create an **empty** CDK stack following [this guide](https://github.com/aws/aws-cdk?tab=readme-ov-file#getting-started) as a reference. 
+Next, create an **empty** CDK stack following [this guide](https://github.com/aws/aws-cdk?tab=readme-ov-file#getting-started) as a reference.
 
 ```sh
 mdkir test-cdk-app
@@ -79,9 +79,9 @@ pnpm dlx cdk init app --language=typescript
 You can delete any resource definitions created as part of the scaffolded `cdk init` command and keep an empty stack definition like this:
 
 ```ts
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
 export class TestCdkAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -100,24 +100,24 @@ cdk deploy
 
 ### Define the resources in CDK
 
-Take a look at your `CloudFormation` or `serverless` file. If you created the resource using clickops you can take a look at the [IaC generator](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC.html) to help you. You want to create the exact same resource definition in AWS CDK. The important differences are that you **should** use [L2 constructs](https://docs.aws.amazon.com/cdk/v2/guide/constructs.html) where possible. 
+Take a look at your `CloudFormation` or `serverless` file. If you created the resource using clickops you can take a look at the [IaC generator](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC.html) to help you. You want to create the exact same resource definition in AWS CDK. The important differences are that you **should** use [L2 constructs](https://docs.aws.amazon.com/cdk/v2/guide/constructs.html) where possible.
 
 For example, the DynamoDB table that was defined in `CloudFormation` previously would look like:
 
 ```ts
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
 export class TestCdkAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new dynamodb.Table(this, "UserTable", {
-      tableName: "User",
+    new dynamodb.Table(this, 'UserTable', {
+      tableName: 'User',
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       partitionKey: {
-        name: "id",
+        name: 'id',
         type: dynamodb.AttributeType.STRING,
       },
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
@@ -131,13 +131,13 @@ You will notice that when using L2 constructs, we do not need to define every si
 To verify that you have matched the original `CloudFormation` definition, you can create a snapshot of the `CloudFormation` that CDK will generate and compare it with the original `CloudFormation` definition:
 
 ```ts
-import * as cdk from "aws-cdk-lib";
-import { Template } from "aws-cdk-lib/assertions";
-import { TestCdkAppStack } from "../lib/test-cdk-app-stack";
+import * as cdk from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import { TestCdkAppStack } from '../lib/test-cdk-app-stack';
 
-test("User table", () => {
+test('User table', () => {
   const app = new cdk.App();
-  const stack = new TestCdkAppStack(app, "MyTestStack");
+  const stack = new TestCdkAppStack(app, 'MyTestStack');
   const template = Template.fromStack(stack);
 
   expect(template.toJSON()).toMatchSnapshot();
@@ -154,19 +154,19 @@ Do not deploy the CDK stack with these new resource definitions yet!
 Ensure that all resources that are going to be migrated have **DeletionPolicy: Retain**.
 :::
 
-Remove the resource definition of the resource that you want to migrate from the original `CloudFormation` or `serverless.yml` file. 
+Remove the resource definition of the resource that you want to migrate from the original `CloudFormation` or `serverless.yml` file.
 
 ```diff lang="yaml"
 Resources:
 -  UserTable:
 -    Type: 'AWS::DynamoDB::Table'
 -    DeletionPolicy: RetainExceptOnCreate
--    Properties: 
+-    Properties:
 -      TableName: 'User'
--      AttributeDefinitions: 
+-      AttributeDefinitions:
 -        - AttributeName: 'id'
 -          AttributeType: 'S'
--      KeySchema: 
+-      KeySchema:
 -        - AttributeName: 'id'
 -          KeyType: 'HASH'
 -      BillingMode: 'PAY_PER_REQUEST'

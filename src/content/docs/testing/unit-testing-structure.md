@@ -178,7 +178,7 @@ describe('job is found', () => {
 
 I do not recommend this approach because when a reader wants to understand everything that a test needs to pass or fail, they will need to look at every single `describe` block that the test is nested within. This means that the needed context is scattered across the file. It is especially difficult to figure out which `describe` blocks apply when the test suite is long and complex.
 
-I would actually prefer the previous, more verbose approach given that it is easier for a maintainer to understand the test suite when they are unfamiliar with the codebase. 
+I would actually prefer the previous, more verbose approach given that it is easier for a maintainer to understand the test suite when they are unfamiliar with the codebase.
 
 [Source Code](https://github.com/phillip-le/phillip-le.github.io/blob/3bd4fa5f64d8388d3e3df774fd6ea0f57919dcf1/src/examples/unit-testing-structure/applyForJob.test.ts#L103)
 
@@ -211,4 +211,3 @@ it('should throw a JobNotFoundError when job is not found', async () => {
 This approach means that when a reader looks at a test case, they only need to see **what has changed from the happy path** to make this test case pass. When they are debugging an issue with their tests, they only need to refer to two locations: the test case they are writing and the single `beforeEach` statement in the test suite, which means that context is not scattered all over the file.
 
 [Source Code](https://github.com/phillip-le/phillip-le.github.io/blob/3bd4fa5f64d8388d3e3df774fd6ea0f57919dcf1/src/examples/unit-testing-structure/applyForJob.test.ts#L195)
-

@@ -301,4 +301,3 @@ export const userFactoryWithFaker = makeFactory<User>(() => ({
   },
 }));
 ```
-

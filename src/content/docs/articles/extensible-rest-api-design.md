@@ -60,10 +60,13 @@ What happens when we want to return more than just the ID? Suppose we now have a
 }
 ```
 
-This results in a breaking change because the shape of user object has changed from `string` to 
+This results in a breaking change because the shape of user object has changed from `string` to
 
 ```js
-{ id: string; name: string; }
+{
+  id: string;
+  name: string;
+}
 ```
 
 So, rather than returning the ID directly, it is usually a good idea to return each user as an object even if it only has a single property.

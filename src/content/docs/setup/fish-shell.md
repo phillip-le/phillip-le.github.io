@@ -95,7 +95,7 @@ thread 'main' panicked at 'Can't write output: Os { code: 32, kind: BrokenPipe, 
 
 ## zoxide
 
-[zoxide](https://github.com/ajeetdsouza/zoxide) makes changing directories a breeze by remembering the directories that you frequently visit and letting you fuzzy jump to the directory you want. But honestly, I use the [Git Repos](https://www.raycast.com/moored/git-repos) [Raycast](https://www.raycast.com/) extension far more than `zoxide`. 
+[zoxide](https://github.com/ajeetdsouza/zoxide) makes changing directories a breeze by remembering the directories that you frequently visit and letting you fuzzy jump to the directory you want. But honestly, I use the [Git Repos](https://www.raycast.com/moored/git-repos) [Raycast](https://www.raycast.com/) extension far more than `zoxide`.
 
 ### Installation
 
@@ -156,7 +156,7 @@ brew install eza
 
 ## fzf
 
-[fzf](https://github.com/junegunn/fzf) is a general-purpose command-line fuzzy finder. I find this to be really useful for searching through my command history. 
+[fzf](https://github.com/junegunn/fzf) is a general-purpose command-line fuzzy finder. I find this to be really useful for searching through my command history.
 
 [fzf.fish](https://github.com/PatrickF1/fzf.fish) adds nice keybindings for `fzf`.
 
