@@ -13,7 +13,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@astrojs/check": "^0.5.10",
+    "@astrojs/check": "^0.8.1",
     "@astrojs/react": "^3.6.0",
     "@astrojs/starlight": "^0.21.2",
     "@astrojs/starlight-tailwind": "^2.0.1",
