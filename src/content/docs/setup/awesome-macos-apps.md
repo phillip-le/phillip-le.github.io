@@ -1,6 +1,6 @@
 ---
 title: 'Awesome macOS apps'
-lastUpdated: 2024-07-14
+lastUpdated: 2024-07-19
 ---
 
 ## Spotlight Replacement
@@ -85,3 +85,7 @@ Raycast has a native [Clipboard History](https://www.raycast.com/extensions/clip
 ### Alternatives
 
 [Maccy](https://maccy.app/)
+
+## HTTP Client
+
+[Bruno](https://docs.usebruno.com/introduction/getting-started) is a `git` based HTTP Client.
