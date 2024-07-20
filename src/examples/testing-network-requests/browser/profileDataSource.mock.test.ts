@@ -1,4 +1,4 @@
-// @vitest-environment node
+// @vitest-environment jsdom
 import { createProfileDataSource } from '../profileDataSource';
 import { type Profile } from '../types';
 import request, { type AxiosRequestConfig } from 'axios';
