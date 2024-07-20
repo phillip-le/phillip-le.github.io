@@ -30,4 +30,4 @@ na exec biome check --fix --unsafe
 # equivalent to 'pnpm exec biome check --fix --unsafe'
 ```
 
-`na` is the shorthand for running the current package manager e.g. `yarn` / `npm` / `pnpm`. 
+`na` is the shorthand for running the current package manager e.g. `yarn` / `npm` / `pnpm`.

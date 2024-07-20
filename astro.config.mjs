@@ -14,7 +14,10 @@ export default defineConfig({
     starlight({
       title: 'Developer Musings',
       lastUpdated: true,
-      customCss: ['./src/tailwind.css', '@fontsource-variable/jetbrains-mono/index.css'],
+      customCss: [
+        './src/tailwind.css',
+        '@fontsource-variable/jetbrains-mono/index.css',
+      ],
       plugins: [starlightLinksValidator()],
     }),
   ],
