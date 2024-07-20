@@ -6,8 +6,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "format": "prettier --write ./src",
-    "lint": "tsc --noEmit",
+    "format": "biome check --write . && prettier --write ./src",
+    "lint": "tsc --noEmit && biome check .",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest"
@@ -33,6 +33,7 @@
     "typescript": "^5.5.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "factory.ts": "^1.4.1",
     "jsdom": "^24.1.0",
     "kebab-case": "^1.0.2",

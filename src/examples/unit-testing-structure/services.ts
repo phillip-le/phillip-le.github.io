@@ -18,6 +18,7 @@ export const createJobApplication = ({
     jobId,
   });
 
+// biome-ignore lint/correctness/noEmptyPattern: dummy example
 export const sendJobApplicationSuccessNotification = ({}: {
   userId: string;
   jobId: string;

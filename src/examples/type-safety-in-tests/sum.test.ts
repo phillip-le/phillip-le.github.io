@@ -1,4 +1,4 @@
-import { sum, sumAsync } from './sum';
+import { sum, type sumAsync } from './sum';
 
 describe('sum', () => {
   it.fails('should not add up', () => {

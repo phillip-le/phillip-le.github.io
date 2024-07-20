@@ -1,4 +1,4 @@
-import { applyForJob, JobNotFoundError } from './applyForJob';
+import { JobNotFoundError, applyForJob } from './applyForJob';
 import {
   createJobApplication,
   getJob,
@@ -22,9 +22,7 @@ describe('applyForJob - simple', () => {
   it('should throw a JobNotFoundError when job is not found', async () => {
     vi.mocked(getJob).mockResolvedValueOnce(null);
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      JobNotFoundError,
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(JobNotFoundError);
   });
 
   it('should throw an error and log when creating a job application fails', async () => {
@@ -33,9 +31,7 @@ describe('applyForJob - simple', () => {
     });
     vi.mocked(createJobApplication).mockRejectedValueOnce('unexpected error');
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      'Failed to apply to job',
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError('Failed to apply to job');
 
     expect(logger.error).toHaveBeenCalledWith({
       error: 'unexpected error',
@@ -57,9 +53,7 @@ describe('applyForJob - simple', () => {
       'notification publish failed',
     );
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      'Failed to apply to job',
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError('Failed to apply to job');
 
     expect(logger.error).toHaveBeenCalledWith({
       error: 'notification publish failed',
@@ -85,12 +79,8 @@ describe('applyForJob - simple', () => {
 
     expect(result).toEqual<JobApplication>(jobApplication);
 
-    expect(getJob).toHaveBeenCalledWith<Parameters<typeof getJob>>(
-      applyForJobPayload.jobId,
-    );
-    expect(createJobApplication).toHaveBeenCalledWith<
-      Parameters<typeof createJobApplication>
-    >({
+    expect(getJob).toHaveBeenCalledWith<Parameters<typeof getJob>>(applyForJobPayload.jobId);
+    expect(createJobApplication).toHaveBeenCalledWith<Parameters<typeof createJobApplication>>({
       jobId: applyForJobPayload.jobId,
       userId: applyForJobPayload.userId,
     });
@@ -113,9 +103,7 @@ describe('applyForJob - nested and DRY', () => {
   it('should throw a JobNotFoundError when job is not found', async () => {
     vi.mocked(getJob).mockResolvedValueOnce(null);
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      JobNotFoundError,
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(JobNotFoundError);
   });
 
   describe('job is found', () => {
@@ -128,9 +116,7 @@ describe('applyForJob - nested and DRY', () => {
     it('should throw an error and log when creating a job application fails', async () => {
       vi.mocked(createJobApplication).mockRejectedValueOnce('unexpected error');
 
-      await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-        'Failed to apply to job',
-      );
+      await expect(applyForJob(applyForJobPayload)).rejects.toThrowError('Failed to apply to job');
 
       expect(logger.error).toHaveBeenCalledWith({
         error: 'unexpected error',
@@ -167,20 +153,14 @@ describe('applyForJob - nested and DRY', () => {
       });
 
       it('should return job application when everything is successful', async () => {
-        vi.mocked(
-          sendJobApplicationSuccessNotification,
-        ).mockResolvedValueOnce();
+        vi.mocked(sendJobApplicationSuccessNotification).mockResolvedValueOnce();
 
         const result = await applyForJob(applyForJobPayload);
 
         expect(result).toEqual<JobApplication>(jobApplication);
 
-        expect(getJob).toHaveBeenCalledWith<Parameters<typeof getJob>>(
-          applyForJobPayload.jobId,
-        );
-        expect(createJobApplication).toHaveBeenCalledWith<
-          Parameters<typeof createJobApplication>
-        >({
+        expect(getJob).toHaveBeenCalledWith<Parameters<typeof getJob>>(applyForJobPayload.jobId);
+        expect(createJobApplication).toHaveBeenCalledWith<Parameters<typeof createJobApplication>>({
           jobId: applyForJobPayload.jobId,
           userId: applyForJobPayload.userId,
         });
@@ -219,19 +199,13 @@ describe('applyForJob - only modifying what we need to make the test pass', () =
   it('should throw a JobNotFoundError when job is not found', async () => {
     vi.mocked(getJob).mockReset().mockResolvedValueOnce(null);
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      JobNotFoundError,
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(JobNotFoundError);
   });
 
   it('should throw an error and log when creating a job application fails', async () => {
-    vi.mocked(createJobApplication)
-      .mockReset()
-      .mockRejectedValueOnce('unexpected error');
+    vi.mocked(createJobApplication).mockReset().mockRejectedValueOnce('unexpected error');
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      'Failed to apply to job',
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError('Failed to apply to job');
 
     expect(logger.error).toHaveBeenCalledWith({
       error: 'unexpected error',
@@ -245,9 +219,7 @@ describe('applyForJob - only modifying what we need to make the test pass', () =
       .mockReset()
       .mockRejectedValueOnce('notification publish failed');
 
-    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError(
-      'Failed to apply to job',
-    );
+    await expect(applyForJob(applyForJobPayload)).rejects.toThrowError('Failed to apply to job');
 
     expect(logger.error).toHaveBeenCalledWith({
       error: 'notification publish failed',
@@ -266,23 +238,15 @@ describe('applyForJob - only modifying what we need to make the test pass', () =
     vi.mocked(getJob).mockReset().mockResolvedValueOnce({
       jobId: applyForJobPayload.jobId,
     });
-    vi.mocked(createJobApplication)
-      .mockReset()
-      .mockResolvedValueOnce(jobApplication);
-    vi.mocked(sendJobApplicationSuccessNotification)
-      .mockReset()
-      .mockResolvedValueOnce();
+    vi.mocked(createJobApplication).mockReset().mockResolvedValueOnce(jobApplication);
+    vi.mocked(sendJobApplicationSuccessNotification).mockReset().mockResolvedValueOnce();
 
     const result = await applyForJob(applyForJobPayload);
 
     expect(result).toEqual<JobApplication>(jobApplication);
 
-    expect(getJob).toHaveBeenCalledWith<Parameters<typeof getJob>>(
-      applyForJobPayload.jobId,
-    );
-    expect(createJobApplication).toHaveBeenCalledWith<
-      Parameters<typeof createJobApplication>
-    >({
+    expect(getJob).toHaveBeenCalledWith<Parameters<typeof getJob>>(applyForJobPayload.jobId);
+    expect(createJobApplication).toHaveBeenCalledWith<Parameters<typeof createJobApplication>>({
       jobId: applyForJobPayload.jobId,
       userId: applyForJobPayload.userId,
     });

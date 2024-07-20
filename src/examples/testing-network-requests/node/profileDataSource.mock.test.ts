@@ -1,7 +1,7 @@
+import request, { type AxiosRequestConfig } from 'axios';
 // @vitest-environment node
 import { createProfileDataSource } from '../profileDataSource';
-import { type Profile } from '../types';
-import request, { type AxiosRequestConfig } from 'axios';
+import type { Profile } from '../types';
 
 vi.mock('axios');
 

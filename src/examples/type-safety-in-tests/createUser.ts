@@ -1,7 +1,4 @@
-import {
-  trackUserCreated,
-  trackUserCreatedMultipleArgs,
-} from './trackUserCreated';
+import { trackUserCreated, trackUserCreatedMultipleArgs } from './trackUserCreated';
 
 export const createUser = async ({
   userId,

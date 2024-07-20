@@ -1,5 +1,5 @@
-import type { Profile, ProfileDataSource } from './types';
 import request from 'axios';
+import type { Profile, ProfileDataSource } from './types';
 
 export const createProfileDataSource = (baseUrl: string): ProfileDataSource => {
   return {

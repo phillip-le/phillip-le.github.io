@@ -1,8 +1,8 @@
+import axios from 'axios';
 // @vitest-environment jsdom
 import nock from 'nock';
 import { createProfileDataSource } from '../profileDataSource';
 import type { Profile } from '../types';
-import axios from 'axios';
 
 // https://github.com/nock/nock?tab=readme-ov-file#axios
 axios.defaults.adapter = 'http';

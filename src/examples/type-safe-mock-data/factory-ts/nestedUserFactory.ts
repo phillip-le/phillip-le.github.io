@@ -1,5 +1,5 @@
-import { makeFactory } from 'factory.ts';
 import { faker } from '@faker-js/faker';
+import { makeFactory } from 'factory.ts';
 
 export type User = {
   firstName: string;

@@ -1,8 +1,8 @@
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 // @vitest-environment jsdom
 import { createProfileDataSource } from '../profileDataSource';
-import { ProfileSchema, type Profile } from '../types';
-import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
+import { type Profile, ProfileSchema } from '../types';
 
 describe('profileDataSource - browser - msw', () => {
   const baseUrl = 'http://localhost:3250';
