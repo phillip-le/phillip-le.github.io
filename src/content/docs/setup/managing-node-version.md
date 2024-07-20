@@ -74,6 +74,8 @@ brew install yarn
 
 [mise](https://mise.jdx.dev/) is a new up and coming "everything" version manager? See [this nice breakdown](https://ricostacruz.com/posts/mise-vs-volta) on the differences between `mise` and `volta`.
 
+`mise` also [supports using asdf plugins](https://mise.jdx.dev/plugins.html#plugins) and so, it could be easy to install [ni](https://phillip-le.github.io/setup/running-js-package-manager-commands/). 
+
 ### nvm.fish
 
 [nvm.fish](https://github.com/jorgebucaran/nvm.fish) is another performant node version manager written in Fish that respects `.nvmrc` and `.node-version` files. Unfortunately, it does not have native support for changing the `node` version when changing directories.

@@ -78,6 +78,6 @@ Example of a `.git-blame-ignore-revs` file.
 
 ## Securing GitHub SSH Key
 
-It is a best practice to secure your SSH keys using a passphrase but it can be annoying to enter your passphrase every time you want to push / pull from GitHub. 
+It is a best practice to secure your SSH keys using a passphrase but it can be annoying to enter your passphrase every time you want to push / pull from GitHub.
 
 You can reduce the number of times you have to enter your passphrase by [adding your ssh key to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#adding-your-ssh-key-to-the-ssh-agent).
