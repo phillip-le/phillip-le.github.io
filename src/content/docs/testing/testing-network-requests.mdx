@@ -1,0 +1,172 @@
+---
+title: 'Testing network requests'
+draft: true
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Unit tests
+
+## Mocking your HTTP client
+
+Here is a function that retrieves a `User` from [JSONPlaceHolder](https://jsonplaceholder.typicode.com/) using [axios](https://github.com/axios/axios).
+
+```ts
+// getUser.ts
+import request from 'axios';
+import { User } from '../data/userData';
+
+export const getUser = async (id: User['id']): Promise<User> => {
+  const response = await request({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    url: `/users/${id}`,
+    method: 'GET',
+    responseType: 'json',
+  });
+
+  return response.data as User;
+};
+```
+
+We could test `getUser` like this:
+
+```ts
+import request, { AxiosRequestConfig } from 'axios';
+import { vi } from 'vitest';
+
+vi.mock('axios');
+
+describe('getUser', () => {
+  it('should return the user if API returns 200', async () => {
+    vi.mocked(request).mockResolvedValueOnce({
+      data: userData[0],
+      status: 200,
+    });
+
+    const result = await getUser(userData[0].id);
+
+    expect(result).toEqual(userData[0]);
+
+    expect(request).toHaveBeenCalledWith<[AxiosRequestConfig]>(
+      expect.objectContaining({
+        baseURL: 'https://jsonplaceholder.typicode.com',
+        method: 'GET',
+        responseType: 'json',
+        url: '/users/b36d014d-af4a-4a1c-9b7d-ca3db0671294',
+      }),
+    );
+  });
+});
+```
+
+The main problem with this approach is that it is easy to fake the behaviour of our HTTP client.
+For example, `axios` by default throws an error if the API returns a 4xx or 5xx error whereas `fetch`
+always gracefully returns the API response and expects consumers to handle the status code appropriately.
+
+Ideally, your unit test should be HTTP client agnostic. It should not matter whether or not you are using `axios`
+or `fetch`. Mocking the network layer with `nock` is beneficial because it is mocking at the outermost edge of our
+application and so you can write unit tests that will be HTTP client agnostic.
+https://levelup.gitconnected.com/why-you-should-often-wrap-your-dependencies-5fced2999616
+
+## Using `nock`
+
+[nock](https://github.com/nock/nock) is usually useful for unit testing functions that make API calls in isolation.
+
+### Node Environment
+
+### Browser Environment
+
+For example, here is a function that retrieves a `User` from [JSONPlaceHolder](https://jsonplaceholder.typicode.com/).
+
+```ts
+// getUser.ts
+import request from 'axios';
+import { User } from '../data/userData';
+
+export const getUser = async (id: User['id']): Promise<User> => {
+  const response = await request({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    url: `/users/${id}`,
+    method: 'GET',
+    responseType: 'json',
+  });
+
+  return response.data as User;
+};
+```
+
+So that we can use `nock` we need to pretend to be in a node environment in our unit test:
+
+- https://vitest.dev/guide/environment.html#environments-for-specific-files
+- https://jestjs.io/docs/configuration#testenvironment-string
+
+Add the following comment to the top of your test file:
+
+<Tabs>
+<TabItem label="vitest">
+```ts
+// @vitest-environment node
+```
+</TabItem>
+
+<TabItem label="jest">
+```ts
+/**
+ * @jest-environment node
+ */
+```
+</TabItem>
+</Tabs>
+
+We can then use `nock` to mock the network request like the following:
+
+```ts
+// @vitest-environment node
+import nock from 'nock';
+import { getUser } from './getUser';
+import { userData } from '../data/userData';
+
+describe('getUser', () => {
+  it('should return the user if API returns 200', async () => {
+    const scope = nock('https://jsonplaceholder.typicode.com')
+      .get(`/users/${userData[0].id}`)
+      .reply(200, userData[0]);
+
+    const result = await getUser(userData[0].id);
+
+    expect(result).toEqual(userData[0]);
+
+    scope.isDone();
+  });
+});
+```
+
+Alternatively, we could mock the `axios` request function like this:
+
+```ts
+import { getUser } from './getUser';
+import { userData } from '../data/userData';
+import request from 'axios';
+import { vi } from 'vitest';
+
+vi.mock('axios');
+
+describe('getUser', () => {
+  it('should return the user if API returns 200', async () => {
+    vi.mocked(request).mockResolvedValueOnce({
+      data: userData[0],
+      status: 200,
+    });
+
+    const result = await getUser(userData[0].id);
+
+    expect(result).toEqual(userData[0]);
+  });
+});
+```
+
+# Integration tests
+
+### Assumptions
+
+- These tests will mock at the edge of the application
