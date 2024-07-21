@@ -1,5 +1,7 @@
+import { DeferredPromise } from '@open-draft/deferred-promise';
+import type { AxiosError } from 'axios';
 import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+import { type SetupServerApi, setupServer } from 'msw/node';
 // @vitest-environment node
 import { createProfileDataSource } from '../profileDataSource';
 import { type Profile, ProfileSchema } from '../types';
@@ -24,6 +26,7 @@ describe('profileDataSource - browser - msw', () => {
 
   afterEach(() => {
     server.resetHandlers();
+    server.events.removeAllListeners();
   });
 
   afterAll(() => {
@@ -92,15 +95,50 @@ describe('profileDataSource - browser - msw', () => {
           }),
       ),
     );
+    const requestBody = new DeferredPromise();
 
-    server.events.on('request:start', async ({ request }) => {
+    server.events.on('response:mocked', async ({ request }) => {
       const body = await request.clone().json();
-
-      const { profileId } = ProfileSchema.pick({ profileId: true }).parse(body);
-
-      expect(profileId).toEqual(profile.profileId);
+      requestBody.resolve(body);
     });
 
     await profileDataSource.sendProfileCreatedTrackingEvent(profile.profileId);
+
+    await expect(requestBody).resolves.toEqual({
+      profileId: profile.profileId,
+    });
+  });
+
+  it('should throw error when server returns 500', async () => {
+    expect.hasAssertions();
+    server.use(
+      http.post(
+        `${baseUrl}/profiles`,
+        async () =>
+          new HttpResponse(null, {
+            status: 500,
+          }),
+      ),
+    );
+
+    try {
+      await profileDataSource.createProfile({
+        bearerToken,
+        name: profile.name,
+      });
+    } catch (error) {
+      const typeAssertedError = error as AxiosError;
+
+      expect(typeAssertedError.config?.headers).toMatchInlineSnapshot(`
+        {
+          "Accept": "application/json, text/plain, */*",
+          "Accept-Encoding": "gzip, compress, deflate, br",
+          "Authorization": "Bearer some-bearer-token",
+          "Content-Length": "17",
+          "Content-Type": "application/json",
+          "User-Agent": "axios/1.7.2",
+        }
+      `);
+    }
   });
 });
