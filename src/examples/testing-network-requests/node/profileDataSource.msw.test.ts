@@ -1,7 +1,7 @@
 import { DeferredPromise } from '@open-draft/deferred-promise';
 import type { AxiosError } from 'axios';
 import { http, HttpResponse } from 'msw';
-import { type SetupServerApi, setupServer } from 'msw/node';
+import { setupServer } from 'msw/node';
 // @vitest-environment node
 import { createProfileDataSource } from '../profileDataSource';
 import { type Profile, ProfileSchema } from '../types';
@@ -95,8 +95,9 @@ describe('profileDataSource - browser - msw', () => {
           }),
       ),
     );
-    const requestBody = new DeferredPromise();
 
+    // https://github.com/mswjs/msw/discussions/1927#discussioncomment-7862299
+    const requestBody = new DeferredPromise();
     server.events.on('response:mocked', async ({ request }) => {
       const body = await request.clone().json();
       requestBody.resolve(body);
@@ -127,9 +128,9 @@ describe('profileDataSource - browser - msw', () => {
         name: profile.name,
       });
     } catch (error) {
-      const typeAssertedError = error as AxiosError;
+      const axiosError = error as AxiosError;
 
-      expect(typeAssertedError.config?.headers).toMatchInlineSnapshot(`
+      expect(axiosError.config?.headers).toMatchInlineSnapshot(`
         {
           "Accept": "application/json, text/plain, */*",
           "Accept-Encoding": "gzip, compress, deflate, br",

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { type AxiosError } from 'axios';
 // @vitest-environment jsdom
 import nock from 'nock';
 import { createProfileDataSource } from '../profileDataSource';
@@ -71,6 +71,32 @@ describe('profileDataSource - browser - nock', () => {
       .reply(200);
 
     await profileDataSource.sendProfileCreatedTrackingEvent(profile.profileId);
+
+    scope.isDone();
+  });
+
+  it('should throw error when server returns 500', async () => {
+    expect.hasAssertions();
+    const scope = nock(baseUrl).post('/profiles').reply(500);
+
+    try {
+      await profileDataSource.createProfile({
+        name: profile.name,
+        bearerToken,
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      expect(axiosError.config?.headers).toMatchInlineSnapshot(`
+        {
+          "Accept": "application/json, text/plain, */*",
+          "Accept-Encoding": "gzip, compress, deflate, br",
+          "Authorization": "Bearer some-bearer-token",
+          "Content-Length": "17",
+          "Content-Type": "application/json",
+          "User-Agent": "axios/1.7.2",
+        }
+      `);
+    }
 
     scope.isDone();
   });

@@ -82,8 +82,8 @@ describe('profileDataSource - browser - nock', () => {
         bearerToken,
       });
     } catch (error) {
-      const typeAssertedError = error as AxiosError;
-      expect(typeAssertedError.config?.headers).toMatchInlineSnapshot(`
+      const axiosError = error as AxiosError;
+      expect(axiosError.config?.headers).toMatchInlineSnapshot(`
         {
           "Accept": "application/json, text/plain, */*",
           "Accept-Encoding": "gzip, compress, deflate, br",

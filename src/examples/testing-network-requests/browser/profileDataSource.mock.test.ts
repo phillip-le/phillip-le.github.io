@@ -1,4 +1,4 @@
-import request, { type AxiosRequestConfig } from 'axios';
+import request, { type AxiosError, type AxiosRequestConfig } from 'axios';
 // @vitest-environment jsdom
 import { createProfileDataSource } from '../profileDataSource';
 import type { Profile } from '../types';
@@ -71,5 +71,24 @@ describe('profileDataSource - browser - mock axios', () => {
         },
       }),
     );
+  });
+
+  it('should throw error when server returns 500', async () => {
+    expect.hasAssertions();
+    vi.mocked(request).mockRejectedValueOnce(
+      new Error('Internal Server Error'),
+    );
+
+    try {
+      await profileDataSource.createProfile({
+        name: profile.name,
+        bearerToken,
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      expect(axiosError).toMatchInlineSnapshot(
+        '[Error: Internal Server Error]',
+      );
+    }
   });
 });
