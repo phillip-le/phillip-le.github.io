@@ -27,8 +27,8 @@ importers:
         specifier: ^8.4.1
         version: 8.4.1
       '@fontsource-variable/jetbrains-mono':
-        specifier: ^5.0.20
-        version: 5.0.20
+        specifier: ^5.0.21
+        version: 5.0.21
       '@open-draft/deferred-promise':
         specifier: ^2.2.0
         version: 2.2.0
@@ -661,8 +661,8 @@ packages:
     resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
 
-  '@fontsource-variable/jetbrains-mono@5.0.20':
-    resolution: {integrity: sha512-IWJnmY9vT5Olcac1vzA7FMdnojCrZWMq+g7SqC2jsFpY0LQTjIgp9gBjjw9kUOkNbLw37/evZO4w6rdPeMA68A==}
+  '@fontsource-variable/jetbrains-mono@5.0.21':
+    resolution: {integrity: sha512-LL/57KBbM3r0UMuN6tSeYExiBObt0QuGq49m1FyoDFIv1GAcuKU0EQ/GAKJ/yt3R8onOCD3f5X9Dln//G6uzRQ==}
 
   '@inquirer/confirm@3.1.16':
     resolution: {integrity: sha512-DXgLZim+YVTk05zRywvFRfJt2Jje7sZ4DO6Ss9RpGtgXEd/T0IiTqubHWst0IazCwdPI9g/06Rtm/nm4IBFJBA==}
@@ -4055,7 +4055,7 @@ snapshots:
 
   '@faker-js/faker@8.4.1': {}
 
-  '@fontsource-variable/jetbrains-mono@5.0.20': {}
+  '@fontsource-variable/jetbrains-mono@5.0.21': {}
 
   '@inquirer/confirm@3.1.16':
     dependencies:
