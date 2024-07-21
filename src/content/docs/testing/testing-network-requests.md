@@ -669,7 +669,6 @@ it('should send tracking event with profileId when calling sendProfileCreatedTra
     ),
   );
 
-  // https://github.com/mswjs/msw/discussions/1927#discussioncomment-7862299
   const requestBody = new DeferredPromise();
   server.events.on('response:mocked', async ({ request }) => {
     const body = await request.clone().json();
@@ -681,6 +680,51 @@ it('should send tracking event with profileId when calling sendProfileCreatedTra
   await expect(requestBody).resolves.toEqual({
     profileId: profile.profileId,
   });
+});
+```
+
+So, let's unpack why this looks quite complicated. There's a few things that we want to assert in this test:
+
+1. We are sending a network request at all
+1. We are sending a network request to the correct URL with the correct method
+1. We are sending a network request with the correct payload
+
+The second assertion is handled by the `onUnhandledRequest: 'error'` option that we set in our setup along with our `msw` handler. 
+
+The third assertion is difficult because previously, we would validate the request payload in the `msw` handler and if the payload was incorrect, then we would have the handler return an unexpected status code resulting in the test failing. However, `sendProfileCreatedTrackingEvent` does not care about the response from the server so we can no longer use this approach.
+
+Instead, we need to use the `msw` [life-cycle events](https://mswjs.io/docs/api/life-cycle-events) API to apply our assertions. `server.events.removeAllListeners()` which we setup in our `afterEach` block cleans up any event listeners that we will setup in this test.
+
+Initially, I thought that we could do:
+
+```ts
+server.events.on('response:mocked', async ({ request }) => {
+  const body = await request.clone().json();
+  expect(body).toEqual({ profileId: profile.profileId });
+});
+```
+
+`server.events.on('response:mocked')` sets up an event listener for `response:mocked` which is an event that is emitted whenever a mocked response is sent e.g. one of our `msw` handlers is invoked.
+
+Note that before unpacking the `request` to `JSON`, I used `clone` to create a copy. This is noted in the [msw documentation](https://mswjs.io/docs/api/life-cycle-events#clone-before-reading).
+
+This approach solves asserting that the request payload is correct, but there are two issues. We still have not solved assertion 1 because the test still passes when `sendProfileCreatedTrackingEvent` does not send a network request at all. You will also notice that since we are asserting on an event listener, the assertion will occur after the test finishes running which causes issues where when the assertion fails, the error is harder to read. Also, we cannot use `expect.hasAssertions` to assert that the network request occurred because `expect.hasAssertions` runs immediately after the test has finished running and so the assertion within the event listener has not been executed yet.
+
+So, using the [wisdom from the maintainers](https://github.com/mswjs/msw/discussions/1927#discussioncomment-7862299), we can use a [DeferredPromise](https://github.com/open-draft/deferred-promise) to set the request body and assert that it is correct.
+
+```ts
+import { DeferredPromise } from '@open-draft/deferred-promise';
+
+const requestBody = new DeferredPromise();
+server.events.on('response:mocked', async ({ request }) => {
+  const body = await request.clone().json();
+  requestBody.resolve(body);
+});
+
+await profileDataSource.sendProfileCreatedTrackingEvent(profile.profileId);
+
+await expect(requestBody).resolves.toEqual({
+  profileId: profile.profileId,
 });
 ```
 
