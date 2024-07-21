@@ -689,7 +689,7 @@ So, let's unpack why this looks quite complicated. There's a few things that we 
 1. We are sending a network request to the correct URL with the correct method
 1. We are sending a network request with the correct payload
 
-The second assertion is handled by the `onUnhandledRequest: 'error'` option that we set in our setup along with our `msw` handler. 
+The second assertion is handled by the `onUnhandledRequest: 'error'` option that we set in our setup along with our `msw` handler.
 
 The third assertion is difficult because previously, we would validate the request payload in the `msw` handler and if the payload was incorrect, then we would have the handler return an unexpected status code resulting in the test failing. However, `sendProfileCreatedTrackingEvent` does not care about the response from the server so we can no longer use this approach.
 
