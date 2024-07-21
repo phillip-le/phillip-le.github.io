@@ -38,6 +38,17 @@ describe('profileDataSource - browser - mock axios', () => {
     );
   });
 
+  it('should return null when server returns 404 on getProfile', async () => {
+    vi.mocked(request).mockResolvedValueOnce({ status: 404 });
+
+    const result = await profileDataSource.getProfile({
+      bearerToken,
+      profileId: profile.profileId,
+    });
+
+    expect(result).toEqual(null);
+  });
+
   it('should create a profile when calling createProfile', async () => {
     vi.mocked(request).mockResolvedValueOnce({ data: profile });
 

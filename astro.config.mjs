@@ -21,4 +21,11 @@ export default defineConfig({
       plugins: [starlightLinksValidator()],
     }),
   ],
+  vite: {
+    optimizeDeps: {
+      // fixes error when running `nr start` where `node` for `msw/node` cannot be found with `vite:dep-scan`
+      // https://github.com/vitejs/vite/issues/14151
+      noDiscovery: true,
+    },
+  },
 });

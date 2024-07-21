@@ -11,7 +11,13 @@ export const createProfileDataSource = (baseUrl: string): ProfileDataSource => {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
         },
+        validateStatus: (status) =>
+          status >= 200 || status < 300 || status === 404,
       });
+
+      if (response.status === 404) {
+        return null;
+      }
 
       return response.data;
     },

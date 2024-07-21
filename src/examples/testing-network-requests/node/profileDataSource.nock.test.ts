@@ -42,6 +42,22 @@ describe('profileDataSource - browser - nock', () => {
     scope.isDone();
   });
 
+  it('should return null when server returns 404 on getProfile', async () => {
+    const scope = nock(baseUrl)
+      .matchHeader('authorization', `Bearer ${bearerToken}`)
+      .get(`/profiles/${profile.profileId}`)
+      .reply(404);
+
+    const result = await profileDataSource.getProfile({
+      bearerToken,
+      profileId: profile.profileId,
+    });
+
+    expect(result).toEqual(null);
+
+    scope.isDone();
+  });
+
   it('should create a profile when calling createProfile', async () => {
     const scope = nock(baseUrl)
       .matchHeader('authorization', `Bearer ${bearerToken}`)

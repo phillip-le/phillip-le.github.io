@@ -4,7 +4,7 @@ export type ProfileDataSource = {
   getProfile: (input: {
     profileId: string;
     bearerToken: string;
-  }) => Promise<Profile>;
+  }) => Promise<Profile | null>;
   createProfile: (input: {
     name: string;
     bearerToken: string;
