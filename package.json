@@ -16,7 +16,7 @@
     "@astrojs/check": "^0.8.2",
     "@astrojs/react": "^3.6.0",
     "@astrojs/starlight": "^0.22.4",
-    "@astrojs/starlight-tailwind": "^2.0.1",
+    "@astrojs/starlight-tailwind": "^2.0.3",
     "@astrojs/tailwind": "^5.1.0",
     "@faker-js/faker": "^8.4.1",
     "@fontsource-variable/jetbrains-mono": "^5.0.21",
