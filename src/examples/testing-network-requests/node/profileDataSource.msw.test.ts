@@ -2,9 +2,10 @@ import { DeferredPromise } from '@open-draft/deferred-promise';
 import type { AxiosError } from 'axios';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { z } from 'zod';
 // @vitest-environment node
 import { createProfileDataSource } from '../profileDataSource';
-import { type Profile, ProfileSchema } from '../types';
+import type { Profile } from '../types';
 
 describe('profileDataSource - browser - msw', () => {
   const baseUrl = 'http://localhost:3250';
@@ -63,11 +64,7 @@ describe('profileDataSource - browser - msw', () => {
         }
 
         const body = await request.json();
-        if (
-          !ProfileSchema.omit({
-            profileId: true,
-          }).safeParse(body).success
-        ) {
+        if (!z.object({ name: z.string() }).safeParse(body).success) {
           return new HttpResponse(null, {
             status: 400,
           });

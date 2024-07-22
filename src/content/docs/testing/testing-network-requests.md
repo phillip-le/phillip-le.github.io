@@ -593,6 +593,31 @@ afterEach(() => {
 
 ### Mocking when retrieving data
 
+I use the [server.use](https://mswjs.io/docs/api/setup-server/use) method to add a handler for each specific test. I prefer adding the handler within the scope of the test for unit tests so that the handler setup is collocated with what we are testing.
+
+A REST API handler is defined using [http](https://mswjs.io/docs/api/http) which has methods corresponding to the HTTP methods and it takes in a path and the [request handler](https://mswjs.io/docs/concepts/request-handler).
+
+```ts
+import { http } from 'msw';
+
+server.use(
+  http.get(`${baseUrl}/profiles/${profile.profileId}`),
+  requestHandler,
+);
+```
+
+We can return a HTTP response by using [HttpResponse](https://mswjs.io/docs/api/http-response/) in our request handler.
+
+```ts
+import { http, HttpResponse } from 'msw';
+
+server.use(http.get(`${baseUrl}/profiles/${profile.profileId}`), () =>
+  HttpResponse.json(profile),
+);
+```
+
+Now I want to assert that the request sends an appropriate authorization header. The [philosophy of msw](https://mswjs.io/docs/philosophy) is to emulate what the server would do if we did not send authorization headers e.g. return a `401` status code. Request handlers take in a couple of parameters including the request that was sent to the server.
+
 ```ts
 import { http, HttpResponse } from 'msw';
 
@@ -619,7 +644,38 @@ it('should return profile when calling getProfile', async () => {
 
 ### Mocking when sending data with response handled
 
+When we are sending data to the server, I want to ensure that the server is receiving the right data.
+
 ```ts
+type Payload = {
+  name: string;
+};
+```
+
+One approach is to assert that the server is receiving the expected data:
+
+```ts {9,10}
+server.use(
+  http.post(`${baseUrl}/profiles`, async ({ request }) => {
+    if (request.headers.get('authorization') !== `Bearer ${bearerToken}`) {
+      return new HttpResponse(null, {
+        status: 401,
+      });
+    }
+
+    const body = await request.json();
+    expect(body).toEqual({ name: profile.name });
+
+    return HttpResponse.json(profile);
+  }),
+);
+```
+
+If we want to follow the philosophy of `msw`, we could also simply validate that the data in the payload has the right shape, similar to what the server would actually do. For example, I am using [zod](https://zod.dev/) to do a runtime check on the shape of the data.
+
+```ts {13}
+import { z } from 'zod';
+
 it('should create a profile when calling createProfile', async () => {
   server.use(
     http.post(`${baseUrl}/profiles`, async ({ request }) => {
@@ -630,11 +686,7 @@ it('should create a profile when calling createProfile', async () => {
       }
 
       const body = await request.json();
-      if (
-        !ProfileSchema.omit({
-          profileId: true,
-        }).safeParse(body).success
-      ) {
+      if (!z.object({ name: z.string() }).safeParse(body).success) {
         return new HttpResponse(null, {
           status: 400,
         });
@@ -655,7 +707,36 @@ it('should create a profile when calling createProfile', async () => {
 
 ### Mocking when sending data with response unhandled
 
+There's a few things that we want to assert in this test:
+
+1. We are sending a network request at all
+1. We are sending a network request to the correct URL with the correct method
+1. We are sending a network request with the correct payload
+
+Asserting that we are sending a network request to the correct URL and method is handled by the `onUnhandledRequest: 'error'` option that we set in our setup along with our `msw` handler.
+
+Asserting that we are sending the correct payload is difficult because previously, we would validate the request payload in the `msw` handler and if the payload was incorrect, then we would have the handler return an unexpected status code resulting in the test failing. However, `sendProfileCreatedTrackingEvent` does not care about the response from the server so we can no longer use this approach.
+
+Instead, we need to use the `msw` [life-cycle events](https://mswjs.io/docs/api/life-cycle-events) API to apply our assertions. `server.events.removeAllListeners()` which we setup in our `afterEach` block cleans up any event listeners that we will setup in this test.
+
+Initially, I thought that we could do:
+
 ```ts
+server.events.on('response:mocked', async ({ request }) => {
+  const body = await request.clone().json();
+  expect(body).toEqual({ profileId: profile.profileId });
+});
+```
+
+`server.events.on('response:mocked')` sets up an event listener for `response:mocked` which is an event that is emitted whenever a mocked response is sent e.g. one of our `msw` handlers is invoked.
+
+Note that before unpacking the `request` to `JSON`, I used `clone` to create a copy. This is noted in the [msw documentation](https://mswjs.io/docs/api/life-cycle-events#clone-before-reading).
+
+This approach solves asserting that the request payload is correct, but there are two issues. We still have not solved assertion 1 because the test still passes when `sendProfileCreatedTrackingEvent` does not send a network request at all. You will also notice that since we are asserting on an event listener, the assertion will occur after the test finishes running which causes issues where when the assertion fails, the error is harder to read. Also, we cannot use `expect.hasAssertions` to assert that the network request occurred because `expect.hasAssertions` runs immediately after the test has finished running and so the assertion within the event listener has not been executed yet.
+
+So, using the [wisdom from the maintainers](https://github.com/mswjs/msw/discussions/1927#discussioncomment-7862299), we can use a [DeferredPromise](https://github.com/open-draft/deferred-promise) to set the request body and assert that it is correct.
+
+```ts {14-18,22-24}
 import { DeferredPromise } from '@open-draft/deferred-promise';
 
 it('should send tracking event with profileId when calling sendProfileCreatedTrackingEvent', async () => {
@@ -683,52 +764,11 @@ it('should send tracking event with profileId when calling sendProfileCreatedTra
 });
 ```
 
-So, let's unpack why this looks quite complicated. There's a few things that we want to assert in this test:
-
-1. We are sending a network request at all
-1. We are sending a network request to the correct URL with the correct method
-1. We are sending a network request with the correct payload
-
-The second assertion is handled by the `onUnhandledRequest: 'error'` option that we set in our setup along with our `msw` handler.
-
-The third assertion is difficult because previously, we would validate the request payload in the `msw` handler and if the payload was incorrect, then we would have the handler return an unexpected status code resulting in the test failing. However, `sendProfileCreatedTrackingEvent` does not care about the response from the server so we can no longer use this approach.
-
-Instead, we need to use the `msw` [life-cycle events](https://mswjs.io/docs/api/life-cycle-events) API to apply our assertions. `server.events.removeAllListeners()` which we setup in our `afterEach` block cleans up any event listeners that we will setup in this test.
-
-Initially, I thought that we could do:
-
-```ts
-server.events.on('response:mocked', async ({ request }) => {
-  const body = await request.clone().json();
-  expect(body).toEqual({ profileId: profile.profileId });
-});
-```
-
-`server.events.on('response:mocked')` sets up an event listener for `response:mocked` which is an event that is emitted whenever a mocked response is sent e.g. one of our `msw` handlers is invoked.
-
-Note that before unpacking the `request` to `JSON`, I used `clone` to create a copy. This is noted in the [msw documentation](https://mswjs.io/docs/api/life-cycle-events#clone-before-reading).
-
-This approach solves asserting that the request payload is correct, but there are two issues. We still have not solved assertion 1 because the test still passes when `sendProfileCreatedTrackingEvent` does not send a network request at all. You will also notice that since we are asserting on an event listener, the assertion will occur after the test finishes running which causes issues where when the assertion fails, the error is harder to read. Also, we cannot use `expect.hasAssertions` to assert that the network request occurred because `expect.hasAssertions` runs immediately after the test has finished running and so the assertion within the event listener has not been executed yet.
-
-So, using the [wisdom from the maintainers](https://github.com/mswjs/msw/discussions/1927#discussioncomment-7862299), we can use a [DeferredPromise](https://github.com/open-draft/deferred-promise) to set the request body and assert that it is correct.
-
-```ts
-import { DeferredPromise } from '@open-draft/deferred-promise';
-
-const requestBody = new DeferredPromise();
-server.events.on('response:mocked', async ({ request }) => {
-  const body = await request.clone().json();
-  requestBody.resolve(body);
-});
-
-await profileDataSource.sendProfileCreatedTrackingEvent(profile.profileId);
-
-await expect(requestBody).resolves.toEqual({
-  profileId: profile.profileId,
-});
-```
+Installing an additional library which is an open draft to solve this particular scenario is not ideal.
 
 ### Error handling
+
+Very similarly to the `nock` example, we can simply set up our `msw` mock server to always return an error and we will see the error that `axios` will actually throw when it receives an error from the server. We also use `expect.hasAssertions` in case `createProfile` never throws an error.
 
 ```ts
 it('should throw error when server returns 500', async () => {
