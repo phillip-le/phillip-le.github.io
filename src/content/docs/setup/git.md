@@ -1,6 +1,6 @@
 ---
 title: 'Git'
-lastUpdated: 2024-07-20
+lastUpdated: 2024-07-30
 ---
 
 ## Config
@@ -11,6 +11,7 @@ Sensible `git` options to set.
 git config --global push.autosetupremote true
 git config --global core.excludeFiles ~/.gitignore
 git config --global blame.ignoreRevsFile .git-blame-ignore-revs
+git config --global pull.rebase false
 ```
 
 ```
@@ -25,6 +26,8 @@ See more cool `git` options explained [here](https://jvns.ca/blog/2024/02/16/pop
 
 ## Usage
 
+### Update branch
+
 Update my branch with the latest changes from `main`.
 
 ```sh
@@ -32,24 +35,46 @@ git fetch
 git merge origin/main
 ```
 
+### `git switch`
+
 `git switch` is the new limited version of `git checkout` see [this StackOverflow thread](https://stackoverflow.com/questions/57265785/whats-the-difference-between-git-switch-and-git-checkout-branch) for more details.
 
-Create a branch.
+#### Create a branch.
 
 ```sh
 git switch -c $BRANCH_NAME
 ```
 
-Go back to previous branch.
+#### Go back to previous branch.
 
 ```sh
 git switch -
 ```
 
+### Force push
+
 Force push only if your changes are the latest changes on the remote. This prevents you from overwriting someone else's changes. See [more details](https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/).
 
 ```sh
 git push --force-with-lease
+```
+
+### Pull
+
+```sh
+git pull --rebase
+```
+
+Abort if there are conflicts
+
+```sh
+git rebase --abort
+```
+
+Pull with `merge` to resolve conflict
+
+```sh
+git pull --no-rebase # or use `git pull` with `git config --global pull.rebase false`
 ```
 
 ## Ignore specific commits in git blame
@@ -81,3 +106,7 @@ Example of a `.git-blame-ignore-revs` file.
 It is a best practice to secure your SSH keys using a passphrase but it can be annoying to enter your passphrase every time you want to push / pull from GitHub.
 
 You can reduce the number of times you have to enter your passphrase by [adding your ssh key to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#adding-your-ssh-key-to-the-ssh-agent).
+
+## References
+
+- [Using git pull --rebase](https://www.youtube.com/watch?v=xN1-2p06Urc)
