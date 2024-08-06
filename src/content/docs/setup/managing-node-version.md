@@ -48,17 +48,17 @@ Install `fnm`.
 curl -fsSL https://fnm.vercel.app/install | bash
 ```
 
-Add the `--use-on-cd` option to the `fnm` startup script in your `config.fish` file to change `node` version when you change directories.
+Setup `fish` according to [these instructions](https://github.com/Schniz/fnm?tab=readme-ov-file#fish-shell). Add the `--use-on-cd` option to the `fnm` to change `node` version when you change directories.
 
 ```sh "--use-on-cd"
-// ~/.config/fish/config.fish
+// ~/.config/fish/conf.d/fnm.fish
 fnm env --use-on-cd | source
 ```
 
 Add the `--corepack-enabled` option to use corepack to manage package managers like `pnpm` and `yarn`.
 
 ```sh "--corepack-enabled"
-// ~/.config/fish/config.fish
+// ~/.config/fish/conf.d/fnm.fish
 fnm env --use-on-cd --corepack-enabled | source
 ```
 
