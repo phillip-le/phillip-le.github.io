@@ -1,5 +1,6 @@
 ---
 title: 'Managing node and package manager versions'
+lastUpdated: 2024-08-06
 ---
 
 ## volta
@@ -54,6 +55,15 @@ Add the `--use-on-cd` option to the `fnm` startup script in your `config.fish` f
 fnm env --use-on-cd | source
 ```
 
+Add the `--corepack-enabled` option to use corepack to manage package managers like `pnpm` and `yarn`.
+
+```sh "--corepack-enabled"
+// ~/.config/fish/config.fish
+fnm env --use-on-cd --corepack-enabled | source
+```
+
+See other `fnm` options [here](https://github.com/Schniz/fnm/blob/master/docs/configuration.md).
+
 Add fish auto complete.
 
 ```sh
@@ -62,13 +72,6 @@ fnm completions --shell fish > ~/.config/fish/completions/fnm.fish
 ```
 
 Restart your terminal.
-
-Then, you can install your preferred package managers with `brew`:
-
-```sh
-brew install pnpm
-brew install yarn
-```
 
 ### mise
 
