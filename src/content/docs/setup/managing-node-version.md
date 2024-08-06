@@ -74,7 +74,44 @@ brew install yarn
 
 [mise](https://mise.jdx.dev/) is a new up and coming "everything" version manager? See [this nice breakdown](https://ricostacruz.com/posts/mise-vs-volta) on the differences between `mise` and `volta`.
 
-`mise` also [supports using asdf plugins](https://mise.jdx.dev/plugins.html#plugins) and so, it could be easy to install [ni](https://phillip-le.github.io/setup/running-js-package-manager-commands/).
+#### Installation
+
+```sh
+brew install mise
+mise settings set experimental true
+mise use -g node@22
+mise use -g npm:@antfu/ni
+```
+
+Enable Corepack.
+
+```diff 
+// ~/.config/mise/config.toml
+[tools]
+node = "22"
+"npm:@antfu/ni" = "latest"
+
+[settings]
+experimental = true
+
++[env]
++MISE_NODE_COREPACK = 'true'
+```
+
+Verify that it is working.
+
+```sh
+mise doctor
+```
+
+#### Usage
+
+Can read the required node version from [`.nvmrc` and `.node-version`](https://mise.jdx.dev/lang/node.html#nvmrc-and-node-version-support).
+
+```sh
+mise missing: node@18.20.4
+$ mise install
+```
 
 ### nvm.fish
 
