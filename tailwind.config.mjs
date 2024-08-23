@@ -1,4 +1,5 @@
 import starlightPlugin from '@astrojs/starlight-tailwind';
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -6,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['"Jetbrains Mono"'],
+        mono: ['"JetBrains Mono Variable"', ...defaultTheme.fontFamily.mono],
       },
     },
   },
