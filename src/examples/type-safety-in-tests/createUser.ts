@@ -1,3 +1,4 @@
+import type { Api } from './api';
 import {
   trackUserCreated,
   trackUserCreatedMultipleArgs,
@@ -6,9 +7,11 @@ import {
 export const createUser = async ({
   userId,
   name,
+  api,
 }: {
   userId: string;
   name: string;
+  api: Api;
 }) => {
   await trackUserCreated({
     userId,
@@ -19,5 +22,6 @@ export const createUser = async ({
 
   return {
     userId,
+    extra: await api.getHello(),
   };
 };
