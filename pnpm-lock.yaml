@@ -59,6 +59,9 @@ importers:
       starlight-links-validator:
         specifier: ^0.9.1
         version: 0.9.1(@astrojs/starlight@0.26.1(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4)))(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4))
+      starlight-package-managers:
+        specifier: ^0.6.0
+        version: 0.6.0(@astrojs/starlight@0.26.1(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4)))(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4))
       tailwindcss:
         specifier: ^3.4.7
         version: 3.4.7
@@ -3598,6 +3601,13 @@ packages:
     peerDependencies:
       '@astrojs/starlight': '>=0.15.0'
       astro: '>=4.0.0'
+
+  starlight-package-managers@0.6.0:
+    resolution: {integrity: sha512-2tE0B4ZVEZXZ1LJjcSvVXLfJP8SB2nE+nhiFgSa3fuHUPtnbzmFxLVp7jEKD8jaMXKWPYtlNTy95gJSK9W1sbQ==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      '@astrojs/starlight': '>=0.22.0'
+      astro: '>=4.2.7'
 
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
@@ -8827,6 +8837,11 @@ snapshots:
       mdast-util-to-string: 4.0.0
       picomatch: 4.0.2
       unist-util-visit: 5.0.0
+
+  starlight-package-managers@0.6.0(@astrojs/starlight@0.26.1(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4)))(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4)):
+    dependencies:
+      '@astrojs/starlight': 0.26.1(astro@4.12.2(@types/node@20.14.11)(typescript@5.5.4))
+      astro: 4.12.2(@types/node@20.14.11)(typescript@5.5.4)
 
   statuses@2.0.1: {}
 
