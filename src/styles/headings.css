@@ -1,0 +1,27 @@
+/* 
+Style the Markdown heading links.
+https://hideoo.dev/notes/starlight-heading-links/
+https://github.com/HiDeoo/hideoo.dev/blob/05126a44c3a76af43f4980e6495b8d487cdef5e8/src/components/ui/Prose.astro#L26
+*/
+
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a {
+  color: var(--sl-color-white);
+  text-decoration: none;
+  position: relative;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a::before {
+  content: '#';
+  display: none;
+  position: absolute;
+  left: -1em;
+  top: 0;
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a:hover::before {
+  display: inline-block;
+}
