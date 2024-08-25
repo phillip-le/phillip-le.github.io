@@ -88,7 +88,7 @@ mise use -g npm:@antfu/ni
 
 Enable Corepack.
 
-```diff 
+```diff
 // ~/.config/mise/config.toml
 [tools]
 node = "22"

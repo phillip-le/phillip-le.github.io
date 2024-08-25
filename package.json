@@ -34,7 +34,10 @@
     "typescript": "^5.5.4"
   },
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.637.0",
+    "@aws-sdk/lib-dynamodb": "^3.637.0",
     "@biomejs/biome": "1.8.3",
+    "dynamodb-admin": "^4.6.1",
     "factory.ts": "^1.4.1",
     "jsdom": "^24.1.1",
     "kebab-case": "^1.0.2",
@@ -42,6 +45,8 @@
     "nock": "^13.5.4",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.14.1",
+    "radash": "^12.1.0",
+    "testcontainers": "^10.12.0",
     "vitest": "^2.0.4",
     "zod": "^3.23.8"
   }

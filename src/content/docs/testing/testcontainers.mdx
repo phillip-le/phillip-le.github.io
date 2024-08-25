@@ -1,0 +1,275 @@
+---
+title: 'Using testcontainers to manage containers for tests'
+lastUpdated: 2024-08-25
+---
+
+import { Code } from '@astrojs/starlight/components';
+
+Most applications rely upon other services such as databases and third party APIs. When we think about how we
+test the data access layer of our application which is responsible for interacting with databases or third
+party APIs it is useful to consider our [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html).
+
+For interactions with a database, our unit tests are usually concerned with regression testing and locking in
+the last good database query that we know worked. For interactions with third party APIs, our unit tests are
+usually concerned with ensuring that our application behaves the way that we expect it to, assuming that the
+third party API abides by its API contract with our system.
+
+When we look at [integration tests](https://martinfowler.com/articles/practical-test-pyramid.html#IntegrationTests)
+that are only concerned with testing the integration between our application and one other service, there are a
+few considerations on how to implement this. We could have our application interact with a deployed instance of a
+database. But this tends to be flakey and error prone because multiple tests from different CI/CD pipelines running
+in parallel could cause test data corruption issues and the availability of staging environments is not guaranteed
+given that they can be used for testing changed. On the other hand, running our integration tests against a local
+running container of the database can be more reliable.
+
+[testcontainers](https://testcontainers.com/getting-started/) offer a nice API for running containers in a number
+of languages. The main benefits of using `testcontainers` over [docker compose](https://docs.docker.com/compose/)
+are that:
+
+- You can start and stop containers within your test files in your preferred language
+- `testcontainers` handles automatically removing containers after they have been used
+- Containers are automatically assigned a new port, so you can run multiple test files in parallel and in
+  isolation because each test file can spin up their own containers
+
+## Usage
+
+Installation
+
+```sh
+pnpm i -D testcontainers
+```
+
+I will be using a service that interacts with [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
+as an example and [all source code can be found here](https://github.com/phillip-le/phillip-le.github.io/tree/main/src/examples/testcontainers). In this case, `createUser` creates a `User` record in DynamoDB by sending a `PutCommand` with
+the partition key of `email`.
+
+```ts
+// userDataAccessService.ts
+type User = {
+  email: string;
+};
+
+export type UserDataAccessService = {
+  createUser: (email: string) => Promise<User>;
+};
+
+export const createUserDataAccessService = ({
+  tableName,
+  dynamoClient,
+}: {
+  tableName: string;
+  dynamoClient: DynamoClient;
+}): UserDataAccessService => ({
+  createUser: async (email) => {
+    await dynamoClient.put({
+      TableName: tableName,
+      Item: {
+        email,
+      },
+      ConditionExpression: 'attribute_not_exists(email)',
+    });
+
+    return {
+      email,
+    };
+  },
+});
+```
+
+To use `testcontainers` we need a docker image. For DynamoDB, AWS maintains the [amazon/dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) image.
+
+The first thing we want to do in our test file is to start up the container. We need to define the image that we want to use with [GenericContainer](https://node.testcontainers.org/features/containers/#starting-a-container) and specify the port that the database exposes.
+
+```ts
+// userDataAccessService.test.ts
+import { GenericContainer } from 'testcontainers';
+
+beforeAll(async () => {
+  const dynamoDbContainer = new GenericContainer(
+    'amazon/dynamodb-local',
+  ).withExposedPorts(8000);
+});
+```
+
+Then, we can start and stop our container using the `start` and `stop` methods.
+
+```ts {3,9,13}
+import { GenericContainer, type StartedTestContainer } from 'testcontainers';
+
+let container: StartedTestContainer;
+
+beforeAll(async () => {
+  const dynamoDbContainer = new GenericContainer(
+    'amazon/dynamodb-local',
+  ).withExposedPorts(8000);
+  container = await dynamoDbContainer.start();
+});
+
+afterAll(async () => {
+  await container.stop();
+});
+```
+
+The first time you run your test, it may take an unexpectedly long time because you don't have the docker image stored locally and so `testcontainers` will be pulling the image.
+
+```sh
+docker pull amazon/dynamodb-local
+```
+
+The next step is to configure our `DynamoDB` client. Since, `testcontainers` will assign a random port to the
+running `DynamoDB` container, we will need to set the `endpoint` that the `DynamoDB` client should be talking to.
+We can determine the port that the container exposes by using hte `getMappedPort` method.  
+As a sidenote, I am using a [simple wrapper](https://phillip-le.github.io/testing/unit-testing-aws-sdk/#wrapping-the-aws-sdk-client-methods) on top
+of `DynamoDBDocumentClient` but this is not necessary.
+
+import dynamoClientCode from '/src/examples/testcontainers/dynamoClient.ts?raw';
+
+<details>
+  <summary>Full code of the DynamoDB client wrapper</summary>
+  <Code code={dynamoClientCode} lang="ts" title="dynamoClient.ts" />
+</details>
+
+```ts {7}
+let dynamoClient: DynamoClient;
+
+beforeAll(async () => {
+  // ...
+  container = await dynamoDbContainer.start();
+  dynamoClient = createDynamoClient({
+    endpoint: `http://${container.getHost()}:${container.getMappedPort(8000)}`,
+    region: 'ap-southeast-2',
+    credentials: {
+      accessKeyId: 'dummy',
+      secretAccessKey: 'dummy',
+    },
+  });
+});
+```
+
+`region` and `credentials` are required otherwise your `DynamoDBClient` will throw errors.
+
+The last part of setup is creating the tables that we need.
+
+```ts
+beforeAll(async () => {
+  // ...
+  await dynamoClient.createTable({
+    TableName: usersTableName,
+    KeySchema: [
+      {
+        AttributeName: 'email',
+        KeyType: 'HASH',
+      },
+    ],
+    AttributeDefinitions: [
+      {
+        AttributeName: 'email',
+        AttributeType: 'S',
+      },
+    ],
+    BillingMode: 'PAY_PER_REQUEST',
+  });
+});
+```
+
+From here, we should be able to run our tests. Ensure that whatever container runtime e.g. Docker Desktop is up
+and running and [configured to work with `testcontainers`](https://node.testcontainers.org/supported-container-runtimes/).
+
+```ts
+it('should create a new user record', async () => {
+  await userDataAccessService.createUser('test@test.com');
+
+  const createdUser = await userDataAccessService.getUser('test@test.com');
+
+  expect(createdUser).toEqual<User>({
+    email: 'test@test.com',
+  });
+});
+```
+
+While `testcontainers` is really good for running different test files in parallel and in isolation by spinning up different containers,
+the process of spinning of new containers is still too slow to spin up a new container for each individual test within a given test file.
+So you're usually better off clearing the data in your database between individual tests.
+
+For example, I clear all the data in my `Users` table after each test.
+
+```ts
+afterEach(async () => {
+  await clearTable<User>({
+    tableName: usersTableName,
+    dynamoDbDocumentClient: dynamoClient.documentClient,
+    keyAttributes: ['email'],
+  });
+});
+```
+
+import clearTableCode from '/src/examples/testcontainers/clearTable.ts?raw';
+
+<details>
+  <summary>Full code of `clearTable` function</summary>
+  <Code code={clearTableCode} lang="ts" title="clearTable.ts" />
+</details>
+
+## Limitations
+
+### Local development and debugging
+
+Unfortunately, `testcontainers` does not provide a nice way to run long living container instances for use cases like running your application
+locally for development and debugging why specific tests are failing with a database query client like [DataGrip](https://www.jetbrains.com/datagrip/).
+This is because the containers expose a random port on startup and [you cannot hardcode which port to expose](https://github.com/testcontainers/testcontainers-java/issues/256).
+
+The team recommends setting up a proxy for accessing the container in this [GitHub issue](https://github.com/testcontainers/testcontainers-java/issues/256#issuecomment-567486495)
+and mentions [this article](https://bsideup.github.io/posts/debugging_containers/) for how to set one up for debugging purposes.
+
+It may also be possible to extend the `GenericContainer` class and [overwrite how it creates containers](https://github.com/testcontainers/testcontainers-java/issues/256#issuecomment-628433773)
+but I have not investigated this.
+
+Ultimately, I found that maintaining a separate configuration for `docker compose` to run long lived containers for local development was
+easier.
+
+### Global database clients
+
+If you rely on globally instantiated database clients then `testcontainers` will be a nightmare to use. This is because
+`testcontainers` will automatically bind an available, random port. Usually, your database client will assume
+that the service is running on the same port or take it in as an environmental variable. By the time that you
+have started running a test file, your global database client has taken in the environment variables and so it is too
+late to overwrite the environmental variables with the port assigned by `testcontainers`. If you still want to figure out if it's
+possible, you can check out [this article](https://traveling-coderman.net/code/node-architecture/testing-queries/) which goes into detail
+how you may workaround this problem.
+
+```ts
+// dynamoDbClient.ts
+const dynamoDbClient = new DynamoDBClient();
+
+export const globalDynamoDbDocumentClient =
+  DynamoDBDocumentClient.from(dynamoDbClient);
+```
+
+```ts
+// userDataAccessService.ts
+import { globalDynamoDbDocumentClient } from './dynamoDbClient'
+
+export const createUser = (email: string) => {
+    await globalDynamoDbDocumentClient.send(new PutCommand({...}))
+}
+```
+
+### Duplication of infrastructure definitions
+
+Another problem is maintaining multiple definitions of your databases. When we spin up our
+`dynamodb-local` container, we still need to populate it with the right tables. Since we usually
+define our infrastructure using [IaaC](https://aws.amazon.com/what-is/iac/) which cannot be used to define
+the tables in our local container, we usually need to maintain a separate dynamodb table definition for
+our tests. Maintaining duplicate table definitions can be error prone because the table definitions can get out of sync, but it may be worth
+it because table schemas like DynamoDB rarely change. Usually, the issue is when adding a new index and your application is relying on that
+index to perform certain queries.
+
+If you have many applications which interact with the same database spread across different codebases, it may be worth publishing a new image
+of `dynamodb-local` containing the table definitions to ECR so that it can be easy to distribute and you do not need to maintain the process
+of populating your table definitions when starting the containers. For reference, you can take a look at [this Buildkite plugin](https://github.com/seek-oss/dynamodb-image-buildkite-plugin).
+
+## Resources
+
+- [Source Code](https://github.com/phillip-le/phillip-le.github.io/tree/main/src/examples/testcontainers)
+- [testcontainers](https://testcontainers.com/)
+- [Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html#TheTestPyramid)
