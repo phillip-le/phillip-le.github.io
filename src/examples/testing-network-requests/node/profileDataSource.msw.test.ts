@@ -134,7 +134,7 @@ describe('profileDataSource - browser - msw', () => {
           "Authorization": "Bearer some-bearer-token",
           "Content-Length": "17",
           "Content-Type": "application/json",
-          "User-Agent": "axios/1.7.2",
+          "User-Agent": "axios/1.7.3",
         }
       `);
     }

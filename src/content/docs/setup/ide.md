@@ -26,7 +26,6 @@ lastUpdated: 2024-08-06
 }
 ```
 
-
 ### Extensions
 
 [TypeScript Explorer](https://marketplace.visualstudio.com/items?itemName=mxsdev.typescript-explorer)
