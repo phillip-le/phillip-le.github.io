@@ -1,0 +1,14 @@
+---
+import {
+  // biome-ignore lint/correctness/noUnusedImports: is used
+  PackageManagers,
+  type PackageManagersProps,
+} from 'starlight-package-managers';
+
+type Props = PackageManagersProps;
+---
+
+<PackageManagers
+  pkgManagers={['npm', 'yarn', 'pnpm', 'ni']}
+  {...Astro.props}
+/>

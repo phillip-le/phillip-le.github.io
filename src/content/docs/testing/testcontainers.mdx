@@ -33,11 +33,13 @@ are that:
 
 ## Usage
 
-Installation
+### Installation
 
-```sh
-pnpm i -D testcontainers
-```
+import AllPackageManagers from '../../../components/AllPackageManagers.astro';
+
+<AllPackageManagers pkg="testcontainers" dev />
+
+### Example service
 
 I will be using a service that interacts with [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
 as an example and [all source code can be found here](https://github.com/phillip-le/phillip-le.github.io/tree/main/src/examples/testcontainers). In this case, `createUser` creates a `User` record in DynamoDB by sending a `PutCommand` with
@@ -75,6 +77,8 @@ export const createUserDataAccessService = ({
   },
 });
 ```
+
+### Setting up tests
 
 To use `testcontainers` we need a docker image. For DynamoDB, AWS maintains the [amazon/dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) image.
 
@@ -186,6 +190,8 @@ it('should create a new user record', async () => {
   });
 });
 ```
+
+### Clearing the database
 
 While `testcontainers` is really good for running different test files in parallel and in isolation by spinning up different containers,
 the process of spinning of new containers is still too slow to spin up a new container for each individual test within a given test file.
