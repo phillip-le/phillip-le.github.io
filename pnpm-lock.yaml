@@ -30,8 +30,8 @@ importers:
         specifier: ^8.4.1
         version: 8.4.1
       '@fontsource-variable/jetbrains-mono':
-        specifier: ^5.0.21
-        version: 5.0.21
+        specifier: ^5.0.22
+        version: 5.0.22
       '@open-draft/deferred-promise':
         specifier: ^2.2.0
         version: 2.2.0
@@ -747,8 +747,8 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
-  '@fontsource-variable/jetbrains-mono@5.0.21':
-    resolution: {integrity: sha512-LL/57KBbM3r0UMuN6tSeYExiBObt0QuGq49m1FyoDFIv1GAcuKU0EQ/GAKJ/yt3R8onOCD3f5X9Dln//G6uzRQ==}
+  '@fontsource-variable/jetbrains-mono@5.0.22':
+    resolution: {integrity: sha512-2LZQFb37H9iUY92qrhqjvrrkBPROdmBy5MMDgQX+FGeHdVE2WwvGt4lOpxOAy0L/bwE2Y0UCe/eb/tOs1kaTYQ==}
 
   '@img/sharp-darwin-arm64@0.33.4':
     resolution: {integrity: sha512-p0suNqXufJs9t3RqLBO6vvrgr5OhgbWp76s5gTRvdmxmuv9E1rcaqGUsl3l4mKVmXPkTkTErXediAui4x+8PSA==}
@@ -5167,7 +5167,7 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@fontsource-variable/jetbrains-mono@5.0.21': {}
+  '@fontsource-variable/jetbrains-mono@5.0.22': {}
 
   '@img/sharp-darwin-arm64@0.33.4':
     optionalDependencies:
