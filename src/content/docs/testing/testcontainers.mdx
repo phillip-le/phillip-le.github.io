@@ -194,10 +194,10 @@ it('should create a new user record', async () => {
 ### Clearing the database
 
 While `testcontainers` is really good for running different test files in parallel and in isolation by spinning up different containers,
-the process of spinning of new containers is still too slow to spin up a new container for each individual test within a given test file.
-So you're usually better off clearing the data in your database between individual tests.
+the process of spinning up new containers is still too slow to spin up a new container for each individual test within a given test file.
+So you are usually better off clearing the data in your database between individual tests.
 
-For example, I clear all the data in my `Users` table after each test.
+For example, I can clear all the data in my `Users` table after each test.
 
 ```ts
 afterEach(async () => {
