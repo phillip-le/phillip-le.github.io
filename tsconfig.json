@@ -4,5 +4,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "types": ["vitest/globals"]
-  }
+  },
+  "include": ["src/**/*"]
 }
