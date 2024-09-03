@@ -63,8 +63,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       starlight-links-validator:
-        specifier: ^0.10.1
-        version: 0.10.1(@astrojs/starlight@0.26.1(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
+        specifier: ^0.11.0
+        version: 0.11.0(@astrojs/starlight@0.26.1(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
       starlight-package-managers:
         specifier: ^0.6.0
         version: 0.6.0(@astrojs/starlight@0.26.1(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
@@ -3725,8 +3725,8 @@ packages:
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
 
-  starlight-links-validator@0.10.1:
-    resolution: {integrity: sha512-Z8VaWXaP+/0F6Jsml0zkDsPTbOyVO12qwfqseTp1aUI2B0gfF6GYt+WHvZ2EB5SCqkPmxmzyCOomqwRB0QmE5g==}
+  starlight-links-validator@0.11.0:
+    resolution: {integrity: sha512-7mKiP0xAS8ItKy8QAIkmeNYbzI4w0WD0pOYoTPa1xMNbz+qYr/QWT+a40QO/Z2XYJLzzQn47yomupUfI89wheg==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.15.0'
@@ -5556,7 +5556,7 @@ snapshots:
       unist-util-position-from-estree: 2.0.0
       unist-util-stringify-position: 4.0.0
       unist-util-visit: 5.0.0
-      vfile: 6.0.2
+      vfile: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
@@ -7287,7 +7287,7 @@ snapshots:
       devlop: 1.1.0
       hast-util-from-parse5: 8.0.1
       parse5: 7.1.2
-      vfile: 6.0.2
+      vfile: 6.0.3
       vfile-message: 4.0.2
 
   hast-util-from-parse5@8.0.1:
@@ -7297,7 +7297,7 @@ snapshots:
       devlop: 1.1.0
       hastscript: 8.0.0
       property-information: 6.4.1
-      vfile: 6.0.2
+      vfile: 6.0.3
       vfile-location: 5.0.2
       web-namespaces: 2.0.1
 
@@ -7341,7 +7341,7 @@ snapshots:
       parse5: 7.1.2
       unist-util-position: 5.0.0
       unist-util-visit: 5.0.0
-      vfile: 6.0.2
+      vfile: 6.0.3
       web-namespaces: 2.0.1
       zwitch: 2.0.4
 
@@ -8456,7 +8456,7 @@ snapshots:
       nlcst-to-string: 4.0.0
       unist-util-modify-children: 4.0.0
       unist-util-visit-children: 3.0.0
-      vfile: 6.0.2
+      vfile: 6.0.3
 
   parse5@7.1.2:
     dependencies:
@@ -9122,7 +9122,7 @@ snapshots:
 
   stackback@0.0.2: {}
 
-  starlight-links-validator@0.10.1(@astrojs/starlight@0.26.1(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)):
+  starlight-links-validator@0.11.0(@astrojs/starlight@0.26.1(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)):
     dependencies:
       '@astrojs/starlight': 0.26.1(astro@4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
       astro: 4.15.2(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)
@@ -9513,7 +9513,7 @@ snapshots:
   vfile-location@5.0.2:
     dependencies:
       '@types/unist': 3.0.2
-      vfile: 6.0.2
+      vfile: 6.0.3
 
   vfile-message@4.0.2:
     dependencies:
