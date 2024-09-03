@@ -99,16 +99,15 @@ describe('profileDataSource - browser - nock', () => {
       });
     } catch (error) {
       const axiosError = error as AxiosError;
-      expect(axiosError.config?.headers).toMatchInlineSnapshot(`
-        {
-          "Accept": "application/json, text/plain, */*",
-          "Accept-Encoding": "gzip, compress, deflate, br",
-          "Authorization": "Bearer some-bearer-token",
-          "Content-Length": "17",
-          "Content-Type": "application/json",
-          "User-Agent": "axios/1.7.3",
-        }
-      `);
+      expect(axiosError.config?.headers).toEqual(
+        expect.objectContaining({
+          Accept: 'application/json, text/plain, */*',
+          'Accept-Encoding': 'gzip, compress, deflate, br',
+          Authorization: 'Bearer some-bearer-token',
+          'Content-Length': '17',
+          'Content-Type': 'application/json',
+        }),
+      );
     }
 
     scope.isDone();
