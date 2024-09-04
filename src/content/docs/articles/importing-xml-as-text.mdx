@@ -1,0 +1,195 @@
+---
+title: 'Importing XML as text'
+lastUpdated: 2024-09-04
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { FileTree } from '@astrojs/starlight/components';
+
+Recently, I wanted to have a way to import XML files as a string in my project.
+
+So, for example, if I had a file `rss.xml`:
+
+```xml
+// rss.xml
+<rss version="2.0">
+    <channel>
+        <title>Hacker News</title>
+        <link>https://news.ycombinator.com/</link>
+        <description>Links for the intellectually curious, ranked by readers.</description>
+        <item>
+            <title>Extreme Pi Boot Optimization</title>
+            <link>https://kittenlabs.de/blog/2024/09/01/extreme-pi-boot-optimization/</link>
+            <pubDate>Sun, 1 Sep 2024 21:36:55 +0000</pubDate>
+            <comments>https://news.ycombinator.com/item?id=41420597</comments>
+            <description>
+                <![CDATA[<a href="https://news.ycombinator.com/item?id=41420597">Comments</a>]]>
+            </description>
+        </item>
+        <item>
+            <title>Programming Zero Knowledge Proofs: From Zero to Hero</title>
+            <link>https://zkintro.com/articles/programming-zkps-from-zero-to-hero</link>
+            <pubDate>Fri, 30 Aug 2024 06:08:41 +0000</pubDate>
+            <comments>https://news.ycombinator.com/item?id=41398092</comments>
+            <description>
+                <![CDATA[<a href="https://news.ycombinator.com/item?id=41398092">Comments</a>]]>
+            </description>
+        </item>
+    </channel>
+</rss>
+```
+
+I want to be able to import the full content of the document as a string in my project:
+
+<Tabs>
+<TabItem label="Code">
+```ts
+// src/index.ts
+import rss from './rss.xml';
+
+console.log(rss);
+
+````
+</TabItem>
+<TabItem label="Expected output">
+```sh
+<rss version="2.0">
+    <channel>
+        <title>Hacker News</title>
+        <link>https://news.ycombinator.com/</link>
+        <description>Links for the intellectually curious, ranked by readers.</description>
+        <item>
+            <title>Extreme Pi Boot Optimization</title>
+            <link>https://kittenlabs.de/blog/2024/09/01/extreme-pi-boot-optimization/</link>
+            <pubDate>Sun, 1 Sep 2024 21:36:55 +0000</pubDate>
+            <comments>https://news.ycombinator.com/item?id=41420597</comments>
+            <description>
+                <![CDATA[<a href="https://news.ycombinator.com/item?id=41420597">Comments</a>]]>
+                    </description>
+        </item>
+        <item>
+            <title>Programming Zero Knowledge Proofs: From Zero to Hero</title>
+            <link>https://zkintro.com/articles/programming-zkps-from-zero-to-hero</link>
+            <pubDate>Fri, 30 Aug 2024 06:08:41 +0000</pubDate>
+            <comments>https://news.ycombinator.com/item?id=41398092</comments>
+            <description>
+                <![CDATA[<a href="https://news.ycombinator.com/item?id=41398092">Comments</a>]]>
+                    </description>
+        </item>
+    </channel>
+</rss>
+````
+
+</TabItem>
+</Tabs>
+
+## TypeScript
+
+We need to let TypeScript know how to handle XML files to resolve the following error:
+
+```sh
+Cannot find module './resources/rss.xml' or its corresponding type declarations.ts(2307)
+```
+
+We can do this by adding a declaration file `xml.d.ts`:
+
+```ts
+// xml.d.ts
+declare module '*.xml' {
+  const text: string;
+  export default text;
+}
+```
+
+<FileTree>
+- src
+    - resources
+        - rss.xml
+    - **xml.d.ts**
+    - index.ts
+- tsconfig.json
+</FileTree>
+
+## Bundling with ESBuild
+
+But types don't exist at runtime. So, how do we actually import the XML file? Basically, we want to read the content of the file
+and then export it as a string.
+
+```ts
+import { readFile } from 'node:fs/promises';
+
+const rss = await readFile('./resources/rss.xml', 'utf-8');
+
+export default rss;
+```
+
+We can tell `esbuild` to do this by using the [text](https://esbuild.github.io/content-types/#text) loader:
+
+```ts {11-13}
+// runEsbuild.ts
+import { build } from "esbuild";
+import esbuildPluginPino from "esbuild-plugin-pino";
+
+build({
+  entryPoints: ["./src/startServer.ts"],
+  bundle: true,
+  platform: "node",
+  outdir: "./dist",
+  minify: true,
+  loader: {
+    ".xml": "text",
+  },
+  plugins: [esbuildPluginPino({ transports: ["pino-pretty"] })],
+}).catch((error) => console.error(error));
+```
+
+If this doesn't fit your needs, you can create your own [plugin](https://esbuild.github.io/plugins/#concepts) like [esbuild-plugin-inline-import](https://github.com/claviska/esbuild-plugin-inline-import).
+
+## Vite / Vitest
+
+[vitest](https://vitest.dev/) uses [vite](https://vitejs.dev/) under the hood for running your tests. With `vite`, you can
+import XML files directly using [?raw](https://vitejs.dev/guide/assets.html#importing-asset-as-string):
+
+```ts
+import rss from './resources/rss.xml?raw';
+```
+
+Unfortunately, since I was using `esbuild` for bundling, I couldn't modify the import path to include `?raw`. So, instead
+I created a [plugin](https://vitejs.dev/guide/api-plugin.html) to tell `vite` how to handle the XML files:
+
+```ts {11-23}
+// vitest.config.ts
+import { readFile } from 'node:fs/promises';
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    globals: true,
+    include: ['**/src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+  },
+  plugins: [
+    {
+      name: 'handle-xml',
+      async transform(_, id) {
+        const xmlRegex = /\.xml$/;
+        if (!xmlRegex.test(id)) {
+          return;
+        }
+        const xml = (await readFile(id)).toString();
+        return {
+          code: `export default \`${xml}\``,
+        };
+      },
+    },
+  ],
+});
+```
+
+Essentially, we are filtering for XML files and then reading the content of the file and exporting it as a string.
+This took inspiration from [vite-plugin-xml-loader](https://github.com/lorenzoc25/vite-plugin-xml-loader).
+
+## Resources
+
+- [Source code for this article](https://github.com/phillip-le/import-xml-example)
+- [esbuild-plugin-inline-import](https://github.com/claviska/esbuild-plugin-inline-import)
+- [vite-plugin-xml-loader](https://github.com/lorenzoc25/vite-plugin-xml-loader)
