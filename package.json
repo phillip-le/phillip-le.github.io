@@ -43,7 +43,7 @@
     "dynamodb-admin": "^4.6.1",
     "factory.ts": "^1.4.1",
     "jsdom": "^25.0.0",
-    "kebab-case": "^1.0.2",
+    "kebab-case": "^2.0.1",
     "msw": "^2.3.5",
     "nock": "^13.5.5",
     "prettier": "^3.3.3",

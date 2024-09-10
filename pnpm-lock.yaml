@@ -94,8 +94,8 @@ importers:
         specifier: ^25.0.0
         version: 25.0.0
       kebab-case:
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^2.0.1
+        version: 2.0.1
       msw:
         specifier: ^2.3.5
         version: 2.3.5(typescript@5.5.4)
@@ -2701,8 +2701,8 @@ packages:
   jsonc-parser@2.3.1:
     resolution: {integrity: sha512-H8jvkz1O50L3dMZCsLqiuB2tA7muqbSg1AtGEkN0leAqGjsUzDJir3Zwr02BhqdcITPg3ei3mZ+HjMocAknhhg==}
 
-  kebab-case@1.0.2:
-    resolution: {integrity: sha512-7n6wXq4gNgBELfDCpzKc+mRrZFs7D+wgfF5WRFLNAr4DA/qtr9Js8uOAVAfHhuLMfAcQ0pRKqbpjx+TcJVdE1Q==}
+  kebab-case@2.0.1:
+    resolution: {integrity: sha512-vwwEnpFH5hwkoK2pGnPmGUoRjpE1NRjvdWY6BLlqucF7zPBPwKNxv5bPbW3/Cq1S+nmnL4kLcArGYdKDD3w2Xw==}
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -7671,7 +7671,7 @@ snapshots:
 
   jsonc-parser@2.3.1: {}
 
-  kebab-case@1.0.2: {}
+  kebab-case@2.0.1: {}
 
   kind-of@6.0.3: {}
 
