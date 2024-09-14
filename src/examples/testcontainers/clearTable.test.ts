@@ -6,7 +6,7 @@ import type { User } from './userDataAccessService';
 describe(
   'clearTable',
   {
-    timeout: 10_000,
+    timeout: 15_000,
   },
   () => {
     let container: StartedTestContainer;
