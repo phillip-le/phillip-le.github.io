@@ -1,7 +1,9 @@
 ---
 title: 'Type safe mock data'
-lastUpdated: 2024-07-09
+lastUpdated: 2024-09-14
 ---
+
+import { Code } from '@astrojs/starlight/components';
 
 Often, I find that when I am writing tests, I do not necessarily want to provide robust mock data because it is not necessary for a test.
 
@@ -91,6 +93,29 @@ it('should return full name', () => {
 ```
 
 Using a type annotation will tell us when we are instantiating an object with invalid keys. The `Partial` utility type is used to say that `user` only needs to have some of the keys of the `User` type. We still need to use a type assertion when passing the `user` object to `getFullName` because `getFullName` expects a `User` and not a partial version of `User`. We know that `getFullName` should only require `firstName` and `lastName` so we use the type assertion to override TypeScript in this instance.
+
+See the example [here](https://github.com/phillip-le/phillip-le.github.io/blob/main/src/examples/type-safe-mock-data/invalidUser.ts).
+
+### Adding type safety with the `satisfies` operator
+
+You can also do this using the [satisfies](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator) operator.
+
+```ts
+it('should return full name', () => {
+  const user = {
+    firstName: 'John',
+    lastName: 'Smith',
+  } satisfies User as Partial<User> as User;
+
+  const result = getFullName(user);
+
+  expect(result).toEqual('John Smith');
+});
+```
+
+In this case, the `satisfies User` ensures that we are not instantiating an object with invalid keys and the type assertion `as Partial<User> as User` is required to ensure that `getFullName` treats the `user` object as a full `User`.
+
+See the example [here](https://github.com/phillip-le/phillip-le.github.io/blob/main/src/examples/type-safe-mock-data/invalidUser.ts).
 
 ### Using spread syntax to create valid objects every time
 
@@ -190,7 +215,7 @@ type DeepPartial<T> = T extends object
   : T;
 ```
 
-For example,
+`DeepPartial` is a variation on `Partial` that recursively ensures that all fields of a type are optional. For example, now `location.current` is optional:
 
 ```ts
 const user: DeepPartial<User> = {
@@ -239,7 +264,7 @@ const user: Partial<User> = {
 };
 ```
 
-Which would work, but quickly becomes overly cumbersome. I have found that [factory.ts](https://www.npmjs.com/package/factory.ts) offers a very clean way of modifying nested attributes while also easing the creation of new isolated test data for each test.
+This would work, but quickly becomes overly cumbersome. I have found that [factory.ts](https://www.npmjs.com/package/factory.ts) offers a very clean way of modifying nested attributes while also easing the creation of new isolated test data for each test.
 
 For each type we want to create mock data for, we create a `Factory` with the default values we want for our mock data similar to the base object we had before.
 
@@ -289,15 +314,12 @@ expect(userWithMelbourne).toEqual<User>({
 
 Sometimes, we want to ensure that our tests are isolated by providing completely different data. A combination of `factory.ts` and [@faker-js/faker](https://www.npmjs.com/package/factory.ts) can be excellent for generating large amounts of fake data, while also allowing us to easily override the attributes we need for a test to pass/fail.
 
-```ts
-import { makeFactory } from 'factory.ts';
-import { faker } from '@faker-js/faker';
+import userFactoryWithFaker from '/src/examples/type-safe-mock-data/factory-ts/userFactoryWithFaker.ts?raw';
 
-export const userFactoryWithFaker = makeFactory<User>(() => ({
-  firstName: faker.person.firstName(),
-  location: {
-    current: faker.location.city(),
-    homeTown: faker.location.city(),
-  },
-}));
-```
+<Code code={userFactoryWithFaker} lang="ts" />
+
+You can find examples of using `factory.ts` [here](https://github.com/phillip-le/phillip-le.github.io/tree/main/src/examples/type-safe-mock-data/factory-ts).
+
+### Resources
+
+- [Examples](https://github.com/phillip-le/phillip-le.github.io/tree/main/src/examples/type-safe-mock-data)
