@@ -10,3 +10,14 @@ const userWithUnknownKeys: Partial<User> = {
   // @ts-expect-error
   invalid: 'key',
 };
+
+const anotherUserWithUnknownKeys = {
+  firstName: 'John',
+  lastName: 'Smith',
+  // @ts-expect-error
+  invalid: 'key',
+} satisfies User as Partial<User> as User;
+
+const getFullName = (user: User) => `${user.firstName} ${user.lastName}`;
+
+getFullName(anotherUserWithUnknownKeys);

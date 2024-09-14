@@ -1,4 +1,5 @@
-import { type User, userFactory } from './nestedUserFactory';
+import { userFactory } from './nestedUserFactory';
+import type { User } from './types';
 
 describe('nestedUserFactory', () => {
   it('should return the default user when no overrides are passed in', () => {
