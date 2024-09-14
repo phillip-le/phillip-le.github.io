@@ -24,7 +24,7 @@
     "@open-draft/deferred-promise": "^2.2.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.2.22",
-    "astro": "^4.15.2",
+    "astro": "^4.15.4",
     "axios": "^1.7.7",
     "ky": "^1.7.2",
     "pino": "^9.3.2",
