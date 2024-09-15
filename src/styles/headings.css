@@ -8,20 +8,37 @@ https://github.com/HiDeoo/hideoo.dev/blob/05126a44c3a76af43f4980e6495b8d487cdef5
   color: var(--sl-color-white);
   text-decoration: none;
   position: relative;
-
+  padding-right: 1em; /* Space for the # symbol */
+  
   &:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* Underline the heading text on hover */
   }
 }
 
 .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a::before {
   content: '#';
-  display: none;
+  display: inline-block;
   position: absolute;
-  left: -1em;
+  right: 0;
   top: 0;
+  color: var(--sl-color-white); /* Default color for the # */
+  opacity: 0; /* Hide the # symbol by default */
+  margin-left: 0.5em; /* Add space between the heading text and # */
+  transition: opacity 0.3s ease, color 0.3s ease;
+  text-decoration: none; /* Ensure the # does not get underlined */
 }
 
+/* Show the # symbol when hovering over the heading */
 .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a:hover::before {
-  display: inline-block;
+  opacity: 1; /* Show the # symbol */
+}
+
+/* Change color of the # symbol when hovering directly over it */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a:hover::before {
+  color: #add8e6; /* Light blue color */
+}
+
+/* Ensure the # symbol remains white when not hovered over */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a:hover::before:hover {
+  color: #add8e6; /* Light blue color */
 }
