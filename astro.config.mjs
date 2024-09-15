@@ -30,8 +30,18 @@ export default defineConfig({
       [
         rehypeAutolinkHeadings,
         {
-          // Wrap the heading text in a link.
-          behavior: 'wrap',
+          behavior: 'wrap', // Wrap the heading with a link
+          properties: {
+            className: 'heading-link', // Optional: apply a class for the link
+          },
+          content: [
+            {
+              type: 'element',
+              tagName: 'span', // Create a span element to wrap the #
+              properties: { className: ['hash'] }, // Add a class to the span for styling
+              children: [{ type: 'text', value: '#' }], // The actual # symbol
+            },
+          ],
         },
       ],
     ],
