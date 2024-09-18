@@ -93,6 +93,9 @@ importers:
       aws-sdk-client-mock-jest:
         specifier: ^4.0.1
         version: 4.0.1(aws-sdk-client-mock@4.0.1)
+      aws-sdk-client-mock-vitest:
+        specifier: ^4.0.0
+        version: 4.0.0
       dynamodb-admin:
         specifier: ^4.6.1
         version: 4.6.1
@@ -1616,6 +1619,9 @@ packages:
     resolution: {integrity: sha512-PilgESg/u2sJvHg0+4C8/ty7w2+/pMhBYpdfPlCysnsjNfFk6a7eW7fwfIWoL93BCvcEblPdLyVL/vYTRCNFYA==}
     peerDependencies:
       aws-sdk-client-mock: 4.0.1
+
+  aws-sdk-client-mock-vitest@4.0.0:
+    resolution: {integrity: sha512-AY4ZsTH+SJsEwnbu2bCPAb4ELO2XqKQBVeQwQnmxa6RVg89zX5W+mWs2qV5+evFOwDIBQensQeS/RsyEbHjvQw==}
 
   aws-sdk-client-mock@4.0.1:
     resolution: {integrity: sha512-yD2mmgy73Xce097G5hIpr1k7j50qzvJ49/+6osGZiCyk4m6cwhb+2x7kKFY1gEMwTzaS8+m8fXv9SB29SkRYyQ==}
@@ -6485,6 +6491,11 @@ snapshots:
     dependencies:
       aws-sdk-client-mock: 4.0.1
       expect: 29.7.0
+      tslib: 2.6.3
+
+  aws-sdk-client-mock-vitest@4.0.0:
+    dependencies:
+      '@vitest/expect': 2.0.5
       tslib: 2.6.3
 
   aws-sdk-client-mock@4.0.1:
