@@ -66,8 +66,8 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0(@astrojs/starlight@0.28.2(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
       starlight-package-managers:
-        specifier: ^0.6.0
-        version: 0.6.0(@astrojs/starlight@0.28.2(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
+        specifier: ^0.7.0
+        version: 0.7.0(@astrojs/starlight@0.28.2(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
       tailwindcss:
         specifier: ^3.4.10
         version: 3.4.10
@@ -3667,8 +3667,8 @@ packages:
       '@astrojs/starlight': '>=0.15.0'
       astro: '>=4.0.0'
 
-  starlight-package-managers@0.6.0:
-    resolution: {integrity: sha512-2tE0B4ZVEZXZ1LJjcSvVXLfJP8SB2nE+nhiFgSa3fuHUPtnbzmFxLVp7jEKD8jaMXKWPYtlNTy95gJSK9W1sbQ==}
+  starlight-package-managers@0.7.0:
+    resolution: {integrity: sha512-7T0Wd4OhtyTxr7yxplO1gt1B0Ped4dxRQ0T3uOp7qM+5UmQiyQE6PMxwmN+4hVuaVQ1zpDdZR6nQrptewS+m9g==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.22.0'
@@ -8988,7 +8988,7 @@ snapshots:
       picomatch: 4.0.2
       unist-util-visit: 5.0.0
 
-  starlight-package-managers@0.6.0(@astrojs/starlight@0.28.2(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)):
+  starlight-package-managers@0.7.0(@astrojs/starlight@0.28.2(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)):
     dependencies:
       '@astrojs/starlight': 0.28.2(astro@4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4))
       astro: 4.15.4(@types/node@20.14.11)(rollup@4.21.2)(typescript@5.5.4)
