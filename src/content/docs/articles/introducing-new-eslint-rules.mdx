@@ -1,0 +1,511 @@
+---
+title: 'How to raise code quality at scale with ESLint'
+lastUpdated: 2024-09-29
+---
+
+## Introducing new ESLint rules to an existing project
+
+### Why linting is important
+
+Linters offer a way of enforcing code quality and consistency in a codebase.
+They can help you catch bugs, enforce best practices, and ensure that your code is
+readable and maintainable.
+
+Linters are also an **automated** way of enforcing practices which means that we can
+spend less time writing nitpicks in code reviews and more time thinking about the bigger picture
+like if the code is solving the right problem, whether or not it will be performant, etc.
+
+Gunnar Morling's [visualisation of the code review pyramid](https://www.morling.dev/blog/the-code-review-pyramid/)
+nicely shows what we should be focussing on in code reviews.
+
+Evan Smith points out in his article about [Kind Engineering](https://kind.engineering/) that
+people tend to be more open to receiving many nitpicks from a linter than from a dozen comments on a PR.
+
+### Choosing which rules to add
+
+How do we choose which rules to add to our ESLint configuration?
+
+Determining which rules to enable individually can be time-consuming in terms of discussing and
+justifying whether or not you need the rule. So, generally it's better to start with a config that
+defines a recommended set of rules. Not every rule in the recommended config will be applicable but
+they are a good starting point. It is much easier to disable specific rules than to enable them one by one.
+
+Here's a list of some recommended configs:
+
+- [eslint:recommended](https://www.npmjs.com/package/@eslint/js). A recommended set of rules native to ESLint.
+- [typescript-eslint/recommended-type-checked](https://typescript-eslint.io/users/configs#recommended-type-checked). A recommended set of rules for TypeScript for code correctness.
+- [typescript-eslint/stylistic-type-checked](https://typescript-eslint.io/users/configs#stylistic-type-checked). A recommended set of rules for TypeScript for simpler code patterns.
+- [jest/recommended](https://www.npmjs.com/package/eslint-plugin-jest). A recommended set of rules for [jest](https://jestjs.io/).
+- [vitest/recommended](https://www.npmjs.com/package/eslint-plugin-vitest). A recommended set of rules for [vitest](https://vitest.dev/).
+- [unicorn/recommended](https://www.npmjs.com/package/eslint-plugin-unicorn). A large collection of miscellaneous rules.
+- [eslint-plugin-testing-library](https://github.com/testing-library/eslint-plugin-testing-library). A collection of rules for [Testing Library](https://testing-library.com/).
+- [eslint-plugin-functional](https://www.npmjs.com/package/eslint-plugin-functional). A collection of rules for enforcing functional programming.
+
+If you are interested in looking at a production grade ESLint configuration, you can check out the
+[SEEK skuba ESLint Config](https://github.com/seek-oss/skuba/blob/main/packages/eslint-config-skuba/index.js)
+which extends the [SEEK base ESLint Config](https://github.com/seek-oss/eslint-config-seek/blob/master/base.js).
+
+It is important to note that even if you do not agree with the opinion of a rule, it is usually
+better to have consistency within the codebase rather than different code styles. For example, `jest` and
+`vitest` expose aliases for writing tests under the [test](https://jestjs.io/docs/api#testname-fn-timeout) and
+`it` functions. So, think about whether you really want to disable a rule from a recommended config.
+
+```ts
+// Exactly the same test
+test('should add up two numbers', () => {
+  expect(sum(1, 1)).toBe(2);
+});
+
+it('should add up two numbers', () => {
+  expect(sum(1, 1)).toBe(2);
+});
+```
+
+### How to ignore existing violations
+
+The best time to introduce linting rules is at the start of a project, so that you do not have to
+worry about fixing a large number of issues later on. If you are working on an existing project,
+introducing a new recommended set of rules can be a daunting task because your first run of the linter
+may show hundreds or thousands of errors.
+
+Do not be discouraged by this! Some of these errors can be fixed automatically using the [--fix](https://eslint.org/docs/latest/use/command-line-interface#--fix) ESLint option.
+
+import AllPackageManagers from '../../../components/AllPackageManagers.astro';
+
+<AllPackageManagers type="exec" pkg="eslint" args="--fix file.ts" />
+
+Not every issue will be fixable automatically, but this lets us focus on the issues that may
+require more thought.
+
+From here, you can choose to change the severity of the rule to a warning or disable it entirely.
+For example,
+
+```js
+{
+    "rules": {
+        "no-unused-vars": "warn",
+        "no-unsafe-argument": "off"
+    }
+}
+```
+
+This is usually done because the effort to make the codebase compliant with the rule is high.
+However, I do not recommend this because there is significant value in having a linter that is able
+to enforce rules by failing a build in CI. Setting rules to `warn` tends to lead to new violations
+being introduced. So, ideally we would be able to ignore existing violations and enforce the rule
+for new changes.
+
+So, I recommend using a tool called [eslint-interactive](https://github.com/mizdra/eslint-interactive/)
+which allow us to quickly deal with the remaining issues.
+
+<AllPackageManagers
+  pkg="eslint-interactive"
+  comment="Install eslint-interactive@10 for ESLint < v9"
+/>
+
+You can start using `eslint-interactive` by running the following command:
+
+<AllPackageManagers type="exec" pkg="eslint-interactive ./src" />
+
+`eslint-interactive` will lint the files in the `./src` directory, summarise the number of issues by rule
+and then allow you to select which rules you want to deal with first.
+
+```sh
+✔ Linting done.
+
+- 150 files (146 files passed, 4 files failed) checked.
+- 4 problems (4 errors, 0 warning) found.
+╔═══════════════════════════════════════╤═══════╤═════════╤════════════╤═════════════════╗
+║ Rule                                  │ Error │ Warning │ is fixable │ has suggestions ║
+╟───────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ @typescript-eslint/no-empty-function  │ 1     │ 0       │ 0          │ 0               ║
+╟───────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ @typescript-eslint/no-unsafe-argument │ 1     │ 0       │ 0          │ 0               ║
+╟───────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ @typescript-eslint/no-unused-vars     │ 2     │ 0       │ 0          │ 0               ║
+╚═══════════════════════════════════════╧═══════╧═════════╧════════════╧═════════════════╝
+
+? Which rules would you like to apply action? …  Select all you want with <space> key.
+✔ @typescript-eslint/no-empty-function
+✔ @typescript-eslint/no-unsafe-argument
+✔ @typescript-eslint/no-unused-vars
+```
+
+After selecting a rule, you can explore the issues that have been found and choose an action to take.
+
+```sh
+✔ Which rules would you like to apply action? · @typescript-eslint/no-empty-function
+? Which action do you want to do? …
+❯ 🔎 Display details of lint results
+  🔧 Run `eslint --fix` (disabled)
+  🔧 Disable per line
+  🔧 Disable per file
+  🔧 Convert error to warning per file
+  🔧 Apply suggestions (experimental, for experts) (disabled)
+  🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)
+  ↩️  Reselect rules
+```
+
+I have found that the most useful option is to `Disable per line` which will add a `// eslint-disable-line`
+comment to the line that is causing the issue. This allows us to ignore the issue for now and come
+back to it later. We can also include additional information in the comment such as a JIRA ticket number
+or a `TODO` which will make it easier to find the issue later.
+
+```sh
+✔ Which action do you want to do? · disablePerLine
+✔ Leave a code comment with your reason for fixing (Optional) · TODO JIRA-123
+✔ Where would you like to position the code comment? · sameLine
+✔ Fixing done.
+```
+
+`eslint-interactive` will write out the changes to the files.
+
+```ts
+// eslint-disable-next-line unicorn/no-await-expression-member -- TODO JIRA-123
+```
+
+:::caution
+If you do not see any files changed, you may be running an incompatible version of `eslint-interactive`.
+Try using `eslint-interactive@10` for ESLint versions less than 9.
+:::
+
+This approach allows us to quickly introduce new rulesets, ignore existing issues and gain the benefits of
+using those stricter rules for future changes. As we work on the codebase, we can gradually fix the existing
+issues and remove the `eslint-disable-line` comments.
+
+To ensure that our `eslint-disable-line` comments are
+actively being used to suppress issues, we can use the [--report-unused-disable-directives](https://eslint.org/docs/latest/use/command-line-interface#--report-unused-disable-directives) ESLint option.
+
+<AllPackageManagers
+  type="exec"
+  pkg="eslint"
+  args="--fix --report-unused-disable-directives file.ts"
+/>
+
+Paired with the `--fix` flag, ESLint will automatically remove any unused `eslint-disable-line` comments.
+
+## Fixing existing violations
+
+One of the downsides of gradually chipping away at existing issues is that for large existing codebases
+with thousands of issues, it can take a very long time to make the codebase compliant with the new rules.
+This is because we are limited to developers resolving issues one by one.
+
+So, how can we scale up our efforts to fix existing issues?
+
+### Using ESLint suggestions
+
+Sometimes, an ESLint rule will have some [suggestions](https://github.com/eslint/rfcs/tree/main/designs/2019-suggestions)
+on how to resolve an issue but the fix is not always correct. So, some level of human oversight is required.
+Usually, these suggestions can be applied in an IDE but how do we apply them to a large number of issues at once?
+
+You can use `eslint-interactive` to apply suggestions. When you select a rule to apply an action to, you can
+select `Apply suggestions` if there are applicable suggestions. It's a good idea to first review the suggestions
+to ensure that they are correct by first selecting `🔎 Display details of lint results`.
+
+:::caution
+When selecting `Apply suggestions`, `eslint-interactive` will attempt to open an editor but this may
+fail silently, see this [GitHub issue](https://github.com/mizdra/eslint-interactive/issues/328) to resolve this.
+:::
+
+If we want to roll out fixes using suggestions over a large number of projects, using the interactive CLI
+is inefficient. Instead, we can use the [eslint-interactive's Programmable API](https://github.com/mizdra/eslint-interactive/blob/main/docs/programmable-api.md).
+
+A good approach I have found is to explore the suggestions provided by the rules using `eslint-interactive`
+and whitelist the rules with suggestions that I trust. Then, I can use a script to roll out the fixes
+using the suggestions quickly.
+
+import applyWhitelistedSuggestions from '/src/examples/raising-code-quality-at-scale/applying-whitelisted-suggestions.ts?raw';
+import { Code } from '@astrojs/starlight/components';
+
+<details>
+  <summary>Script for applying whitelisted suggestions</summary>
+  <Code code={applyWhitelistedSuggestions} lang="ts" />
+</details>
+
+### Using codemods
+
+Codemods are programs that use code to refactor your code. One of the most popular ways to write
+codemods for JavsScript has been to use [jscodeshift](https://github.com/facebook/jscodeshift).
+However, this has required learning the underlying Abstract Syntax Tree (AST) of JavaScript, how to manipulate
+the ASTs and writing tests for your codemods is often more work than expected.
+
+I have found that using [grit](https://github.com/getgrit/gritql?tab=readme-ov-file#why-gritql) is a much
+nicer experience. `grit` allows you to mostly write your codemods using JavaScript syntax while taking
+advantage of [matching against the underlying AST](https://docs.grit.io/language/patterns#syntax-tree-ast-nodes).
+`grit` is also incredibly fast.
+
+One instance where I have found `grit` to be useful has been to refactor default exports to named exports.
+
+I can enforce this using ESLint, with [no-restricted-exports](https://eslint.org/docs/latest/rules/no-restricted-exports#restrictdefaultexports)
+
+```ts
+{
+    'no-restricted-exports': ['error', { restrictDefaultExports: { direct: true } }],
+}
+```
+
+However, it would be very time consuming to manually refactor all the default exports to named exports.
+Fortunately, `grit` has a standard library pattern to migrate [default imports to named imports](https://docs.grit.io/patterns/library/migrate_default_imports).
+So, I can run the following command to apply the codemod.
+
+```sh
+grit apply migrate_default_imports
+```
+
+I was also able to write my own simpler `grit` pattern which was curated for my codebases.
+
+```sh
+or {
+    `export default $export` => `export { $export }`,
+    `import $alias from $source` => `import { $alias } from $source` where {
+        and {
+          $alias <: not contains `{ $imports }`,
+          $alias <: not r"\* as .*",
+          $source <: r".\..*",
+          $source <: not r".*json."
+        }
+    }
+}
+```
+
+This pattern replaces named default exports with a named export.
+
+```javascript
+// Before
+const hello = () => {
+  console.log('hello');
+};
+
+export default hello;
+```
+
+```javascript
+// After
+const hello = () => {
+  console.log('hello');
+};
+
+export { hello };
+```
+
+It also replaces default imports with named imports and ensures that other imports are unaffected.
+
+```js
+// Before
+import hello from './hello';
+import 'aws-sdk-client-mock';
+import { world } from './world';
+import * as stream from './stream';
+import me from 'me';
+import schema from '../../validation/schema.json';
+```
+
+```js
+// After
+import { hello } from './hello';
+import 'aws-sdk-client-mock';
+import { world } from './world';
+import * as stream from './stream';
+import me from 'me';
+import schema from '../../validation/schema.json';
+```
+
+Another great part about `grit` is that code snippets included above can be used as [tests](https://docs.grit.io/guides/testing)
+to ensure that the codemod is working as expected. This is much simpler than setting up files, running the codemod
+and comparing the modified files with a correctly modified file.
+
+### Using ESLint information to guide LLMs
+
+I recently came across an article called [How to Fix ESLint Violations with AI Assistance](https://www.docker.com/blog/how-to-fix-eslint-violations-with-ai-assistance/)
+which sparked my interest. I have been using [GitHub Copilot](https://github.com/features/copilot) for a while now
+but one of the limitations with Copilot has been that I cannot use it programmatically.
+
+Could we use LLMs to help fix ESLint issues at scale?
+
+My first attempt was to use [node-llama-cpp](https://node-llama-cpp.withcat.ai/guide/) which lets you
+easily run LLMs locally with a nice JavaScript API. For most of my experiments I used [llama3.1 8B](https://ai.meta.com/blog/meta-llama-3-1/)
+which is a a lightweight open-source model by Meta that was the best I could run on my local machine.
+
+I would generate a list of ESLint issues using `eslint-interactive` in JSON format and then give the LLM the
+ability to read the ESLint issues using the [function calling](https://node-llama-cpp.withcat.ai/guide/function-calling)
+feature of `node-llama-cpp`.
+
+<AllPackageManagers type="exec" pkg="eslint-interactive" args="--format json" />
+
+Unfortunately, I ran into one big deal breaker: it was very difficult to get the LLM to generate fixes in
+a suitable format. It was especially important that any fixes that were created could be easily inserted
+into the original code.
+
+Next, I came across [aider](https://aider.chat/), an AI pair programming CLI tool that hooks into
+many different LLMs and is specifically designed to handle structuring and inserting the LLM outputs
+into your codebase. `aider` also has a [programmatic API](https://aider.chat/docs/scripting.html) which
+means that we can use it to fix ESLint issues at scale.
+
+import { Steps } from '@astrojs/starlight/components';
+
+<details>
+<summary>
+Some details about how I setup `aider`
+</summary>
+
+<Steps>
+1. Install [aider using pipx](https://aider.chat/docs/install/pipx.html):
+
+    ```sh
+    pipx install aider-chat
+    ```
+
+2.  I used [ollama](https://github.com/ollama/ollama/) to handle running `llama3.1 8B` locally. You can install `ollama` using Homebrew:
+
+    ```sh
+    brew install ollama
+    ```
+
+3.  You will need to run `ollama` in a separate terminal window.
+
+    ```sh
+    ollama serve
+    ```
+
+4.  And pull the model that you wish to use:
+
+    ```sh
+    ollama pull llama3.1
+    ```
+
+5.  You can [interactively test `aider` with `llama3.1 8B`](https://aider.chat/docs/llms/ollama.html) by running and
+    seeing how it reacts to the prompt: "Hello":
+
+        ```sh
+        OLLAMA_API_BASE=http://127.0.0.1:11434 aider --model ollama/llama3.1
+        ```
+
+</Steps>
+</details>
+
+My strategy for using `aider` was:
+
+Use `eslint-interactive` to generate a list of ESLint issues.
+
+```ts
+import { Core, type ESLintOptions } from 'eslint-interactive';
+
+const core = new Core({
+  patterns: ['src', 'spec'],
+  eslintOptions: {
+    type: 'flat',
+  } as ESLintOptions,
+});
+
+const results = await core.lint();
+```
+
+Filter the issues to only include issues that I trust `aider` to fix.
+
+```ts
+const filteredResults = results.filter((result) =>
+  result.messages.some(
+    (message) => message.ruleId === 'unicorn/no-await-expression-member',
+  ),
+);
+```
+
+Construct a prompt for `aider` to fix one file and one rule at a time.
+
+```ts
+function convertToRelativePath(absolutePath: string): string {
+  const currentWorkingDirectory = process.cwd();
+  return path.relative(currentWorkingDirectory, absolutePath);
+}
+
+const ruleToBasePromptGuidance: Record<string, string> = {
+  'unicorn/no-await-expression-member':
+    'This means that we need to await the promise and then destructure on a separate line.',
+};
+
+const createPromptWithRelativeFilePaths = ({
+  eslintResults,
+  ruleId,
+}: {
+  eslintResults: ESLint.LintResult[];
+  ruleId: string;
+}) => {
+  return eslintResults
+    .filter((result) =>
+      result.messages.some((message) => message.ruleId === ruleId),
+    )
+    .map((result) => {
+      const relativeFilePath = convertToRelativePath(result.filePath);
+      const basePrompt = `The file ${relativeFilePath} has the ESLint issue: ${ruleId}. ${ruleToBasePromptGuidance[ruleId]} Specific information about
+    where the issues occur are as follows:`;
+      const messageIssues = result.messages
+        .filter((message) => message.ruleId === ruleId)
+        .map((message) => {
+          return `${message.message} at line ${message.line} and column ${message.column}`;
+        });
+      return {
+        prompt: `${basePrompt}\n${messageIssues.join('\n')}`,
+        relativeFilePath,
+      };
+    });
+};
+```
+
+This results in a prompt that looks like:
+
+> The file src/file.ts has the ESLint issue: unicorn/no-await-expression-member. This means that we need to await the promise and then destructure on a separate line. Specific information about
+> where the issues occur are as follows:
+>
+> Do not access a member directly from an await expression. at line 14 and column 58
+>
+> Do not access a member directly from an await expression. at line 25 and column 58
+
+I can then use [zx](https://github.com/google/zx) to run `aider` CLI from JavaScript.
+
+```ts
+import { $ } from 'zx';
+
+const promptWithRelativeFilePaths = createPromptWithRelativeFilePaths({
+  eslintResults: results,
+  ruleId: 'unicorn/no-await-expression-member',
+});
+
+for await (const { prompt, relativeFilePath } of promptWithRelativeFilePaths) {
+  console.log('User:', prompt);
+  const response =
+    await $`OLLAMA_API_BASE=http://127.0.0.1:11434 aider ${relativeFilePath} --message "${prompt}" --model ollama/llama3.1 --no-auto-commits --yes --subtree-only`;
+  console.log('AI:', response.stdout);
+}
+```
+
+A couple of notes about the options passed into `aider`:
+
+1. By passing in the `relativeFilePath`, `aider` will only modify that file. `aider` [still has context about the rest of the codebase](https://aider.chat/docs/faq.html#how-can-i-add-all-the-files-to-the-chat)
+   so we do not need add the rest of the files explicitly.
+2. `--message` is the prompt that is given to the LLM. Unfortunately, it does not seem possible to `aider`
+   multiple prompts through the CLI.
+3. `--no-auto-commits` is important because we want to review the changes before they are committed. By default,
+   `aider` will commit the changes it has made with an appropriate commit message.
+4. `--yes` is used to automatically accept any prompt that `aider` gives which is useful for running `aider` programmatically
+   given that we cannot interactively respond to `aider`.
+5. `--subtree-only` is useful for large monorepos and ensures that `aider` is only looking at files in the
+   current working directory rather than from the `git` root. This also enables using relative file paths from
+   the current working directory rather than from the `git` root.
+
+I had some success with this approach but I found that there were some issues that `llama3.1 8B`
+was not able to adequately fix. Given that `aider` has good support for many different LLMs,
+investigating the performance of the [leading LLMs](https://aider.chat/docs/leaderboards/) would be a good next step.
+
+## Overall
+
+This article is not about providing a single silver bullet to fix all ESLint issues in a codebase. But,
+hopefully by using a combination of `eslint-interactive`, `grit`, `aider` and other tools, you can vastly
+reduce the number of issues that require human intervention and focus on delivering business value.
+
+I think it's important to note that choosing which tools you want to use to resolve a specific set of ESLint
+rules will be very important in determining the success of your efforts.
+
+It is also important to remember that it is acceptable to have existing violations that are not fixed
+immediately. It is usually not worthwhile investing in the developer effort to make a codebase fully
+compliant but it is absolutely worthwhile ensuring that future changes are less bug-prone, more consistent
+and more maintainable.
