@@ -115,8 +115,8 @@ importers:
         specifier: ^12.1.0
         version: 12.1.0
       testcontainers:
-        specifier: ^10.12.0
-        version: 10.12.0
+        specifier: ^10.13.1
+        version: 10.13.1
       vitest:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@20.14.11)(jsdom@25.0.1)
@@ -4112,8 +4112,8 @@ packages:
     resolution: {integrity: sha512-flFL3m4wuixmf6IfhFJd1YPiLiMuxEc8uHRM1buzIeZPm22Au2pDqBJQgdo7n1WfPU1ONFGv7YDwpFBmHGF6lg==}
     engines: {node: '>=12'}
 
-  testcontainers@10.12.0:
-    resolution: {integrity: sha512-KEtFj7VvfZPZuyugYJe5aYC/frFN2LRHwQVOVbdZf1vYYGDa4VQt6d0/bM3PcgTE1BOAY6cWBD/S41yu4JQ1Kg==}
+  testcontainers@10.13.1:
+    resolution: {integrity: sha512-JBbOhxmygj/ouH/47GnoVNt+c55Telh/45IjVxEbDoswsLchVmJiuKiw/eF6lE5i7LN+/99xsrSCttI3YRtirg==}
 
   text-decoder@1.1.1:
     resolution: {integrity: sha512-8zll7REEv4GDD3x4/0pW+ppIxSNs7H1J10IKFZsuOMscumCdM2a+toDGLPA3T+1+fLBql4zbt5z83GEQGGV5VA==}
@@ -9862,14 +9862,14 @@ snapshots:
       ansi-escapes: 5.0.0
       supports-hyperlinks: 2.3.0
 
-  testcontainers@10.12.0:
+  testcontainers@10.13.1:
     dependencies:
       '@balena/dockerignore': 1.0.2
       '@types/dockerode': 3.3.31
       archiver: 7.0.1
       async-lock: 1.4.1
       byline: 5.0.0
-      debug: 4.3.5
+      debug: 4.3.6
       docker-compose: 0.24.8
       dockerode: 3.3.5
       get-port: 5.1.1
