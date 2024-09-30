@@ -21,7 +21,9 @@ You can initialise the DynamoDB client in its own file and export it globally so
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
-const dynamoDbClient = new DynamoDBClient({ region: 'ap-southeast-2' });
+const dynamoDbClient = new DynamoDBClient({
+  region: 'ap-southeast-2',
+});
 
 export const dynamoDbDocumentClient =
   DynamoDBDocumentClient.from(dynamoDbClient);
@@ -92,8 +94,12 @@ export const getUsersByRole = async (
     new QueryCommand({
       TableName: config.userTableName,
       IndexName: config.userTableRoleIndexName,
-      ExpressionAttributeNames: { '#role': 'role' },
-      ExpressionAttributeValues: { ':role': role },
+      ExpressionAttributeNames: {
+        '#role': 'role',
+      },
+      ExpressionAttributeValues: {
+        ':role': role,
+      },
       KeyConditionExpression: '#role = :role',
     }),
   );
@@ -165,8 +171,12 @@ it('should query user by role from dynamodb', async () => {
   expect(mockDynamoDbDocumentClient).toHaveReceivedCommandWith(QueryCommand, {
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { '#role': 'role' },
-    ExpressionAttributeValues: { ':role': role },
+    ExpressionAttributeNames: {
+      '#role': 'role',
+    },
+    ExpressionAttributeValues: {
+      ':role': role,
+    },
     KeyConditionExpression: '#role = :role',
   });
 });
@@ -187,8 +197,12 @@ const { Items: maybeUsers } = await dynamoDbDocumentClient
   .query({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { '#role': 'role' },
-    ExpressionAttributeValues: { ':role': role },
+    ExpressionAttributeNames: {
+      '#role': 'role',
+    },
+    ExpressionAttributeValues: {
+      ':role': role,
+    },
     KeyConditionExpression: '#role = :role',
   })
   .promise();
@@ -210,7 +224,9 @@ it('should query user by role from dynamodb', async () => {
   };
 
   const mockQueryDynamoDb = jest.fn().mockImplementation(() => ({
-    promise: jest.fn().mockResolvedValue({ Items: [mockReaderUser] }),
+    promise: jest.fn().mockResolvedValue({
+      Items: [mockReaderUser],
+    }),
   }));
   jest
     .spyOn(dynamoDbDocumentClient, 'query')
@@ -223,8 +239,12 @@ it('should query user by role from dynamodb', async () => {
   >({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { '#role': 'role' },
-    ExpressionAttributeValues: { ':role': mockReaderUser.role },
+    ExpressionAttributeNames: {
+      '#role': 'role',
+    },
+    ExpressionAttributeValues: {
+      ':role': mockReaderUser.role,
+    },
     KeyConditionExpression: '#role = :role',
   });
 });
@@ -262,8 +282,12 @@ export const getUsersByRoleDynamoDb = async (
   const { Items: users } = await queryDynamoDb({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { '#role': 'role' },
-    ExpressionAttributeValues: { ':role': role },
+    ExpressionAttributeNames: {
+      '#role': 'role',
+    },
+    ExpressionAttributeValues: {
+      ':role': role,
+    },
     KeyConditionExpression: '#role = :role',
   });
 
@@ -312,8 +336,12 @@ it('should query user by role from dynamodb', async () => {
   expect(queryDynamoDb).toHaveBeenCalledWith<[QueryCommandInput]>({
     TableName: config.userTableName,
     IndexName: config.userTableRoleIndexName,
-    ExpressionAttributeNames: { '#role': 'role' },
-    ExpressionAttributeValues: { ':role': role },
+    ExpressionAttributeNames: {
+      '#role': 'role',
+    },
+    ExpressionAttributeValues: {
+      ':role': role,
+    },
     KeyConditionExpression: '#role = :role',
   });
 });

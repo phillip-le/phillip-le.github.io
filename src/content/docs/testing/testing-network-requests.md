@@ -139,7 +139,9 @@ To test our `getProfile` function we could mock out what `request` returns:
 
 ```ts {2}
 it('should return profile when calling getProfile', async () => {
-  vi.mocked(request).mockResolvedValueOnce({ data: profile });
+  vi.mocked(request).mockResolvedValueOnce({
+    data: profile,
+  });
 
   const result = await profileDataSource.getProfile({
     bearerToken,
@@ -169,7 +171,9 @@ Similarly, to test our `createProfile` function we could mock out what `request`
 
 ```ts
 it('should create a profile when calling createProfile', async () => {
-  vi.mocked(request).mockResolvedValueOnce({ data: profile });
+  vi.mocked(request).mockResolvedValueOnce({
+    data: profile,
+  });
 
   const result = await profileDataSource.createProfile({
     bearerToken,
@@ -253,7 +257,9 @@ You may think that the following test case covers the scenario where the server 
 
 ```ts
 it('should return null when server returns 404 on getProfile', async () => {
-  vi.mocked(request).mockResolvedValueOnce({ status: 404 });
+  vi.mocked(request).mockResolvedValueOnce({
+    status: 404,
+  });
 
   const result = await profileDataSource.getProfile({
     bearerToken,
@@ -286,7 +292,10 @@ Another very common mistake when dealing with HTTP clients is that we log the er
 
 ```ts
 try {
-  await getProfile({ profileId, bearerToken });
+  await getProfile({
+    profileId,
+    bearerToken,
+  });
 } catch (error) {
   console.error(error);
   throw error;
@@ -664,7 +673,9 @@ server.use(
     }
 
     const body = await request.json();
-    expect(body).toEqual({ name: profile.name });
+    expect(body).toEqual({
+      name: profile.name,
+    });
 
     return HttpResponse.json(profile);
   }),
@@ -686,7 +697,13 @@ it('should create a profile when calling createProfile', async () => {
       }
 
       const body = await request.json();
-      if (!z.object({ name: z.string() }).safeParse(body).success) {
+      if (
+        !z
+          .object({
+            name: z.string(),
+          })
+          .safeParse(body).success
+      ) {
         return new HttpResponse(null, {
           status: 400,
         });
@@ -724,7 +741,9 @@ Initially, I thought that we could do:
 ```ts
 server.events.on('response:mocked', async ({ request }) => {
   const body = await request.clone().json();
-  expect(body).toEqual({ profileId: profile.profileId });
+  expect(body).toEqual({
+    profileId: profile.profileId,
+  });
 });
 ```
 

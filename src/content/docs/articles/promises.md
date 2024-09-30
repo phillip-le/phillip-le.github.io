@@ -156,7 +156,12 @@ const createUsers = async ({
         }),
       );
     } catch (error) {
-      logger.error({ error }, 'Failed to create users');
+      logger.error(
+        {
+          error,
+        },
+        'Failed to create users',
+      );
       throw error;
     }
   });
@@ -190,7 +195,12 @@ const createUsers = async ({
         }),
       );
     } catch (error) {
-      logger.error({ error }, 'Failed to create users');
+      logger.error(
+        {
+          error,
+        },
+        'Failed to create users',
+      );
       throw error;
     }
   });

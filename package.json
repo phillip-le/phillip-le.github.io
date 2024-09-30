@@ -6,8 +6,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "format": "biome check --write . && prettier --write ./src",
-    "lint": "tsc --noEmit && biome check .",
+    "format": "biome check --write . && prettier --write ./src --config .prettierrc.js",
+    "lint": "tsc --noEmit && biome check . && prettier --check ./src --config .prettierrc.js",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest"

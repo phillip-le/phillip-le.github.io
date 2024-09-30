@@ -21,7 +21,10 @@ export const applyForJob = async ({
       throw new JobNotFoundError();
     }
 
-    const jobApplication = await createJobApplication({ userId, jobId });
+    const jobApplication = await createJobApplication({
+      userId,
+      jobId,
+    });
 
     await sendJobApplicationSuccessNotification(jobApplication);
 
