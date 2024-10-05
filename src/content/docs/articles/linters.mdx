@@ -1,0 +1,111 @@
+---
+title: 'Awesome linters'
+lastUpdated: 2024-10-05
+---
+
+import { Code } from '@astrojs/starlight/components';
+
+## knip
+
+[knip](https://knip.dev/overview/getting-started) helps you detect unused code so that you can keep your codebases nice and clean.
+
+## ls-lint
+
+[ls-lint](https://ls-lint.org/) is a fast linter for file and folder names with a simple config.
+
+## Dependency cruiser
+
+[Dependency cruiser](https://github.com/sverweij/dependency-cruiser) is useful for ensuring that files are only importing from modules that they should be importing from. See [this note](https://github.com/Sairyss/domain-driven-hexagon?tab=readme-ov-file#enforcing-architecture) about how it can be used to enforce code architecture.
+
+## biome
+
+[Biome](https://biomejs.dev/guides/getting-started/) is a fast and simple formatter and linter.
+
+### Config
+
+import biomeConfig from '../../../../biome.json?raw';
+
+<Code code={biomeConfig} lang="json" />
+
+## ESLint
+
+[ESLint](https://eslint.org/) is the de-facto linter for JavaScript and comes with extensive community support.
+
+### Recommended plugins
+
+- [@eslint/js](https://www.npmjs.com/package/@eslint/js). The ESLint JavaScript Plugin maintained by the ESLint team.
+- [typescript-eslint](https://typescript-eslint.io/). Adds TypeScript support to ESLint.
+- [eslint-plugin-jest](https://www.npmjs.com/package/eslint-plugin-jest). A plugin for [jest](https://jestjs.io/).
+- [@vitest/eslint-plugin](https://www.npmjs.com/package/@vitest/eslint-plugin). A plugin for [vitest](https://vitest.dev/).
+- [eslint-plugin-unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn). A large collection of miscellaneous rules.
+- [eslint-plugin-testing-library](https://github.com/testing-library/eslint-plugin-testing-library). A plugin for [Testing Library](https://testing-library.com/).
+- [eslint-plugin-functional](https://www.npmjs.com/package/eslint-plugin-functional). A collection of rules for enforcing functional programming.
+- [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x). A plugin for linting imports and exports.
+- [eslint-plugin-promise](https://www.npmjs.com/package/eslint-plugin-promise). A plugin for linting promises.
+- [eslint-plugin-depend](https://www.npmjs.com/package/eslint-plugin-depend). A plugin for suggesting alternatives to dependencies.
+- [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier). A plugin for integrating [Prettier](https://prettier.io/) with ESLint.
+
+### Recommended rules
+
+#### Banning enums
+
+As mentioned in the [typescript-eslint documentation](https://typescript-eslint.io/troubleshooting/faqs/general/#how-can-i-ban-specific-language-feature), you can use the [no-restricted-syntax](https://eslint.org/docs/latest/rules/no-restricted-syntax) rule to ban specific language features.
+
+Some common language features that I ban are:
+
+- [`const` enums](https://www.typescriptlang.org/docs/handbook/enums.html#const-enums)
+- [numeric enums](https://www.typescriptlang.org/docs/handbook/enums.html#numeric-enums) due to [how they are implemented](https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings).
+
+This can be achieved by adding the following to your ESLint config:
+
+```js
+export default [
+  {
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'TSEnumDeclaration[const=true]',
+          message:
+            'const enum is not allowed due to several pitfalls https://www.typescriptlang.org/docs/handbook/enums.html#const-enum-pitfalls. Use a regular enum or object literal instead.',
+        },
+        {
+          selector: 'TSEnumMember > Literal[raw=/^[0-9]+$/]',
+          message:
+            'Enum with numeric values is not allowed due to unintuitive behavior https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings. Use string values or object literal instead.',
+        },
+      ],
+    },
+  },
+];
+```
+
+If you are interested in exploring how these rules work, you can play around with the [typescript-eslint playground](https://typescript-eslint.io/play/).
+
+#### Prefer Type Aliases over Interfaces
+
+As mentioned in the [typescript handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces), [Type Aliases](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases) are mostly interchangeable with [Interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces). I prefer using Type Aliases because I often find myself defining aliases for [Union Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types).
+
+```ts
+type MyType = string | number;
+```
+
+So, it is more convenient to use Type Aliases for everything rather than using Interfaces except when I need to use a Type Alias.
+
+You can use the [consistent-type-definitions](https://typescript-eslint.io/rules/consistent-type-definitions/) rule to enforce the use of `type` over `interface`.
+
+```js
+export default [
+  {
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    },
+  },
+];
+```
+
+### Config
+
+import eslintConfig from '../../../../src/examples/linters/eslint.config.mjs?raw';
+
+<Code code={eslintConfig} lang="js" />
