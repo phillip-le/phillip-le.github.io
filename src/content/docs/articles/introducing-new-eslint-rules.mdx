@@ -1,6 +1,6 @@
 ---
 title: 'How to raise code quality at scale with ESLint'
-lastUpdated: 2024-09-29
+lastUpdated: 2024-10-05
 ---
 
 ## Introducing new ESLint rules to an existing project
@@ -30,16 +30,7 @@ justifying whether or not you need the rule. So, generally it's better to start 
 defines a recommended set of rules. Not every rule in the recommended config will be applicable but
 they are a good starting point. It is much easier to disable specific rules than to enable them one by one.
 
-Here's a list of some recommended configs:
-
-- [eslint:recommended](https://www.npmjs.com/package/@eslint/js). A recommended set of rules native to ESLint.
-- [typescript-eslint/recommended-type-checked](https://typescript-eslint.io/users/configs#recommended-type-checked). A recommended set of rules for TypeScript for code correctness.
-- [typescript-eslint/stylistic-type-checked](https://typescript-eslint.io/users/configs#stylistic-type-checked). A recommended set of rules for TypeScript for simpler code patterns.
-- [jest/recommended](https://www.npmjs.com/package/eslint-plugin-jest). A recommended set of rules for [jest](https://jestjs.io/).
-- [vitest/recommended](https://www.npmjs.com/package/eslint-plugin-vitest). A recommended set of rules for [vitest](https://vitest.dev/).
-- [unicorn/recommended](https://www.npmjs.com/package/eslint-plugin-unicorn). A large collection of miscellaneous rules.
-- [eslint-plugin-testing-library](https://github.com/testing-library/eslint-plugin-testing-library). A collection of rules for [Testing Library](https://testing-library.com/).
-- [eslint-plugin-functional](https://www.npmjs.com/package/eslint-plugin-functional). A collection of rules for enforcing functional programming.
+You can see a list of recommended configs in my article on [awesome linters](https://phillip-le.github.io/articles/linters/).
 
 If you are interested in looking at a production grade ESLint configuration, you can check out the
 [SEEK skuba ESLint Config](https://github.com/seek-oss/skuba/blob/main/packages/eslint-config-skuba/index.js)
