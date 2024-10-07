@@ -1,6 +1,6 @@
 ---
 title: 'Git'
-lastUpdated: 2024-07-30
+lastUpdated: 2024-10-07
 ---
 
 ## Config
@@ -12,6 +12,7 @@ git config --global push.autosetupremote true
 git config --global core.excludeFiles ~/.gitignore
 git config --global blame.ignoreRevsFile .git-blame-ignore-revs
 git config --global pull.rebase false
+git config --global push.useForceIfIncludes true
 ```
 
 ```
