@@ -20,7 +20,7 @@
     "@astrojs/starlight-tailwind": "^2.0.3",
     "@astrojs/tailwind": "^5.1.0",
     "@faker-js/faker": "^8.4.1",
-    "@fontsource-variable/jetbrains-mono": "^5.1.0",
+    "@fontsource-variable/jetbrains-mono": "^5.1.1",
     "@open-draft/deferred-promise": "^2.2.0",
     "@types/react": "^18.3.8",
     "@types/react-dom": "^18.2.22",
