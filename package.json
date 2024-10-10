@@ -1,13 +1,13 @@
 {
   "name": "developer-setup",
-  "type": "commonjs",
+  "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
-    "format": "biome check --write . && prettier --write ./src --config .prettierrc.js",
-    "lint": "tsc --noEmit && biome check . && prettier --check ./src --config .prettierrc.js",
+    "build": "astro build",
+    "format": "biome check --write . && prettier --write ./src --config .prettierrc.mjs",
+    "lint": "astro check && biome check . && prettier --check ./src --config .prettierrc.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest"
@@ -44,7 +44,6 @@
     "eslint-interactive": "^11.1.0",
     "factory.ts": "^1.4.1",
     "jsdom": "^25.0.1",
-    "kebab-case": "^1.0.2",
     "msw": "^2.4.9",
     "nock": "^13.5.5",
     "prettier": "^3.3.3",
