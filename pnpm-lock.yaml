@@ -121,8 +121,8 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
       zx:
-        specifier: ^8.1.8
-        version: 8.1.8
+        specifier: ^8.1.9
+        version: 8.1.9
 
 packages:
 
@@ -4667,8 +4667,8 @@ packages:
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  zx@8.1.8:
-    resolution: {integrity: sha512-m8s48skYQ8EcRz9KXfc7rZCjqlZevOGiNxq5tNhDiGnhOvXKRGxVr+ajUma9B6zxMdHGSSbnjV/R/r7Ue2xd+A==}
+  zx@8.1.9:
+    resolution: {integrity: sha512-UHuLHphHmsBYKkAchkSrEN4nzDyagafqC9HUxtc1J7eopaScW6H9dsLJ1lmkAntnLtDTGoM8fa+jrJrXiIfKFA==}
     engines: {node: '>= 12.17.0'}
     hasBin: true
 
@@ -6322,13 +6322,13 @@ snapshots:
 
   '@types/docker-modem@3.0.6':
     dependencies:
-      '@types/node': 20.14.11
+      '@types/node': 22.7.5
       '@types/ssh2': 1.15.1
 
   '@types/dockerode@3.3.31':
     dependencies:
       '@types/docker-modem': 3.0.6
-      '@types/node': 20.14.11
+      '@types/node': 22.7.5
       '@types/ssh2': 1.15.1
 
   '@types/estree-jsx@1.0.5':
@@ -6340,7 +6340,7 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 20.14.11
+      '@types/node': 22.7.5
     optional: true
 
   '@types/hast@3.0.4':
@@ -6351,7 +6351,7 @@ snapshots:
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 20.14.11
+      '@types/node': 22.7.5
     optional: true
 
   '@types/mdast@4.0.4':
@@ -6405,7 +6405,7 @@ snapshots:
 
   '@types/ssh2@0.5.52':
     dependencies:
-      '@types/node': 20.14.11
+      '@types/node': 22.7.5
       '@types/ssh2-streams': 0.1.12
 
   '@types/ssh2@1.15.1':
@@ -10443,7 +10443,7 @@ snapshots:
 
   zwitch@2.0.4: {}
 
-  zx@8.1.8:
+  zx@8.1.9:
     optionalDependencies:
       '@types/fs-extra': 11.0.4
-      '@types/node': 20.14.11
+      '@types/node': 22.7.5
