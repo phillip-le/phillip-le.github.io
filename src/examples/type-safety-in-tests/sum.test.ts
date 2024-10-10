@@ -17,7 +17,7 @@ describe('sum', () => {
 
 describe('sumAsync', () => {
   it('should add up two numbers', async () => {
-    const result = await sum(1, 1);
+    const result = sum(1, 1);
 
     expect(result).toEqual<Awaited<ReturnType<typeof sumAsync>>>(2);
   });

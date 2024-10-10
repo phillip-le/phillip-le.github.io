@@ -1,9 +1,13 @@
 ---
 title: Validating floating point number input in JavaScript
 lastUpdated: 2024-10-03
+sidebar:
+  hidden: true
 ---
 
 Floating point numbers are notoriously difficult to work with because they are not precise.
+So, one of the most common ways to preserve the precision of
+a floating point number is to store it as a `string`.
 
 ```sh title="node"
 
@@ -11,7 +15,8 @@ Floating point numbers are notoriously difficult to work with because they are n
 0.020000000000000004
 ```
 
-If you really need to manipulate floating point numbers, you are probably better off using a dedicated library like [big.js](https://www.npmjs.com/package/big.js).
+If you really need to manipulate floating point numbers, you are probably better off using a dedicated library like [big.js](https://www.npmjs.com/package/big.js) which exposes dedicated
+classes for encapsulating floating decimal point numbers.
 
 But, if your system is just passing through floating point numbers, you may be able to get away with accepting the numbers as a `string` and preserving that value through your system.
 
@@ -20,6 +25,9 @@ However, how do you know if the `string` you were given is a valid floating poin
 This article explores how to validate floating point number input in JavaScript, the various pitfalls you may encounter, and how to avoid them.
 
 For the purposes of this article, a valid floating point number is a number that looks like `123.456` or `-123.456`.
+More specifically, I did _not_ want to accept anything that
+JavaScript accepts as a `number` but a more narrow subset that
+would be accepted by many different systems / technologies.
 
 How hard could it be?
 
@@ -126,4 +134,8 @@ import { z } from 'zod';
 const schema = z.number();
 ```
 
-To validate a string as a number, we need to use
+To validate a string as a number, we need to use [.pipe](https://zod.dev/?id=pipe) and [coerce](https://zod.dev/?id=coercion-for-primitives).
+
+```ts
+const floatingPointNumberSchema = z.string().pipe(z.coerce.number());
+```
