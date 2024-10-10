@@ -40,7 +40,6 @@
     "@aws-sdk/client-dynamodb": "^3.668.0",
     "@aws-sdk/lib-dynamodb": "^3.637.0",
     "@biomejs/biome": "1.8.3",
-    "dynamodb-admin": "^4.6.1",
     "eslint-interactive": "^11.1.0",
     "factory.ts": "^1.4.1",
     "jsdom": "^25.0.1",
