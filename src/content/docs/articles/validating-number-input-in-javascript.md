@@ -1,9 +1,11 @@
 ---
 title: Validating floating point number input in JavaScript
-lastUpdated: 2024-10-03
+lastUpdated: 2024-10-15
 ---
 
 Floating point numbers are notoriously difficult to work with because they are not precise.
+So, one of the most common ways to preserve the precision of
+a floating point number is to store it as a `string`.
 
 ```sh title="node"
 
@@ -11,7 +13,8 @@ Floating point numbers are notoriously difficult to work with because they are n
 0.020000000000000004
 ```
 
-If you really need to manipulate floating point numbers, you are probably better off using a dedicated library like [big.js](https://www.npmjs.com/package/big.js).
+If you really need to manipulate floating point numbers, you are probably better off using a dedicated library like [big.js](https://www.npmjs.com/package/big.js) which exposes dedicated
+classes for encapsulating floating decimal point numbers.
 
 But, if your system is just passing through floating point numbers, you may be able to get away with accepting the numbers as a `string` and preserving that value through your system.
 
@@ -20,6 +23,9 @@ However, how do you know if the `string` you were given is a valid floating poin
 This article explores how to validate floating point number input in JavaScript, the various pitfalls you may encounter, and how to avoid them.
 
 For the purposes of this article, a valid floating point number is a number that looks like `123.456` or `-123.456`.
+More specifically, I did _not_ want to accept anything that
+JavaScript accepts as a `number` but a more narrow subset that
+would be accepted by many different systems / technologies.
 
 How hard could it be?
 
@@ -126,4 +132,42 @@ import { z } from 'zod';
 const schema = z.number();
 ```
 
-To validate a string as a number, we need to use
+To validate a string as a number, we need to use [.pipe](https://zod.dev/?id=pipe) and [coerce](https://zod.dev/?id=coercion-for-primitives).
+
+```ts
+export const isValidFloatingPointNumberZod = (input: string) => {
+  return z.string().pipe(z.coerce.number()).safeParse(input).success;
+};
+```
+
+This is a bit better but it still accepts some invalid inputs.
+
+```sh
+> isValidFloatingPointNumberZod("20e5")
+true
+> isValidFloatingPointNumberZod("Infinity")
+true
+```
+
+This makes sense because `zod` is concerned with validating input that
+can be coerced into a `number` type.
+
+## Using regex
+
+Perhaps one of the most robust ways to validating that a string looks like a floating point
+number is to use `regex`.
+
+I recommend using [regex101](https://regex101.com/) to explore the regex below but a high level
+summary is that we are trying to match a string that:
+
+- Starts with an optional `-` sign
+- Followed by one digit that can be `0-9` or many digits which start with `1-9`
+- Followed by an optional `.`
+- Followed by one or more digits
+- Ends with a digit
+
+```ts
+export const isValidFloatingPointNumberRegex = (input: string) => {
+  return /^-?(?:0|[1-9]\d*)(?:\.\d+)?$/.test(input);
+};
+```
