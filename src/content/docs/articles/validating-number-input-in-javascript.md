@@ -171,3 +171,7 @@ export const isValidFloatingPointNumberRegex = (input: string) => {
   return /^-?(?:0|[1-9]\d*)(?:\.\d+)?$/.test(input);
 };
 ```
+
+## Resources
+
+- [Test suites](https://github.com/phillip-le/phillip-le.github.io/tree/main/src/examples/validating-number-input-in-javascript)
