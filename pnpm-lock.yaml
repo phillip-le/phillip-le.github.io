@@ -63,8 +63,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       starlight-links-validator:
-        specifier: ^0.11.0
-        version: 0.11.0(@astrojs/starlight@0.28.3(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)))(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3))
+        specifier: ^0.12.3
+        version: 0.12.3(@astrojs/starlight@0.28.3(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)))(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3))
       starlight-package-managers:
         specifier: ^0.7.0
         version: 0.7.0(@astrojs/starlight@0.28.3(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)))(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3))
@@ -1323,6 +1323,9 @@ packages:
 
   '@types/node@22.7.5':
     resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
+
+  '@types/picomatch@2.3.3':
+    resolution: {integrity: sha512-Yll76ZHikRFCyz/pffKGjrCwe/le2CDwOP5F210KQo27kpRE46U2rDnzikNlVn6/ezH3Mhn46bJMTfeVTtcYMg==}
 
   '@types/prop-types@15.7.11':
     resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
@@ -3544,8 +3547,8 @@ packages:
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
 
-  starlight-links-validator@0.11.0:
-    resolution: {integrity: sha512-7mKiP0xAS8ItKy8QAIkmeNYbzI4w0WD0pOYoTPa1xMNbz+qYr/QWT+a40QO/Z2XYJLzzQn47yomupUfI89wheg==}
+  starlight-links-validator@0.12.3:
+    resolution: {integrity: sha512-xOyriH9BQ7kQbHlVARp3quIKqUsBjx4sgv6/F2eKP1a6pWRLvFsX+89rRaCkRKAEnmFiI8VygjH1D/RGUXoxbQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.15.0'
@@ -5890,6 +5893,8 @@ snapshots:
   '@types/node@22.7.5':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/picomatch@2.3.3': {}
 
   '@types/prop-types@15.7.11': {}
 
@@ -8420,7 +8425,7 @@ snapshots:
   rehype-parse@9.0.0:
     dependencies:
       '@types/hast': 3.0.4
-      hast-util-from-html: 2.0.1
+      hast-util-from-html: 2.0.3
       unified: 11.0.5
 
   rehype-raw@7.0.0:
@@ -8750,9 +8755,10 @@ snapshots:
 
   stackback@0.0.2: {}
 
-  starlight-links-validator@0.11.0(@astrojs/starlight@0.28.3(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)))(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)):
+  starlight-links-validator@0.12.3(@astrojs/starlight@0.28.3(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)))(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)):
     dependencies:
       '@astrojs/starlight': 0.28.3(astro@4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3))
+      '@types/picomatch': 2.3.3
       astro: 4.16.3(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3)
       github-slugger: 2.0.0
       hast-util-from-html: 2.0.1
