@@ -15,9 +15,7 @@ https://github.com/HiDeoo/hideoo.dev/blob/05126a44c3a76af43f4980e6495b8d487cdef5
 .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) > a .hash {
   opacity: 0; /* Hide the # symbol by default */
   margin-left: 0.5em; /* Add space between the heading text and # */
-  transition:
-    opacity 0.3s ease,
-    color 0.3s ease;
+  transition: opacity 0.3s ease, color 0.3s ease;
   color: var(--sl-color-white); /* Default color for the # */
   display: inline; /* Ensure # wraps with the text */
 }
