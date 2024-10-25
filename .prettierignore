@@ -1,2 +1,3 @@
 src/examples/**/*
 src/content/docs/articles/importing-xml-as-text.mdx
+**/*.css
