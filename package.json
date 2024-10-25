@@ -10,7 +10,9 @@
     "lint": "astro check && biome check . && prettier --check ./src --config .prettierrc.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest"
+    "test": "vitest",
+    "update-deps:check": "npm-check-updates",
+    "update-deps:update": "npm-check-updates -u && pnpm install"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
