@@ -27,8 +27,8 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2(astro@4.16.7(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3))(tailwindcss@3.4.14)
       '@faker-js/faker':
-        specifier: ^9.0.3
-        version: 9.0.3
+        specifier: ^9.1.0
+        version: 9.1.0
       '@fontsource-variable/jetbrains-mono':
         specifier: ^5.1.1
         version: 5.1.1
@@ -806,8 +806,8 @@ packages:
   '@expressive-code/plugin-text-markers@0.35.6':
     resolution: {integrity: sha512-/k9eWVZSCs+uEKHR++22Uu6eIbHWEciVHbIuD8frT8DlqTtHYaaiwHPncO6KFWnGDz5i/gL7oyl6XmOi/E6GVg==}
 
-  '@faker-js/faker@9.0.3':
-    resolution: {integrity: sha512-lWrrK4QNlFSU+13PL9jMbMKLJYXDFu3tQfayBsMXX7KL/GiQeqfB1CzHkqD5UHBUtPAuPo6XwGbMFNdVMZObRA==}
+  '@faker-js/faker@9.1.0':
+    resolution: {integrity: sha512-GJvX9iM9PBtKScJVlXQ0tWpihK3i0pha/XAhzQa1hPK/ILLa1Wq3I63Ij7lRtqTwmdTxRCyrUhLC5Sly9SLbug==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@fastify/busboy@2.1.1':
@@ -5408,7 +5408,7 @@ snapshots:
     dependencies:
       '@expressive-code/core': 0.35.6
 
-  '@faker-js/faker@9.0.3': {}
+  '@faker-js/faker@9.1.0': {}
 
   '@fastify/busboy@2.1.1': {}
 
@@ -6228,6 +6228,10 @@ snapshots:
     dependencies:
       acorn: 8.12.1
 
+  acorn-jsx@5.3.2(acorn@8.13.0):
+    dependencies:
+      acorn: 8.13.0
+
   acorn@8.12.1: {}
 
   acorn@8.13.0: {}
@@ -6923,8 +6927,8 @@ snapshots:
 
   espree@10.2.0:
     dependencies:
-      acorn: 8.12.1
-      acorn-jsx: 5.3.2(acorn@8.12.1)
+      acorn: 8.13.0
+      acorn-jsx: 5.3.2(acorn@8.13.0)
       eslint-visitor-keys: 4.1.0
 
   esprima@4.0.1: {}
