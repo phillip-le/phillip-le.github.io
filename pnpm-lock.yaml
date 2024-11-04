@@ -79,8 +79,8 @@ importers:
         specifier: ^3.682.0
         version: 3.682.0
       '@aws-sdk/lib-dynamodb':
-        specifier: ^3.682.0
-        version: 3.682.0(@aws-sdk/client-dynamodb@3.682.0)
+        specifier: ^3.685.0
+        version: 3.685.0(@aws-sdk/client-dynamodb@3.682.0)
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
@@ -285,8 +285,8 @@ packages:
     resolution: {integrity: sha512-6+DMgt91IkyO1gXqANH0lOZr/Em7CpzRQOD7Mku1icXDVfpVFnW4DZyUP+6EYeZlHgi2KwVYh5Hp7++oKcYWiw==}
     engines: {node: '>=16.0.0'}
 
-  '@aws-sdk/lib-dynamodb@3.682.0':
-    resolution: {integrity: sha512-ZJpud08kgkjRj2opXcJIeGkq/KgiS6dnuyJNe9Rm6BWAadhJ7zR7pinRCcCJVj4vzo6VMFD9OfR872Dg2uS+aA==}
+  '@aws-sdk/lib-dynamodb@3.685.0':
+    resolution: {integrity: sha512-M2h1Mvds6lp4VTJqnX4xuNk0wvjaHzMG5qQkIbwt5tD9CnUUvHh66fvEJtIi2MmgKx3xQ1c7QzAiCaAgm41f8Q==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.682.0
@@ -325,8 +325,8 @@ packages:
     resolution: {integrity: sha512-NwVq8YvInxQdJ47+zz4fH3BRRLC6lL+WLkvr242PVBbUOLRyK/lkwHlfiKUoeVIMyK5NF+up6TRg71t/8Bny6Q==}
     engines: {node: '>=16.0.0'}
 
-  '@aws-sdk/util-dynamodb@3.682.0':
-    resolution: {integrity: sha512-adG2DgR3QszwmlvqKSHMOqGlGXOFcrdjAeH9alfydqOEzIAjLSu/14w2SnPGC5SeIAJpr/ApUTjJTJT5el91/Q==}
+  '@aws-sdk/util-dynamodb@3.685.0':
+    resolution: {integrity: sha512-bUTxoTaBwvJvLGqrdaSi9tZpLAf7hIVkX6bWcw9EPEbdjubDLUbcyBz3NCxKRODBck/zUSIiM/ShqrXLiursPA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.682.0
@@ -4784,11 +4784,11 @@ snapshots:
       mnemonist: 0.38.3
       tslib: 2.6.3
 
-  '@aws-sdk/lib-dynamodb@3.682.0(@aws-sdk/client-dynamodb@3.682.0)':
+  '@aws-sdk/lib-dynamodb@3.685.0(@aws-sdk/client-dynamodb@3.682.0)':
     dependencies:
       '@aws-sdk/client-dynamodb': 3.682.0
       '@aws-sdk/core': 3.679.0
-      '@aws-sdk/util-dynamodb': 3.682.0(@aws-sdk/client-dynamodb@3.682.0)
+      '@aws-sdk/util-dynamodb': 3.685.0(@aws-sdk/client-dynamodb@3.682.0)
       '@smithy/core': 2.4.8
       '@smithy/smithy-client': 3.4.0
       '@smithy/types': 3.5.0
@@ -4856,7 +4856,7 @@ snapshots:
       '@smithy/types': 3.5.0
       tslib: 2.6.3
 
-  '@aws-sdk/util-dynamodb@3.682.0(@aws-sdk/client-dynamodb@3.682.0)':
+  '@aws-sdk/util-dynamodb@3.685.0(@aws-sdk/client-dynamodb@3.682.0)':
     dependencies:
       '@aws-sdk/client-dynamodb': 3.682.0
       tslib: 2.6.3
