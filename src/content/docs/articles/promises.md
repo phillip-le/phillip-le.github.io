@@ -3,7 +3,7 @@ title: 'Handling multiple promises'
 lastUpdated: 2024-07-10
 ---
 
-## Sequential Execution / Promise sequencing
+## Sequential Execution / Promise Sequencing
 
 ### `.forEach`
 
@@ -108,22 +108,22 @@ Now, we have a `posts` array with our expected posts in the same order that we s
 As described in the [MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises#composition), promise sequencing can also be achieved using [.reduce()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#running_promises_in_sequence).
 
 ```ts
-const posts = await postIds.reduce(
+const posts = await postIds.reduce<Promise<Post[]>>(
   async (acc, postId) => {
     const fetchedPosts = await acc;
     const newPost = await fetchPost(postId);
     return [...fetchedPosts, newPost];
   },
-  Promise.resolve([] as Post[]),
+  Promise.resolve([]),
 );
 ```
 
-[Playground Link](https://www.typescriptlang.org/play/?target=9&moduleResolution=99&module=7&jsx=0#code/C4TwDgpgBACg9gZ2FAvFA3gKClAlgEwC4oA7AVwFsAjCAJwG5sphdgAbCYpW3Egc0YBfRpgDGcEkigAzCMFEALeFLQBDBCBKioACjCJgASSKlKNWgEpiMWnAq4EEADzLgAPlQesOcZLgcAOjY4Ph0AAwAxOUVePih9KQASdASjfEEwi0YfCSlaCAR9SWg1AHdVVhlohR0mHDCFYGAwBEIAejaAKwQJMDZVUQgFf3w6ANAwXHFRgPEKNtSENuTU4wyAGiYspl8paTI2NldUKFVyyvzC3IgA7okdbZy-QODQyOqIfHiDKBWDNcy2Sg+WAZFoJAwdTwJn2h1cAQImxwOBY7E4MgORwM41YHCRUGEmEJmB06k02genkhTykLAoEAAcnBSicACKqYA3EjMh5A3bIVb4BAnADaAEZ1lAAEySgDMAF1MDtcgKDMKyhVVUhjAgAvl8GRBrVkacNFpdANRJLBRYqd4TVB+VV5ApPq51adzshLUCTU6SBBSscNZVZC7XHp-vhHg6QWCISKAkmw4o3WrJQGgwZ5b6CficDY7A4bpd-AA3CA6EXy02wAzViz4mO7fw3V46ABE7o71rVzdyraCIXCAFEAB4QURkTlfXi-dA6dmcgLc0qUgC0zFw9KZpVtbSgYoADCfBAhAUSLLzMEA)
+[Playground Link](https://www.typescriptlang.org/play/?moduleResolution=99&target=9&jsx=0&module=7#code/C4TwDgpgBACg9gZ2FAvFA3gKClAlgEwC4oA7AVwFsAjCAJwG5sphdgAbCYpW3Egc0YBfRpgDGcEkigAzCMFEALeFLQBDBCBKioACjCJgASSKlKNWgEpiMWnAq4EEADzLgAPlQesOcZLgcAOjY4Ph0AAwAxOUVePih9KQASdASjfEEwi0YfCSlaCAR9SWg1AHdVVhlohR0mHDCFYGAwBEIAejaAKwQJMDZVUQgFf3w6ANAwXHFRgPEKNtSENuTU4wyAGiYspl8paTI2NldUKFVyyvzC3IgA7okdbZy-QODQyOqIfHiDKBWDNcy2Sg+WAZFoJAwdTwJn2h1cAQImxwOBY7E4MgORwM41YHCRUGEmEJmB06k02genkhTykLAoEAAcnBSicACKqYA3EjMh5A3bIVb4BAnADaAEZ1lAAEySgDMAF1MDtcgKDMKyhVVUhjAgAvl8GRBi5bPZHC4DCL5W43LVkacNFpdANRJLBRYqd47VB+VV5ApPq51adzshnUC7T6SBBSscNZVZH7XHp-vhHl6QWCISKAjmE4oA2rJVGYwZ5eGCficDY7A4bpd-AA3CA6S0WfFp3b+G6vHQAIkDvddao7uS7QRC4QAogAPCCiMicr68X7oHTszkBbmlSkAWmYuHpTNK7raUDFAAZL4IEICiRZeZggA)
 
 This is the equivalent of:
 
 ```ts
-const posts = await Promise.resolve([] as Post[])
+const posts = await Promise.resolve<Post[]>([])
   .then(async (fetchedPosts) => {
     const newPost = await fetchPost(1);
     return [...fetchedPosts, newPost];
@@ -138,7 +138,7 @@ const posts = await Promise.resolve([] as Post[])
   });
 ```
 
-[Playground Link](https://www.typescriptlang.org/play/?target=9&moduleResolution=99&module=7&jsx=0#code/C4TwDgpgBACg9gZ2FAvFA3gKClAlgEwC4oA7AVwFsAjCAJwG5sphdgAbCYpW3Egc0YBfRpgDGcEkigAzCMFEALeFLQBDBCBKioACjCJgASSKlKNWgEpiMWnAq4EEADzLgAPlQesOcZLgcAOjY4Ph0AAwAxOUVePih9KQASdASjfEEwi0YfCSlaCAR9SWg1AHdVVhlohR0mHDCFYGAwBEIAejaAKwQJMDZVUQgFf3w6ANAwXHFRgPEKNtSENuTU4wyAGiYspl8paTI2NldUKFVyyvzC3IgA7okdbZy-QODQyOqIfHiDKBWDNcy2Sg+WAZFoJAwdTwJn2h1cAQImxwOBY7E4MgORwM41YHCRUGEmEJmB06k02genkhTykLAoEAAcnBSicACKqYA3EjMh4iGnIRYnM4VZA2OwOG6XfwANwgOgA2gBdU4IWAGJUWKHjBQQEikjRaXSyeQ6-CuBAWKneZH80gQUrHMoiqom1w6ACMjxtwLkYIh8oCgeNik+5vWdodBkVQJwgk1Nu1uv15KNHzNBgtVqhtpI9sdp3OyGDSgMOgATF6bSC-VAA0G02GI65o1C41rgDq9WTDTpi6GM5aUF5s1Bdshc5GVAXncW3QBmSvI6vg2uBgJ99NIBDhifNmMEr27fw3V46ABE5rP4cWh9yx6CIXCAFEAB4QURkTlfXi-dA6dmcgE3KlJSAC0zC4PSTKlJabRQO6AAMSGCAggJEhYvKYEAA)
+[Playground Link](https://www.typescriptlang.org/play/?moduleResolution=99&target=9&jsx=0&module=7#code/C4TwDgpgBACg9gZ2FAvFA3gKClAlgEwC4oA7AVwFsAjCAJwG5sphdgAbCYpW3Egc0YBfRpgDGcEkigAzCMFEALeFLQBDBCBKioACjCJgASSKlKNWgEpiMWnAq4EEADzLgAPlQesOcZLgcAOjY4Ph0AAwAxOUVePih9KQASdASjfEEwi0YfCSlaCAR9SWg1AHdVVhlohR0mHDCFYGAwBEIAejaAKwQJMDZVUQgFf3w6ANAwXHFRgPEKNtSENuTU4wyAGiYspl8paTI2NldUKFVyyvzC3IgA7okdbZy-QODQyOqIfHiDKBWDNcy2Sg+WAZFoJAwdTwJn2h1cAQImxwOBY7E4MgORwM41YHCRUGEmEJmB06k02genkhTykLAoEAAcnBSicACKqYA3EjMh4iGnIRYnM4VZA2OwOG6XfwAN2crgA2gBdNw6JUWKHjBQQEikjRaXSyeRa-CuBAWKneZH80gQUrHMoiqpG1w6ACMjytwLkYIh8oC-sNik+pvWNrtBkVQJwgnVVs12t15INHxNBjNFqh1pItvtp3OyEDSgMOgATB6rSCfVA-QGUyGw65I1CYxrgFqdWT9TpC8G0+aUF5M1Bdshs+GVHnHYWXQBmcvIyvg6v+gI91NIBChseNqMEj27fw3V46ABEppPocW+9yh6CIXCAFEAB4QURkTlfXi-dA6dmcgLcqUlIALTMLg9JMqU5ptFAroAAwIYICCAkSFi8pgQA)
 
 This is functionally the same as using `for...of` but done in a more functional style.
 
