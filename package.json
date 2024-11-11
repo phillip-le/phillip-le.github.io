@@ -18,7 +18,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/markdown-remark": "^5.3.0",
     "@astrojs/react": "^3.6.2",
-    "@astrojs/starlight": "^0.28.6",
+    "@astrojs/starlight": "^0.29.0",
     "@astrojs/starlight-tailwind": "^2.0.3",
     "@astrojs/tailwind": "^5.1.2",
     "@faker-js/faker": "^9.2.0",
@@ -33,20 +33,20 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rehype-autolink-headings": "^7.1.0",
-    "starlight-links-validator": "^0.13.0",
+    "starlight-links-validator": "^0.13.2",
     "starlight-package-managers": "^0.8.0",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@aws-sdk/client-dynamodb": "^3.686.0",
-    "@aws-sdk/lib-dynamodb": "^3.686.0",
+    "@aws-sdk/client-dynamodb": "^3.687.0",
+    "@aws-sdk/lib-dynamodb": "^3.687.0",
     "@biomejs/biome": "1.9.4",
     "eslint-interactive": "^11.1.0",
     "factory.ts": "^1.4.2",
     "jsdom": "^25.0.1",
-    "msw": "^2.6.2",
-    "nock": "^13.5.5",
+    "msw": "^2.6.4",
+    "nock": "^13.5.6",
     "npm-check-updates": "^17.1.10",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
@@ -54,7 +54,7 @@
     "testcontainers": "^10.14.0",
     "vitest": "^2.1.4",
     "zod": "^3.23.8",
-    "zx": "^8.2.0"
+    "zx": "^8.2.1"
   },
   "packageManager": "pnpm@9.12.3"
 }
