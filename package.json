@@ -52,7 +52,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "radash": "^12.1.0",
     "testcontainers": "^10.14.0",
-    "vitest": "^2.1.4",
+    "vitest": "^2.1.8",
     "zod": "^3.23.8",
     "zx": "^8.2.1"
   },
