@@ -39,7 +39,7 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@aws-sdk/client-dynamodb": "^3.687.0",
+    "@aws-sdk/client-dynamodb": "^3.705.0",
     "@aws-sdk/lib-dynamodb": "^3.687.0",
     "@biomejs/biome": "1.9.4",
     "eslint-interactive": "^11.1.0",
