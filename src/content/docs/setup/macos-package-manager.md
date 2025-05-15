@@ -30,6 +30,14 @@ Check that it worked
 brew doctor
 ```
 
+### Useful commands
+
+Show what you have installed at a top level and excludes their dependencies.
+
+```sh
+brew leaves
+```
+
 ## Brewfile
 
 Easily re-install all of the packages you've installed with `brew` on another machine using [Homebrew-file](https://homebrew-file.readthedocs.io/en/latest/index.html).
