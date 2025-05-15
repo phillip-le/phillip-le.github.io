@@ -46,9 +46,140 @@ export default defineConfig({
 });
 ```
 
+### esbuild
+
+Set the format to `esm`:
+
+```sh ins="--format=esm"
+esbuild ./src/index.ts --bundle --platform=node --format=esm
+```
+
+```ts
+// build-script.ts
+import { BuildOptions } from 'esbuild';
+{
+  format: 'esm',
+} satisfies BuildOptions;
+```
+
+**Using `esbuild` bundled application with AWS Lambda**
+
+Ensure that you output your files with the `.mjs` extension:
+
+```sh ins="--outfile=./build/index.mjs"
+esbuild ./src/index.ts --outfile=./build/index.mjs --bundle --platform=node --format=esm
+```
+
+```ts
+// build-script.ts
+import { BuildOptions } from 'esbuild';
+{
+  format: 'esm',
+  outfile: './build/index.mjs'
+} satisfies BuildOptions;
+```
+
+This resolves the following error:
+
+```json
+{
+  "timestamp": "2025-05-14T13:26:00.828Z",
+  "level": "ERROR",
+  "message": "(node:8) Warning: To load an ES module, set \"type\": \"module\" in the package.json or use the .mjs extension."
+}
+```
+
+```json
+{
+  "timestamp": "2025-05-14T13:26:00.829Z",
+  "level": "ERROR",
+  "message": {
+    "errorType": "UserCodeSyntaxError",
+    "errorMessage": "SyntaxError: Cannot use import statement outside a module",
+    "stackTrace": [
+      "Runtime.UserCodeSyntaxError: SyntaxError: Cannot use import statement outside a module",
+      "    at _loadUserApp (file:///var/runtime/index.mjs:1084:17)",
+      "    at async UserFunction.js.module.exports.load (file:///var/runtime/index.mjs:1119:21)",
+      "    at async start (file:///var/runtime/index.mjs:1282:23)",
+      "    at async file:///var/runtime/index.mjs:1288:1"
+    ]
+  }
+}
+```
+
+Also, ensure that you add the following banner as noted in [this GitHub issue](https://github.com/evanw/esbuild/issues/1921#issuecomment-1152991694):
+
+```sh
+esbuild ./src/index.ts --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\" --outfile=./build/index.mjs --bundle --platform=node --format=esm
+```
+
+```ts
+import { BuildOptions } from 'esbuild';
+const buildOptions = {
+  banner: {
+    js: "import { createRequire } from 'module';const require = createRequire(import.meta.url);",
+  },
+  format: 'esm',
+  outfile: './build/index.mjs',
+} satisfies BuildOptions;
+```
+
+To resolve the following error:
+
+```json
+{
+    "timestamp": "2025-05-15T00:27:41.191Z",
+    "level": "ERROR",
+    "message": {
+        "errorType": "Error",
+        "errorMessage": "Dynamic require of \"querystring\" is not supported",
+        "stackTrace": [
+            "Error: Dynamic require of \"querystring\" is not supported",
+            ...
+            "    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)",
+            "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)",
+            "    at async _tryAwaitImport (file:///var/runtime/index.mjs:1008:16)",
+            "    at async _tryRequire (file:///var/runtime/index.mjs:1057:86)",
+            "    at async _loadUserApp (file:///var/runtime/index.mjs:1081:16)",
+            "    at async UserFunction.js.module.exports.load (file:///var/runtime/index.mjs:1119:21)",
+            "    at async start (file:///var/runtime/index.mjs:1282:23)",
+            "    at async file:///var/runtime/index.mjs:1288:1"
+        ]
+    }
+}
+```
+
+### prettier
+
+Update your `prettier` config from `.js` to `.mjs` and `.ts` to `.mts`.
+
+Update the exports of your config from
+
+```diff lang="js"
+-module.exports = {
++export default {
+```
+
+### dependency-cruiser
+
+Update your `dependency-cruiser` config from `.js` to `.mjs` and `.ts` to `.mts`.
+
+Update the exports of your config from
+
+```diff lang="js"
+-module.exports = {
++export default {
+```
+
 ### Test Runner
 
 If you are using [jest](https://jestjs.io/), you will want to migrate to using [vitest](https://vitest.dev/). Fortunately, there is [good documentation](https://vitest.dev/guide/migration.html#jest) and [robust codemods](https://docs.grit.io/patterns/library/jest_to_vitest) that make this easier.
+
+### Linting
+
+It can also be good to enable some linting rules to help adjust to the differences between CommonJS and ESM:
+
+- [unicorn/prefer-module](https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-module.md)
 
 ### Additional resources
 
