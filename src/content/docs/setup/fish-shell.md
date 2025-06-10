@@ -56,6 +56,21 @@ end
 
 [Starship](https://starship.rs/) is a cross-shell prompt that has a customizable config file.
 
+### Installation
+
+Install the binary using `devbox`
+
+```sh
+devbox add starship
+```
+
+Add the init hook
+
+```fish
+// ~/.config/fish/config.fish
+starship init fish | source
+```
+
 ### Alternatives
 
 #### Fisher + Tide
