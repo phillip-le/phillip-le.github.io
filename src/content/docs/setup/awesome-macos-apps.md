@@ -25,8 +25,15 @@ Just use the native Raycast [windows management extension](https://www.raycast.c
 
 [Kitty](https://sw.kovidgoyal.net/kitty/) is my terminal of choice.
 
+Add the right font [Monaspace](https://monaspace.githubnext.com/):
+
+```sh
+brew install --cask font-monaspace
 ```
+
+```toml
 // ~/.config/kitty/kitty.conf
+font_family        'Monaspace Neon', monospace
 tab_bar_style powerline
 ```
 

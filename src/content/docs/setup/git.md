@@ -102,6 +102,10 @@ Example of a `.git-blame-ignore-revs` file.
 
 `git` works best with text files and while you can version other file types with it, it is usually not advised. Instead, you can use [Git LFS](https://git-lfs.com/) to manage these larger files.
 
+## GitHub SSH Key
+
+[Tutorial for creating a new SSH key and adding it to GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
 ## Securing GitHub SSH Key
 
 It is a best practice to secure your SSH keys using a passphrase but it can be annoying to enter your passphrase every time you want to push / pull from GitHub.
