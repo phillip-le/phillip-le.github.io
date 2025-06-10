@@ -2,7 +2,7 @@
 title: 'Fish shell'
 sidebar:
   order: 2
-lastUpdated: 2024-07-09
+lastUpdated: 2025-06-10
 ---
 
 [Fish](https://fishshell.com/) is the superior shell with sensible defaults.
@@ -73,10 +73,6 @@ starship init fish | source
 
 ### Alternatives
 
-#### Fisher + Tide
-
-[Fisher](https://github.com/jorgebucaran/fisher/) is a plugin manager for `fish`.
-
 [Tide](https://github.com/IlanCosman/tide) is a customizable prompt for `fish`.
 
 #### Installation
@@ -108,10 +104,10 @@ thread 'main' panicked at 'Can't write output: Os { code: 32, kind: BrokenPipe, 
 
 ### Installation
 
-Install `zoxide` with brew.
+Install `zoxide` with `devbox`.
 
 ```sh
-brew install zoxide
+devbox add zoxide
 ```
 
 Add `zoxide init fish | source` to the end of your `config.fish`.
@@ -140,7 +136,7 @@ fisher install jethrokuan/z
 ### Installation
 
 ```sh
-brew install bat
+devbox add bat
 ```
 
 ## fd
@@ -150,7 +146,7 @@ brew install bat
 ### Installation
 
 ```sh
-brew install fd
+devbox add fd
 ```
 
 ## eza
@@ -160,7 +156,17 @@ brew install fd
 ### Installation
 
 ```sh
-brew install eza
+devbox add eza
+```
+
+## Fisher
+
+[Fisher](https://github.com/jorgebucaran/fisher/) is a plugin manager for `fish`.
+
+### Installation
+
+```sh
+brew install fisher
 ```
 
 ## fzf
@@ -174,7 +180,7 @@ brew install eza
 Install `fzf`
 
 ```sh
-brew install fzf
+devbox add fzf
 ```
 
 Install `fzf.fish`

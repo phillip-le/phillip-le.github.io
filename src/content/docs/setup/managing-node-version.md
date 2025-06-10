@@ -1,15 +1,56 @@
 ---
 title: 'Managing node and package manager versions'
-lastUpdated: 2024-08-06
+lastUpdated: 2025-06-10
 ---
 
-## volta
+## mise
+
+[mise](https://mise.jdx.dev/) is a new up and coming "everything" version manager? See [this nice breakdown](https://ricostacruz.com/posts/mise-vs-volta) on the differences between `mise` and `volta`.
+
+### Installation
+
+```sh
+brew install mise
+mise use -g node@22
+mise use -g npm:@antfu/ni
+```
+
+```diff
+// ~/.config/mise/config.toml
+[tools]
+node = "22"
+"npm:@antfu/ni" = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
+```
+
+Verify that it is working.
+
+```sh
+mise doctor
+```
+
+You don't need to add `mise` to the `PATH` because it adds itself to the `PATH`.
+
+### Usage
+
+`mise` can read the required node version from [`.nvmrc` and `.node-version`](https://mise.jdx.dev/lang/node.html#nvmrc-and-node-version-support) with the `idiomatic_version_file_enable_tools` setting.
+
+```sh
+mise missing: node@18.20.4
+$ mise install
+```
+
+## Alternatives
+
+### volta
 
 Manage the `node` and package manager versions by using [volta](https://docs.volta.sh/guide/). Volta also allows you to standardise the versions of `node` and the package managers used in a repository with [volta's config](https://docs.volta.sh/guide/understanding#managing-your-project).
 
 Great if you can enforce using `volta` across all of the codebases you work in or you can consistently rely on a default version of `node`. Not great if you need to use the version of `node` specified in a `.nvmrc` file.
 
-### Installation
+#### Installation
 
 Install `volta`.
 
@@ -25,7 +66,7 @@ volta install yarn@1
 volta install pnpm
 ```
 
-### Usage
+#### Usage
 
 Inside of a repository, you can pin the node version and package manager to use in the `package.json` file with the following commands:
 
@@ -33,8 +74,6 @@ Inside of a repository, you can pin the node version and package manager to use 
 volta pin node
 volta pin pnpm
 ```
-
-## Alternatives
 
 ### fnm
 
@@ -72,49 +111,6 @@ fnm completions --shell fish > ~/.config/fish/completions/fnm.fish
 ```
 
 Restart your terminal.
-
-### mise
-
-[mise](https://mise.jdx.dev/) is a new up and coming "everything" version manager? See [this nice breakdown](https://ricostacruz.com/posts/mise-vs-volta) on the differences between `mise` and `volta`.
-
-#### Installation
-
-```sh
-brew install mise
-mise settings set experimental true
-mise use -g node@22
-mise use -g npm:@antfu/ni
-```
-
-Enable Corepack.
-
-```diff
-// ~/.config/mise/config.toml
-[tools]
-node = "22"
-"npm:@antfu/ni" = "latest"
-
-[settings]
-experimental = true
-
-+[env]
-+MISE_NODE_COREPACK = 'true'
-```
-
-Verify that it is working.
-
-```sh
-mise doctor
-```
-
-#### Usage
-
-Can read the required node version from [`.nvmrc` and `.node-version`](https://mise.jdx.dev/lang/node.html#nvmrc-and-node-version-support).
-
-```sh
-mise missing: node@18.20.4
-$ mise install
-```
 
 ### nvm.fish
 
