@@ -201,6 +201,12 @@ Show command history: `CTRL + R`
 brew install colima qemu
 ```
 
+Optionally run `colima` as a [brew service](https://docs.brew.sh/Manpage#services-subcommand) so that it starts on login.
+
+```sh
+brew services start colima
+```
+
 Configure `DOCKER_HOST`:
 
 ```sh
@@ -211,4 +217,18 @@ Optionally, configure `TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE` for [testcontainer
 
 ```sh
 set -Ux TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE /var/run/docker.sock
+```
+
+### Usage
+
+Start colima
+
+```sh
+colima start
+```
+
+If something is wrong, usually it's good to just restart `colima`:
+
+```sh
+colima restart
 ```
