@@ -26,7 +26,7 @@ Add `fish` to known shells.
 /opt/homebrew/bin/fish
 ```
 
-Restart terminal.
+Restart terminal. May need to restart laptop.
 
 Set `fish` as default shell
 
@@ -52,21 +52,19 @@ if test -f (brew --prefix)/etc/brew-wrap.fish
 end
 ```
 
-## Fisher
+## Starship
+
+[Starship](https://starship.rs/) is a cross-shell prompt that has a customizable config file.
+
+### Alternatives
+
+#### Fisher + Tide
 
 [Fisher](https://github.com/jorgebucaran/fisher/) is a plugin manager for `fish`.
 
-### Installation
-
-```sh
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-```
-
-## Tide
-
 [Tide](https://github.com/IlanCosman/tide) is a customizable prompt for `fish`.
 
-### Installation
+#### Installation
 
 ```sh
 fisher install IlanCosman/tide@v6
@@ -88,10 +86,6 @@ thread 'main' panicked at 'Can't write output: Os { code: 32, kind: BrokenPipe, 
 ```
 
 :::
-
-### Alternatives
-
-[Starship](https://starship.rs/) is a cross-shell prompt that has a customizable config file. I use this when I need to use [fnm](https://github.com/Schniz/fnm) for [managing my node version](/setup/managing-node-version).
 
 ## zoxide
 
