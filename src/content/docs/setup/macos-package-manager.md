@@ -53,3 +53,28 @@ With an existing `Brewfile`, copy that file to `~/.config/brewfile/Brewfile` and
 ```sh
 brew file install
 ```
+
+## Devbox
+
+### Installation
+
+Install `devbox`
+
+```sh
+curl -fsSL https://get.jetify.com/devbox | bash
+```
+
+Add the init hook.
+
+```fish
+// ~/.config/fish/config.fish
+devbox global shellenv --init-hook | source
+```
+
+Restart the terminal. This should initiate installing `nix`.
+
+Pull the global config from `git`
+
+```sh
+devbox global shellenv --init-hook | source
+```

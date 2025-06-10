@@ -40,6 +40,10 @@ tab_bar_style powerline
 
 [Arc](https://arc.net/) is the only browser worth using. It has vertical tabs, automatically closes tabs, easy shortcuts to copy the current URL (CMD + SHIFT + C) and native support for picture in picture video play.
 
+### Setup
+
+Use `CMD+Shift+D` to enable the Toolbar.
+
 ## Menubar Organisation
 
 Sometimes you don't want to see everything up in the menubar all of the time.
