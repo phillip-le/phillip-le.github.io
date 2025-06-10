@@ -192,3 +192,23 @@ fisher install PatrickF1/fzf.fish
 ### Usage
 
 Show command history: `CTRL + R`
+
+## colima
+
+### Installation
+
+```sh
+brew install colima qemu
+```
+
+Configure `DOCKER_HOST`:
+
+```sh
+set -Ux DOCKER_HOST "unix://$HOME/.colima/docker.sock"
+```
+
+Optionally, configure `TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE` for [testcontainers](https://node.testcontainers.org/supported-container-runtimes/#colima).
+
+```sh
+set -Ux TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE /var/run/docker.sock
+```
