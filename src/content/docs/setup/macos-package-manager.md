@@ -55,6 +55,12 @@ Install your dependencies using an existing `Brewfile`
 brew bundle install
 ```
 
+You can overwrite an existing `Brewfile` by running the following command. This is useful when you already version your `Brewfile` using `git`.
+
+```sh
+brew bundle dump --force
+```
+
 ## Devbox
 
 ### Installation
