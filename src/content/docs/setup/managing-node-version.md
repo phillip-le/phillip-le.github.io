@@ -1,6 +1,6 @@
 ---
 title: 'Managing node and package manager versions'
-lastUpdated: 2025-06-10
+lastUpdated: 2025-06-11
 ---
 
 ## mise
@@ -40,6 +40,12 @@ You don't need to add `mise` to the `PATH` because it adds itself to the `PATH`.
 ```sh
 mise missing: node@18.20.4
 $ mise install
+```
+
+You can install `npm` tools and have `mise` manage them across all of your `node` versions:
+
+```sh
+mise use -g npm:prettier
 ```
 
 ## Alternatives

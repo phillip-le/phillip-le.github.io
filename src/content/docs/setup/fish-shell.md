@@ -2,7 +2,7 @@
 title: 'Fish shell'
 sidebar:
   order: 2
-lastUpdated: 2025-06-10
+lastUpdated: 2025-06-11
 ---
 
 [Fish](https://fishshell.com/) is the superior shell with sensible defaults.
@@ -50,6 +50,12 @@ Wrap `brew` with `Homebrew-file` in your `config.fish` file.
 if test -f (brew --prefix)/etc/brew-wrap.fish
   source (brew --prefix)/etc/brew-wrap.fish
 end
+```
+
+[Set your theme](https://fishshell.com/docs/current/tutorial.html#syntax-highlighting):
+
+```sh
+fish_config
 ```
 
 ## Starship

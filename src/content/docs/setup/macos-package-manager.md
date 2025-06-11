@@ -2,6 +2,7 @@
 title: 'Package manager for macOS'
 sidebar:
   order: 1
+lastUpdated: 2025-06-11
 ---
 
 ## Brew
@@ -40,18 +41,18 @@ brew leaves
 
 ## Brewfile
 
-Easily re-install all of the packages you've installed with `brew` on another machine using [Homebrew-file](https://homebrew-file.readthedocs.io/en/latest/index.html).
+Easily re-install all of the packages you've installed with `brew` on another machine using a [Brewfile](https://docs.brew.sh/Brew-Bundle-and-Brewfile).
 
-### Installation
+Export your installed dependencies to a `Brewfile` in the current directory
 
 ```sh
-brew install rcmdnk/file/brew-file
+brew bundle dump
 ```
 
-With an existing `Brewfile`, copy that file to `~/.config/brewfile/Brewfile` and run the following command. You may need to wrap the `brew` command as shown in the [fish installation](/setup/fish-shell).
+Install your dependencies using an existing `Brewfile`
 
 ```sh
-brew file install
+brew bundle install
 ```
 
 ## Devbox
