@@ -39,6 +39,12 @@ Show what you have installed at a top level and excludes their dependencies.
 brew leaves
 ```
 
+You can also view your installed casks
+
+```sh
+brew list --cask
+```
+
 ## Brewfile
 
 Easily re-install all of the packages you've installed with `brew` on another machine using a [Brewfile](https://docs.brew.sh/Brew-Bundle-and-Brewfile).
