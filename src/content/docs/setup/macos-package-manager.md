@@ -2,7 +2,7 @@
 title: 'Package manager for macOS'
 sidebar:
   order: 1
-lastUpdated: 2025-06-11
+lastUpdated: 2025-06-12
 ---
 
 ## Brew
@@ -45,7 +45,7 @@ You can also view your installed casks
 brew list --cask
 ```
 
-## Brewfile
+### Brewfile
 
 Easily re-install all of the packages you've installed with `brew` on another machine using a [Brewfile](https://docs.brew.sh/Brew-Bundle-and-Brewfile).
 
@@ -86,8 +86,16 @@ devbox global shellenv --init-hook | source
 
 Restart the terminal. This should initiate installing `nix`.
 
-Pull the global config from `git`
+### Usage
+
+Pull the global config:
 
 ```sh
-devbox global shellenv --init-hook | source
+devbox global pull git@github.com:phillip-le/devbox-config.git
+```
+
+Push the global config:
+
+```sh
+devbox global push git@github.com:phillip-le/devbox-config.git
 ```
