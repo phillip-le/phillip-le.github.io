@@ -100,3 +100,9 @@ Raycast has a native [Clipboard History](https://www.raycast.com/extensions/clip
 ## HTTP Client
 
 [Bruno](https://docs.usebruno.com/introduction/getting-started) is a `git` based HTTP Client.
+
+## Ticktick
+
+[Ticktick](https://ticktick.com/download) is just a great TODO app.
+
+Make sure you disable the global hotkey [which interferes with VSCode's open command palette command (CMD+Shift+P)!](https://www.reddit.com/r/MacOS/comments/rw5l0i/comment/mla7g1d/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)
