@@ -1,6 +1,6 @@
 ---
 title: 'Git'
-lastUpdated: 2024-10-07
+lastUpdated: 2025-06-12
 ---
 
 ## Config
@@ -11,9 +11,38 @@ Sensible `git` options to set.
 git config --global push.autosetupremote true
 git config --global core.excludeFiles ~/.gitignore
 git config --global blame.ignoreRevsFile .git-blame-ignore-revs
-git config --global pull.rebase false
+git config --global pull.rebase true
 git config --global push.useForceIfIncludes true
 ```
+
+Remember to set your email and name!
+
+```sh
+git config --global user.email <EMAIL>
+git config --global user.name <NAME>
+```
+
+Your `.gitconfig` should look something like:
+
+```
+// ~/.gitconfig
+[user]
+        email = john.smith@omg.lol
+        name = John Smith
+[gpg]
+        format = ssh
+[commit]
+        gpgsign = true
+[push]
+        autosetupremote = true
+        useForceIfIncludes = true
+[core]
+        excludeFiles = /Users/john.smith/.gitignore
+[pull]
+        rebase = true
+```
+
+It can also be useful to add the following to your global `.gitignore`:
 
 ```
 // ~/.gitignore
