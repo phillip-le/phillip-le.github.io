@@ -9,7 +9,6 @@ Sensible `git` options to set.
 
 ```sh
 git config --global push.autosetupremote true
-git config --global core.excludeFiles ~/.gitignore
 git config --global blame.ignoreRevsFile .git-blame-ignore-revs
 git config --global pull.rebase true
 git config --global push.useForceIfIncludes true
@@ -36,16 +35,14 @@ Your `.gitconfig` should look something like:
 [push]
         autosetupremote = true
         useForceIfIncludes = true
-[core]
-        excludeFiles = /Users/john.smith/.gitignore
 [pull]
         rebase = true
 ```
 
-It can also be useful to add the following to your global `.gitignore`:
+It can also be useful to add the following to your global `.gitignore` (located by default in `~/.config/git/ignore`):
 
 ```
-// ~/.gitignore
+// ~/.config/git/ignore
 
 .idea
 .DS_Store
