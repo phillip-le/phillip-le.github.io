@@ -5,26 +5,10 @@ lastUpdated: 2025-06-12
 
 ## Config
 
-Sensible `git` options to set.
-
-```sh
-git config --global push.autosetupremote true
-git config --global blame.ignoreRevsFile .git-blame-ignore-revs
-git config --global pull.rebase true
-git config --global push.useForceIfIncludes true
-```
-
-Remember to set your email and name!
-
-```sh
-git config --global user.email <EMAIL>
-git config --global user.name <NAME>
-```
-
-Your `.gitconfig` should look something like:
+You can set some useful configs in your `.config/git/config`:
 
 ```
-// ~/.gitconfig
+// ~/.config/git/config
 [user]
         email = john.smith@omg.lol
         name = John Smith
